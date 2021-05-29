@@ -6,6 +6,7 @@ class eApproval extends StatefulWidget {
   State<StatefulWidget> createState() => new _eApprovalState();
 }
 
+// ignore: camel_case_types
 class _eApprovalState extends State<eApproval> {
   @override
   Widget build(BuildContext context) {

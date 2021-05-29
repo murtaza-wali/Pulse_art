@@ -2,6 +2,7 @@ import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/Model/MenuModel.dart';
 import 'package:art/eApproval/eApprovalMenu.dart';
+import 'package:art/eApproval/eApprovalTabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 
@@ -132,7 +133,7 @@ class _ArtMenu extends State<Menu> {
                     if (categoriesList[index].title == 'E-Approval') {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => eApproval()),
+                        MaterialPageRoute(builder: (context) => Eapproval()),
                       );
                     } else if (categoriesList[index].title == 'GatePass') {
                       Navigator.push(
