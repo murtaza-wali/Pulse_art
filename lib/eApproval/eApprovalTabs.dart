@@ -7,11 +7,13 @@ class CategoriesModel {
   String _name = "";
   String _description = "";
   String _status = "";
+  String _type = "";
 
-  CategoriesModel(String name, String description, String status) {
+  CategoriesModel(String name, String description, String status, String type) {
     this._name = name;
     this._description = description;
     this._status = status;
+    this._type = type;
   }
 }
 
@@ -20,14 +22,18 @@ class CategoryRepository {
     return Future.value([
       //adding all the categories of news in the list
       new CategoriesModel(
-          'Junaid Khan', "Leave for 15 days holiday", "Pending"),
-      new CategoriesModel('Farhad Naseem', "Testing Machine", "Approved"),
-      new CategoriesModel('Ali Zafar', "Medical Leave", "Pending"),
-      new CategoriesModel('Batool', "Laptop for HR Manager", "Reject"),
-      new CategoriesModel('Farhan', "New Scanner for IT Department", "Reject"),
-      new CategoriesModel('Subhan', "Emergency Leave", "Reject"),
-      new CategoriesModel('Omar Khalid', "Buying Laptop", "Pending"),
-      new CategoriesModel('Danish Aslam', "Expense for stock", "Approved")
+          'Junaid Khan', "Leave for 15 days holiday", "Open", "Requisition"),
+      new CategoriesModel('Farhad Naseem', "Testing Machine", "Approved", "PO"),
+      new CategoriesModel('Ali Zafar', "Medical Leave", "Open", "Requisition"),
+      new CategoriesModel(
+          'Batool', "Laptop for HR Manager", "Reject", "Journal Batch"),
+      new CategoriesModel(
+          'Farhan', "New Scanner for IT Department", "Reject", "Requisition"),
+      new CategoriesModel('Subhan', "Emergency Leave", "Reject", "PO"),
+      new CategoriesModel(
+          'Omar Khalid', "Buying Laptop", "Open", "Journal Batch"),
+      new CategoriesModel(
+          'Danish Aslam', "Expense for stock", "Approved", "Journal Batch")
     ]);
   }
 }
@@ -47,7 +53,18 @@ class _EapprovalState extends State<Eapproval> {
         length: choices.length,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Approval'),
+            title: new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/images/artlogo.png',
+                  fit: BoxFit.contain,
+                  height: 20,
+                ),
+                Container(
+                    padding: const EdgeInsets.all(8.0), child: Text('Worklist'))
+              ],
+            ),
             automaticallyImplyLeading: true, // hides default back button
             flexibleSpace: Container(
               decoration: BoxDecoration(
@@ -91,10 +108,10 @@ class Choice {
 }
 
 const List<Choice> choices = const <Choice>[
-  const Choice(title: 'All'),
+  const Choice(title: 'Open'),
   const Choice(title: 'Approved'),
   const Choice(title: 'Reject'),
-  const Choice(title: 'Pending'),
+  const Choice(title: 'All'),
 ];
 
 class ChoiceCard extends StatelessWidget {
@@ -131,35 +148,77 @@ class ChoiceCard extends StatelessWidget {
 
   Widget listText(CategoriesModel category, BuildContext context) {
     if (category._status == choice.title) {
-      return ListTile(
-          trailing: Text(
-            category._status,
-            style: TextStyle(color: Colors.green, fontSize: 15),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          // Text("Pay on: Wed, May 08 2019"),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(category._name,
+                          style: TextStyle(color: Colors.black, fontSize: 15)),
+                      Text(category._description,
+                          style: TextStyle(color: Colors.grey, fontSize: 15)),
+                      Text(category._type,
+                          style: TextStyle(color: Colors.grey, fontSize: 15)),
+                    ],
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(category._status,
+                      style: TextStyle(color: Colors.green, fontSize: 15)),
+                  // Text("Not Received"),
+                ],
+              ),
+            ],
           ),
-          title: Text(category._name),
-          subtitle: Text(category._description),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => eApproval()),
-            );
-          });
+        ],
+      );
     } else if (choice.title == 'All') {
       print('status: ${category._status}');
       print('description: ${category._description}');
-      return ListTile(
-          trailing: Text(
-            category._status,
-            style: TextStyle(color: Colors.green, fontSize: 15),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          // Text("Pay on: Wed, May 08 2019"),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(category._name,
+                          style: TextStyle(color: Colors.black, fontSize: 15)),
+                      Text(category._description,
+                          style: TextStyle(color: Colors.grey, fontSize: 15)),
+                      Text(category._type,
+                          style: TextStyle(color: Colors.grey, fontSize: 15)),
+                    ],
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(category._status,
+                      style: TextStyle(color: Colors.green, fontSize: 15)),
+                  // Text("Not Received"),
+                ],
+              ),
+            ],
           ),
-          title: Text(category._name),
-          subtitle: Text(category._description),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => eApproval()),
-            );
-          });
+        ],
+      );
     } else {
       return Container();
     }

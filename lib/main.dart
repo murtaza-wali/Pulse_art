@@ -46,7 +46,43 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: ReColors().appMainColor,
       body: Center(
-        child: Image.asset('assets/images/artlogo.png'),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Center(
+                child: Image.asset('assets/images/artlogo.png',
+                    height: 250, width: 260),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Powered by Artistic Milliners",
+                        style: TextStyle(
+                          // remove this if don't have custom font
+                          fontSize: 10.0,
+                          // text size
+                          color: Colors.white, // text color
+                        ),
+                      ),Text(
+                        "Copyright © 2021 All Rights Reserved",
+                        style: TextStyle(
+                          // remove this if don't have custom font
+                          fontSize: 10.0,
+                          // text size
+                          color: Colors.white, // text color
+                        ),
+
+                      )
+                    ],
+                  )),
+            )
+          ],
+        ),
       ),
     );
   }

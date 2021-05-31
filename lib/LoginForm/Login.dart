@@ -3,7 +3,6 @@ import 'package:art/Menu/MainMenu.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:flutter/material.dart';
 
-
 class Login extends StatefulWidget {
   // This widget is the root of your application.
   @override
@@ -17,28 +16,37 @@ class _State extends State<Login> {
 
   Widget build(BuildContext buildContext) {
     return Scaffold(
+      backgroundColor: color2,
       appBar: new ReusableWidgets().getAppBar('Login'),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: ListView(
           children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                      color: color2,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
+            Center(
+              child: Image.asset('assets/images/artlogo.png',
+                  height: 155, width: 165),
+            ),
             Container(
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,
               child: TextField(
-                controller: username,
+                controller: userpassword,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'User Name'),
+                  labelText: "Username",
+                  labelStyle: TextStyle(
+                      color: Colors.white
+                  ),
+                  fillColor: Colors.white,
+                  enabledBorder: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.white, width: 2.0),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                ),
               ),
             ),
             Container(
@@ -47,13 +55,27 @@ class _State extends State<Login> {
               child: TextField(
                 controller: userpassword,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'User Password'),
+                  labelText: "Password",
+                  labelStyle: TextStyle(
+                      color: Colors.white
+                  ),
+                  fillColor: Colors.white,
+                  enabledBorder: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.white, width: 2.0),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                ),
               ),
             ),
             FlatButton(
               onPressed: () {},
               child: Text('Forget Password?'),
-              textColor: color2,
+              textColor: Colors.white,
             ),
             Container(
               padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
@@ -65,25 +87,25 @@ class _State extends State<Login> {
                     MaterialPageRoute(builder: (context) => Menu()),
                   );
                 },
-                textColor: Colors.white,
+                textColor: color2,
                 child: Text('Login'),
-                color: color2,
+                color: Colors.white,
               ),
             ),
-            Container(
+           /* Container(
               child: Row(
                 children: <Widget>[
                   Text('Does not have an account?'),
                   FlatButton(
                     onPressed: () {},
                     child: Text('Sign Up'),
-                    textColor: color2,
+                    textColor: Colors.white,
                     // padding: EdgeInsets.fromLTRB(60, 10, 60, 10),
                   )
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
-            )
+            )*/
           ],
         ),
       ),

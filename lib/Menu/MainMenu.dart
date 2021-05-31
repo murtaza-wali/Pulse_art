@@ -1,8 +1,7 @@
 import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/Model/MenuModel.dart';
-import 'package:art/eApproval/eApprovalMenu.dart';
-import 'package:art/eApproval/eApprovalTabs.dart';
+import 'package:art/eApproval/eApprovalNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 
@@ -26,7 +25,18 @@ class _ArtMenu extends State<Menu> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Menu'),
+          title: new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/artlogo.png',
+                fit: BoxFit.contain,
+                height: 20,
+              ),
+              Container(
+                  padding: const EdgeInsets.all(8.0), child: Text('Menu'))
+            ],
+          ),
 
           actions: <Widget>[
             // Using Stack to show Notification Badge
@@ -133,7 +143,8 @@ class _ArtMenu extends State<Menu> {
                     if (categoriesList[index].title == 'E-Approval') {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Eapproval()),
+                        MaterialPageRoute(
+                            builder: (context) => eApprovalNavigation()),
                       );
                     } else if (categoriesList[index].title == 'GatePass') {
                       Navigator.push(

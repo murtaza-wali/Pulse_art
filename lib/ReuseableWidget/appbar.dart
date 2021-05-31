@@ -4,10 +4,21 @@ import 'dart:ui';
 
 class ReusableWidgets {
   Color color2 = HexColor("#055e8e");
-  getAppBar(String title) {
 
+  getAppBar(String title) {
     return AppBar(
-      title: Text(title),
+      title: new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset(
+            'assets/images/artlogo.png',
+            fit: BoxFit.contain,
+            height: 20,
+          ),
+          Container(padding: const EdgeInsets.all(8.0), child: Text(title))
+        ],
+      ),
+      // leading: Image.asset("assets/images/artlogo.png"),
       automaticallyImplyLeading: true, // hides default back button
       flexibleSpace: Container(
         decoration: BoxDecoration(
