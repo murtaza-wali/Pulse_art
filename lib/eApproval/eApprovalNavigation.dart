@@ -1,6 +1,9 @@
+import 'package:art/HexCodeConverter/Hexcode.dart';
+import 'package:art/eApproval/WorklistAccess.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'VacationRules.dart';
 import 'eApprovalTabs.dart';
 
 // ignore: camel_case_types
@@ -27,7 +30,8 @@ class eApprovalNavigation extends StatefulWidget {
 }
 
 class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
-  FSBStatus? drawerStatus;
+  FSBStatus drawerStatus;
+  Color color2 = HexColor("#055e8e");
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
       child: Scaffold(
         body: FoldableSidebarBuilder(
           //drawerBackgroudcolor........
-          drawerBackgroundColor: Colors.blueGrey,
+          drawerBackgroundColor: color2,
           drawer: CustomDrawer(closeDrawer: (){
             setState(() {
               drawerStatus = FSBStatus.FSB_CLOSE;
@@ -45,7 +49,7 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
           status: drawerStatus,
         ),
         floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: color2,
             child: Icon(Icons.menu,color: Colors.white,),
             onPressed: () {
               setState(() {
@@ -57,22 +61,12 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
   }
 }
 
-class FirstScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black.withAlpha(200),
-      child: Center(child: Text("Click on FAB to Open Drawer",style: TextStyle(fontSize: 20,color: Colors.white),),),
-    );
-  }
-}
-
 
 class CustomDrawer extends StatelessWidget {
 
   final Function closeDrawer;
 
-  const CustomDrawer({Key? key, required this.closeDrawer}) : super(key: key);
+  const CustomDrawer({Key key,  this.closeDrawer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +98,10 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             onTap: (){
               debugPrint("Tapped Profile");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VacationRules()),
+              );
             },
             leading: Icon(Icons.rule),
             title: Text(
@@ -117,6 +115,10 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             onTap: () {
               debugPrint("Tapped settings");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WorklistAccess()),
+              );
             },
             leading: Icon(Icons.workspaces_filled),
             title: Text("Worklist Access"),

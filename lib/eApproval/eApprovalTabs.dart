@@ -102,7 +102,7 @@ class _EapprovalState extends State<Eapproval> {
 }
 
 class Choice {
-  const Choice({required this.title});
+  const Choice({ this.title});
 
   final String title;
 }
@@ -115,7 +115,7 @@ const List<Choice> choices = const <Choice>[
 ];
 
 class ChoiceCard extends StatelessWidget {
-  const ChoiceCard({Key? key, required this.choice}) : super(key: key);
+  const ChoiceCard({Key key,  this.choice}) : super(key: key);
 
   final Choice choice;
 
@@ -151,71 +151,87 @@ class ChoiceCard extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // Text("Pay on: Wed, May 08 2019"),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(category._name,
-                          style: TextStyle(color: Colors.black, fontSize: 15)),
-                      Text(category._description,
-                          style: TextStyle(color: Colors.grey, fontSize: 15)),
-                      Text(category._type,
-                          style: TextStyle(color: Colors.grey, fontSize: 15)),
-                    ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => eApproval()),
+              );
+            },
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(category._name,
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 15)),
+                        Text(category._description,
+                            style: TextStyle(color: Colors.grey, fontSize: 15)),
+                        Text(category._type,
+                            style: TextStyle(color: Colors.grey, fontSize: 15)),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(category._status,
-                      style: TextStyle(color: Colors.green, fontSize: 15)),
-                  // Text("Not Received"),
-                ],
-              ),
-            ],
-          ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(category._status,
+                        style: TextStyle(color: Colors.green, fontSize: 15)),
+                    // Text("Not Received"),
+                  ],
+                ),
+              ],
+            ),
+          )
+          // Text("Pay on: Wed, May 08 2019"),
         ],
       );
     } else if (choice.title == 'All') {
-      print('status: ${category._status}');
-      print('description: ${category._description}');
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           // Text("Pay on: Wed, May 08 2019"),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(category._name,
-                          style: TextStyle(color: Colors.black, fontSize: 15)),
-                      Text(category._description,
-                          style: TextStyle(color: Colors.grey, fontSize: 15)),
-                      Text(category._type,
-                          style: TextStyle(color: Colors.grey, fontSize: 15)),
-                    ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => eApproval()),
+              );
+            },
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(category._name,
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 15)),
+                        Text(category._description,
+                            style: TextStyle(color: Colors.grey, fontSize: 15)),
+                        Text(category._type,
+                            style: TextStyle(color: Colors.grey, fontSize: 15)),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(category._status,
-                      style: TextStyle(color: Colors.green, fontSize: 15)),
-                  // Text("Not Received"),
-                ],
-              ),
-            ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(category._status,
+                        style: TextStyle(color: Colors.green, fontSize: 15)),
+                    // Text("Not Received"),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       );

@@ -10,7 +10,7 @@ class Gatepass extends StatefulWidget {
 }
 
 class _GetpassState extends State<Gatepass> {
-  List<GpModel>? emps;
+  List<GpModel> emps;
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _GetpassState extends State<Gatepass> {
                 ),
               ),
             ],
-            rows: emps!
+            rows: emps
                 .map(
                   (emp) => DataRow(cells: [
                     DataCell(

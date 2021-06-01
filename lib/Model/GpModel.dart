@@ -3,7 +3,7 @@ class GpModel {
   String GpDept;
   String GpReqBy;
 
-  GpModel({required this.GpCode, required this.GpDept, required this.GpReqBy});
+  GpModel({ this.GpCode,  this.GpDept,  this.GpReqBy});
 
   static List<GpModel> getUsers() {
     return <GpModel>[
