@@ -1,16 +1,15 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
+import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
 
 class ReuseGradient {
   @override
   getgradient() {
-    Color color2 = HexColor("#055e8e");
     return BoxDecoration(
       gradient: LinearGradient(
-        begin: Alignment(-0.6, -1),
-        end: Alignment(-1, -0),
-        colors: [Colors.black, color2],
-      ),
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          colors: [Colors.black, ReColors().appMainColor,ReColors().appMainColor, Colors.black]),
       color: Colors.white,
       borderRadius: BorderRadius.circular(17.0),
       boxShadow: <BoxShadow>[

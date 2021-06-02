@@ -1,5 +1,7 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/Menu/MainMenu.dart';
+import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -12,87 +14,84 @@ class Login extends StatefulWidget {
 class _State extends State<Login> {
   TextEditingController username = new TextEditingController();
   TextEditingController userpassword = new TextEditingController();
-  Color color2 = HexColor("#055e8e");
+
 
   Widget build(BuildContext buildContext) {
     return Scaffold(
-      backgroundColor: color2,
       appBar: new ReusableWidgets().getAppBar('Login'),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Center(
-              child: Image.asset('assets/images/artlogo.png',
-                  height: 155, width: 165),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.center,
-              child: TextField(
-                controller: userpassword,
-                decoration: InputDecoration(
-                  labelText: "Username",
-                  labelStyle: TextStyle(
-                      color: Colors.white
-                  ),
-                  fillColor: Colors.white,
-                  enabledBorder: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: Colors.white, width: 2.0),
-                    borderRadius: BorderRadius.circular(25.0),
+      body: Container(
+          decoration: Gradientbg().getbg(),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: ListView(
+              children: <Widget>[
+                Center(
+                  child: Image.asset('assets/images/artlogo.png',
+                      height: 155, width: 165),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: userpassword,
+                    decoration: InputDecoration(
+                      labelText: "Username",
+                      labelStyle: TextStyle(color: Colors.white),
+                      fillColor: Colors.white,
+                      enabledBorder: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 2.0),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.center,
-              child: TextField(
-                controller: userpassword,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  labelStyle: TextStyle(
-                      color: Colors.white
-                  ),
-                  fillColor: Colors.white,
-                  enabledBorder: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: Colors.white, width: 2.0),
-                    borderRadius: BorderRadius.circular(25.0),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: userpassword,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      labelStyle: TextStyle(color: Colors.white),
+                      fillColor: Colors.white,
+                      enabledBorder: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.white, width: 2.0),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            FlatButton(
-              onPressed: () {},
-              child: Text('Forget Password?'),
-              textColor: Colors.white,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-              child: FlatButton(
-                onPressed: () {
-                  // yahan click listner define hoga
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Menu()),
-                  );
-                },
-                textColor: color2,
-                child: Text('Login'),
-                color: Colors.white,
-              ),
-            ),
-           /* Container(
+                FlatButton(
+                  onPressed: () {},
+                  child: Text('Forget Password?'),
+                  textColor: Colors.white,
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                  child: FlatButton(
+                    onPressed: () {
+                      // yahan click listner define hoga
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Menu()),
+                      );
+                    },
+                    textColor: ReColors().appMainColor,
+                    child: Text('Login'),
+                    color: Colors.white,
+                  ),
+                ),
+                /* Container(
               child: Row(
                 children: <Widget>[
                   Text('Does not have an account?'),
@@ -106,9 +105,9 @@ class _State extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
             )*/
-          ],
-        ),
-      ),
+              ],
+            ),
+          )),
     );
   }
 }

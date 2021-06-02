@@ -1,4 +1,5 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
+import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/eApproval/WorklistAccess.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -31,7 +32,6 @@ class eApprovalNavigation extends StatefulWidget {
 
 class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
   FSBStatus drawerStatus;
-  Color color2 = HexColor("#055e8e");
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
       child: Scaffold(
         body: FoldableSidebarBuilder(
           //drawerBackgroudcolor........
-          drawerBackgroundColor: color2,
+          drawerBackgroundColor: ReColors().appMainColor,
           drawer: CustomDrawer(closeDrawer: (){
             setState(() {
               drawerStatus = FSBStatus.FSB_CLOSE;
@@ -49,7 +49,7 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
           status: drawerStatus,
         ),
         floatingActionButton: FloatingActionButton(
-            backgroundColor: color2,
+            backgroundColor: ReColors().appMainColor,
             child: Icon(Icons.menu,color: Colors.white,),
             onPressed: () {
               setState(() {

@@ -1,9 +1,9 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
+import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
 class ReusableWidgets {
-  Color color2 = HexColor("#055e8e");
 
   getAppBar(String title) {
     return AppBar(
@@ -25,7 +25,7 @@ class ReusableWidgets {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.topRight,
-            colors: [color2, Colors.black],
+            colors: [ReColors().appMainColor, Colors.black],
           ),
         ),
       ),

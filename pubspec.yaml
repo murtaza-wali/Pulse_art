@@ -47,6 +47,7 @@ dependencies:
   foldable_sidebar: ^1.0.0
   date_format: ^2.0.2
   intl: ^0.17.0
+  progress_state_button: ^1.0.3
 
 
 dev_dependencies:

@@ -1,4 +1,5 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
+import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/eApproval/eApprovalMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,6 @@ class Eapproval extends StatefulWidget {
 }
 
 class _EapprovalState extends State<Eapproval> {
-  Color color2 = HexColor("#055e8e");
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _EapprovalState extends State<Eapproval> {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.topRight,
-                  colors: [color2, Colors.black],
+                  colors: [ReColors().appMainColor, Colors.black],
                 ),
               ),
             ),
