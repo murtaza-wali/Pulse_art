@@ -3,7 +3,6 @@ import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class Gatepass extends StatefulWidget {
   State<StatefulWidget> createState() => new _GetpassState();
@@ -82,7 +81,8 @@ class _GetpassState extends State<Gatepass> {
                     DataCell(
                       Text('${emp.GpReqBy}'),
                     ),
-                  ]),
+                  ]
+                  ),
                 )
                 .toList(),
           )),
