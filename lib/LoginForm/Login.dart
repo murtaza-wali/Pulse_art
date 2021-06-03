@@ -1,7 +1,7 @@
-import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/Menu/MainMenu.dart';
-import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
+import 'package:art/ReuseableWidget/ReuseButton.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +15,9 @@ class _State extends State<Login> {
   TextEditingController username = new TextEditingController();
   TextEditingController userpassword = new TextEditingController();
 
-
   Widget build(BuildContext buildContext) {
     return Scaffold(
-      appBar: new ReusableWidgets().getAppBar('Login'),
+      appBar: new ReusableWidgets().getAppBar(appstring().login),
       body: Container(
           decoration: Gradientbg().getbg(),
           child: Padding(
@@ -35,7 +34,7 @@ class _State extends State<Login> {
                   child: TextField(
                     controller: userpassword,
                     decoration: InputDecoration(
-                      labelText: "Username",
+                      labelText:appstring().username,
                       labelStyle: TextStyle(color: Colors.white),
                       fillColor: Colors.white,
                       enabledBorder: new OutlineInputBorder(
@@ -56,7 +55,7 @@ class _State extends State<Login> {
                   child: TextField(
                     controller: userpassword,
                     decoration: InputDecoration(
-                      labelText: "Password",
+                      labelText: appstring().psw,
                       labelStyle: TextStyle(color: Colors.white),
                       fillColor: Colors.white,
                       enabledBorder: new OutlineInputBorder(
@@ -73,23 +72,17 @@ class _State extends State<Login> {
                 ),
                 FlatButton(
                   onPressed: () {},
-                  child: Text('Forget Password?'),
+                  child: Text(appstring().forget_psw),
                   textColor: Colors.white,
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                  child: FlatButton(
-                    onPressed: () {
-                      // yahan click listner define hoga
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Menu()),
-                      );
-                    },
-                    textColor: ReColors().appMainColor,
-                    child: Text('Login'),
-                    color: Colors.white,
-                  ),
+                ReuseButton(
+                  buttonText: appstring().login,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Menu()),
+                    );
+                  },
                 ),
                 /* Container(
               child: Row(

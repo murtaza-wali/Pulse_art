@@ -143,11 +143,6 @@ class _ArtMenu extends State<Menu> {
                               height: 100,
                               image: AssetImage(categoriesList[index].image),
                             ),
-                            // child: Icon(
-                            //   Icons.mobile_friendly_sharp,
-                            //   color: Colors.blue,
-                            //   size: 50,
-                            // ),
                           ),
                         ),
                         Text(

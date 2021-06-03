@@ -1,9 +1,6 @@
 import 'dart:async';
-
-import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:flutter/material.dart';
-
 import 'LoginForm/Login.dart';
 
 void main() {

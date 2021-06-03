@@ -1,7 +1,6 @@
-import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
-import 'package:art/ReuseableWidget/GradientBG.dart';
-import 'package:art/ReuseableWidget/ReuseGradient.dart';
+import 'package:art/ReuseableValues/ReStrings.dart';
+import 'package:art/ReuseableWidget/ReuseButton.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:art/eApproval/CustomDropdown.dart';
 import 'package:art/eApproval/GrantAccessToModel.dart';
@@ -126,10 +125,10 @@ class _WorklistState extends State<WorklistAccess> {
     sampleData.add(new GrantAcessModel(false, 'All Item Types'));
     sampleData.add(new GrantAcessModel(false, 'Selected Item Types'));
     // descriptionTextController = TextEditingController();
-    _dateController.text = 'Start Date';
+    _dateController.text = appstring().startdate;
     // _dateController.text = DateFormat.yMd().format(DateTime.now());
     // _enddateController.text = DateFormat.yMd().format(DateTime.now());
-    _enddateController.text = 'End Date';
+    _enddateController.text = appstring().enddate;
     _worklistnameModelDropdownList =
         _buildworklistnameModelDropdown(_worklistnameModelList);
     _worklistnameModel = _worklistnameModelList[0];
@@ -181,27 +180,30 @@ class _WorklistState extends State<WorklistAccess> {
                   ],
                 ),
               ),
-              new Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Description",
-                    labelStyle: TextStyle(color: ReColors().appMainColor),
-                    fillColor: ReColors().appMainColor,
-                    enabledBorder: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: BorderSide(color: ReColors().appMainColor),
+              new Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: appstring().description,
+                      labelStyle: TextStyle(color: ReColors().appMainColor),
+                      fillColor: ReColors().appMainColor,
+                      enabledBorder: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: BorderSide(color: ReColors().appMainColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ReColors().appMainColor, width: 2.0),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: ReColors().appMainColor)),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ReColors().appMainColor, width: 2.0),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: ReColors().appMainColor)),
+                    maxLines: 5,
+                    controller: descriptionTextController,
                   ),
-
-                  maxLines: 5,
-                  controller: descriptionTextController,
                 ),
               ),
               new InkWell(
@@ -225,7 +227,7 @@ class _WorklistState extends State<WorklistAccess> {
                           Icons.calendar_today_sharp,
                           color: ReColors().appMainColor,
                         ),
-                        hintText: 'Start Date',
+                        hintText: appstring().startdate,
                         hintStyle: TextStyle(color: ReColors().appMainColor),
                         fillColor: Colors.white70,
                       ),
@@ -248,9 +250,9 @@ class _WorklistState extends State<WorklistAccess> {
                       },
                       autocorrect: true,
                       decoration: InputDecoration(
-                        prefixIcon:
-                            Icon(Icons.calendar_today_sharp, color: ReColors().appMainColor),
-                        hintText: 'End Date',
+                        prefixIcon: Icon(Icons.calendar_today_sharp,
+                            color: ReColors().appMainColor),
+                        hintText: appstring().enddate,
                         hintStyle: TextStyle(color: ReColors().appMainColor),
                       ),
                     )),
@@ -284,14 +286,15 @@ class _WorklistState extends State<WorklistAccess> {
                               }
                             });
                           },
-                          child: new RadioItem(sampleData[index], ReColors().appMainColor),
+                          child: new RadioItem(
+                              sampleData[index], ReColors().appMainColor),
                         );
                       },
                     )),
                   ],
                 ),
               ),
-              actionButton(ReColors().appMainColor)
+              actionButton()
             ],
           ),
         ));
@@ -317,14 +320,14 @@ Future<String> _selectRingtone(BuildContext context,
                   onPressed: () {
                     Navigator.pop(context, null);
                   },
-                  child: Text('CANCEL'),
+                  child: Text(appstring().cancel),
                 ),
                 FlatButton(
                   onPressed: () {
                     var _currentIndex;
                     Navigator.pop(context, null);
                   },
-                  child: Text('OK'),
+                  child: Text(appstring().ok),
                 ),
               ],
               content: Container(
@@ -335,14 +338,12 @@ Future<String> _selectRingtone(BuildContext context,
                   itemCount: checkBoxListTileModel.length,
                   itemBuilder: (BuildContext context, int index) {
                     return new CheckboxListTile(
-                        activeColor:ReColors().appMainColor,
+                        activeColor: ReColors().appMainColor,
                         dense: true,
                         //font change
                         title: new Text(
                           checkBoxListTileModel[index].title,
-                          style: TextStyle(
-                              fontSize: 14,
-                              letterSpacing: 0.5),
+                          style: TextStyle(fontSize: 14, letterSpacing: 0.5),
                         ),
                         value: checkBoxListTileModel[index].isCheck,
                         /*secondary: Container(
@@ -367,30 +368,12 @@ Future<String> _selectRingtone(BuildContext context,
       });
 }
 
-Widget actionButton(Color color2) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      RaisedButton(
-        color: color2,
-        child: Text(
-          "Apply",
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: () => onVerifyClick(),
-      ),
-      SizedBox(
-        width: 20.0,
-      ),
-      RaisedButton(
-        color: color2,
-        child: Text(
-          "Cancel",
-          style: TextStyle(color: Colors.white),
-        ),
-        onPressed: () => onNextClick(),
-      ),
-    ],
+Widget actionButton() {
+  return ReuseTwoButton(
+    firstbuttonText: appstring().apply,
+    secondbuttonText: appstring().cancel,
+    firstonPressed: null,
+    secondonPressed: null,
   );
 }
 

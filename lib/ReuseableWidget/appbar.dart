@@ -1,7 +1,5 @@
-import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 class ReusableWidgets {
 
