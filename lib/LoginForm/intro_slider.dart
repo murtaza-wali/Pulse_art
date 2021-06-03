@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../main.dart';
 import 'Login.dart';
 
 /// This is the main method of app, from here execution starts.
@@ -22,7 +19,7 @@ class IntroAppState extends State<IntroApp> {
     super.initState();
 
   }
-  // Making list of pages needed to pass in IntroViewsFlutter constructor.
+  // Making list of pages needed to pass in IntroViewsFlutter ructor.
   final pages = [
     PageViewModel(
       pageBackground: Container(
@@ -40,15 +37,15 @@ class IntroAppState extends State<IntroApp> {
                   ]))),
       // iconImageAssetPath: 'assets/air-hostess.png',
       bubble: Image.asset('assets/images/eapprovals.png'),
-      body: const Text(
+      body:  Text(
         'E-Approval',
       ),
-      title: const Text(
+      title:  Text(
         'E-Approval',
       ),
       titleTextStyle:
-          const TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle: const TextStyle(fontFamily: 'MyFont', color: Colors.white),
+           TextStyle(fontFamily: 'MyFont', color: Colors.white),
+      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white),
       mainImage: Image.asset(
         'assets/images/eapprovals.png',
         height: 285.0,
@@ -71,10 +68,10 @@ class IntroAppState extends State<IntroApp> {
                     Colors.black
                   ]))),
       iconImageAssetPath: 'assets/images/denim.png',
-      body: const Text(
+      body:  Text(
         'Denim',
       ),
-      title: const Text('Denim'),
+      title:  Text('Denim'),
       mainImage: Image.asset(
         'assets/images/denim.png',
         height: 285.0,
@@ -82,8 +79,8 @@ class IntroAppState extends State<IntroApp> {
         alignment: Alignment.center,
       ),
       titleTextStyle:
-          const TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle: const TextStyle(fontFamily: 'MyFont', color: Colors.white),
+           TextStyle(fontFamily: 'MyFont', color: Colors.white),
+      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white),
     ),
     PageViewModel(
       pageBackground: Container(
@@ -100,10 +97,10 @@ class IntroAppState extends State<IntroApp> {
                     Colors.black
                   ]))),
       iconImageAssetPath: 'assets/images/jarvis.png',
-      body: const Text(
+      body:  Text(
         'J.A.R.V.I.S',
       ),
-      title: const Text('J.A.R.V.I.S'),
+      title:  Text('J.A.R.V.I.S'),
       mainImage: Image.asset(
         'assets/images/jarvis.png',
         height: 285.0,
@@ -111,8 +108,8 @@ class IntroAppState extends State<IntroApp> {
         alignment: Alignment.center,
       ),
       titleTextStyle:
-          const TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle: const TextStyle(fontFamily: 'MyFont', color: Colors.white),
+           TextStyle(fontFamily: 'MyFont', color: Colors.white),
+      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white),
     ),
   ];
 
@@ -143,7 +140,7 @@ class IntroAppState extends State<IntroApp> {
               MaterialPageRoute(builder: (_) => Login()),
             );
           },
-          pageButtonTextStyles: const TextStyle(
+          pageButtonTextStyles:  TextStyle(
             color: Colors.white,
             fontSize: 18.0,
           ),
