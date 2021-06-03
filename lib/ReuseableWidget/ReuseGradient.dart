@@ -1,9 +1,7 @@
-import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
 
 class ReuseGradient {
-  @override
   getgradient() {
     return BoxDecoration(
       gradient: LinearGradient(

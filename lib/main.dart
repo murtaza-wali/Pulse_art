@@ -1,9 +1,18 @@
 import 'dart:async';
+import 'package:art/LoginForm/intro_slider.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginForm/Login.dart';
 
-void main() {
+int initScreen;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen");
+  await prefs.setInt("initScreen", 1);
+  print('initScreen ${initScreen}');
   runApp(MyApp());
 }
 
@@ -22,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key,  this.title}) : super(key: key);
+  MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
@@ -33,10 +42,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        Duration(seconds: 3),
-        () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => Login())));
+    if (initScreen == null) {
+      Timer(
+          Duration(seconds: 3),
+          () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => IntroApp())));
+    } else if (initScreen == 1) {
+      Timer(
+          Duration(seconds: 3),
+          () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (BuildContext context) => Login())));
+    }
   }
 
   @override
@@ -67,7 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             // text size
                             color: Colors.white, // text color
                           ),
-                        ),Text(
+                        ),
+                        Text(
                           "Copyright © 2021 All Rights Reserved",
                           style: TextStyle(
                             // remove this if don't have custom font
@@ -75,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             // text size
                             color: Colors.white, // text color
                           ),
-
                         )
                       ],
                     )),
@@ -83,8 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      )
-      ,
+      ),
     );
   }
 }
