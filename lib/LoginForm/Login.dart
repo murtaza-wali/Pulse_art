@@ -1,4 +1,10 @@
+import 'dart:math';
+
+import 'package:art/InternetConnection/Offline.dart';
+import 'package:art/LocalStorage/LocalStorage.dart';
 import 'package:art/Menu/MainMenu.dart';
+import 'package:art/Model/LoginAuthenticationModel.dart';
+import 'package:art/Model/LoginUser.dart';
 import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:art/ReuseableWidget/ReuseButton.dart';
@@ -14,11 +20,32 @@ class Login extends StatefulWidget {
 class _State extends State<Login> {
   TextEditingController username = new TextEditingController();
   TextEditingController userpassword = new TextEditingController();
+  List<Item> _users;
+  String p_user;
+  String p_psw;
+  LoginAuth loginAuth;
+  Item item;
+  bool _isHidden = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _users = [];
+    loginAuth = new LoginAuth();
+    item = new Item();
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
 
   Widget build(BuildContext buildContext) {
     return Scaffold(
       appBar: new ReusableWidgets().getAppBar(appstring().login),
-      body: Container(
+      body: ReuseOffline().getoffline(Container(
           decoration: Gradientbg().getbg(),
           child: Padding(
             padding: EdgeInsets.all(10),
@@ -32,9 +59,10 @@ class _State extends State<Login> {
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
                   child: TextField(
-                    controller: userpassword,
+                    style: TextStyle(color: Colors.white),
+                    controller: username,
                     decoration: InputDecoration(
-                      labelText:appstring().username,
+                      labelText: appstring().username,
                       labelStyle: TextStyle(color: Colors.white),
                       fillColor: Colors.white,
                       enabledBorder: new OutlineInputBorder(
@@ -53,8 +81,18 @@ class _State extends State<Login> {
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
                   child: TextField(
+                    obscureText: _isHidden,
+                    obscuringCharacter: "*",
+                    style: TextStyle(color: Colors.white),
                     controller: userpassword,
                     decoration: InputDecoration(
+                      suffix: InkWell(
+                        onTap: _togglePasswordView,
+                        child: Icon(
+                          _isHidden ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                      ),
                       labelText: appstring().psw,
                       labelStyle: TextStyle(color: Colors.white),
                       fillColor: Colors.white,
@@ -78,10 +116,31 @@ class _State extends State<Login> {
                 ReuseButton(
                   buttonText: appstring().login,
                   onPressed: () {
-                    Navigator.push(
+                    // LoginAuth().getLoginUser(username.text, userpassword.text);
+                    loginAuth
+                        .getLoginUser(username.text, userpassword.text)
+                        .then((users) {
+                      setState(() {
+                        //list of user
+                        _users = users;
+                        showAlertDialog(context, 'You must fill correct data.', "Error" , "Ok");
+                        print('_users.len ${_users}');
+                      });
+                      item = _users[0];
+                      print('_users.len ${item}');
+                      print('_users ${item.userId}');
+                      int userID = item.userId;
+                      LocalStorage().userIdSet(userID);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Menu()),
+                      );
+                    });
+
+                    /* Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Menu()),
-                    );
+                    );*/
                   },
                 ),
                 /* Container(
@@ -100,7 +159,40 @@ class _State extends State<Login> {
             )*/
               ],
             ),
-          )),
+          ))),
     );
   }
+}
+showAlertDialog(BuildContext context, String message, String heading, String buttonCancelTitle) {
+  // set up the buttons
+  Widget cancelButton = FlatButton(
+    child: Text(buttonCancelTitle),
+    onPressed: () {
+      Navigator.pop(context, null);
+    },
+  );
+  /*Widget continueButton = FlatButton(
+    child: Text(buttonAcceptTitle),
+    onPressed: () {
+
+    },
+  );*/
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text(heading),
+    content: Text(message),
+    actions: [
+      cancelButton,
+      // continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

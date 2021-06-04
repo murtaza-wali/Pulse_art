@@ -102,6 +102,7 @@ class ReuseTwoButton extends StatelessWidget {
         Container(
           height: 50.0,
           margin: EdgeInsets.all(10),
+
           child: RaisedButton(
             onPressed: secondonPressed,
             shape: RoundedRectangleBorder(

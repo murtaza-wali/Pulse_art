@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:art/LoginForm/intro_slider.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginForm/Login.dart';
 
 int initScreen;
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 Future<void> main() async {
+  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");

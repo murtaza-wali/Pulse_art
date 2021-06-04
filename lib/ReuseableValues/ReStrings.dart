@@ -1,5 +1,6 @@
+// ignore: camel_case_types
 class appstring{
-  final appName = 'PULSE';
+  final appname = 'PULSE';
   final login = 'LOGIN';
   final apply = 'Apply';
   final cancel = 'Cancel';

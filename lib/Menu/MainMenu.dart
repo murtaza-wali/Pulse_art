@@ -1,10 +1,11 @@
 import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/InternetConnection/Offline.dart';
-import 'package:art/Model/MenuModel.dart';
+import 'package:art/LocalStorage/LocalStorage.dart';
+import 'package:art/Model/LoginAuthenticationModel.dart';
+import 'package:art/Model/MenuCardsModel.dart';
 import 'package:art/eApproval/eApprovalNavigation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_offline/flutter_offline.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -13,13 +14,26 @@ class Menu extends StatefulWidget {
 
 class _ArtMenu extends State<Menu> {
   int counter = 10;
-  List<MenuModel> categoriesList = [];
   Color color2 = HexColor("#055e8e");
+  int _getID;
+
+  List<MenuItem> menuList = [];
 
   @override
   void initState() {
-    categoriesList = new MenuModel("", "").loadCategories();
     super.initState();
+    LocalStorage().userIdGet().then((get) {
+      _getID = get;
+      // print("GET ID " + _getID.toString());
+      MenuCard().getMenus(_getID).then((users) {
+        setState(() {
+          //list of user
+          print( _getID);
+          menuList = users;
+        });
+      });
+    });
+
   }
 
   @override
@@ -93,18 +107,18 @@ class _ArtMenu extends State<Menu> {
           // horizontal, this would produce 2 rows.
           crossAxisCount: 2,
           // Generate 100 Widgets that display their index in the List
-          children: List.generate(categoriesList.length, (index) {
+          children: List.generate(null == menuList ? 0 : menuList.length, (index) {
             return Container(
               child: InkWell(
                 onTap: () {
-                  print(categoriesList[index].title);
-                  if (categoriesList[index].title == 'E-Approval') {
+                  print(menuList[index].applicationName);
+                  if (menuList[index].applicationName == 'E-Approval') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => eApprovalNavigation()),
                     );
-                  } else if (categoriesList[index].title == 'GatePass') {
+                  } else if (menuList[index].applicationName == 'GatePass') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Gatepass()),
@@ -141,12 +155,12 @@ class _ArtMenu extends State<Menu> {
                             child: Image(
                               width: 100,
                               height: 100,
-                              image: AssetImage(categoriesList[index].image),
+                              image: NetworkImage(menuList[index].logo),
                             ),
                           ),
                         ),
                         Text(
-                          categoriesList[index].title,
+                          menuList[index].applicationName,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14.0,
