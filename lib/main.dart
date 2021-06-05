@@ -52,15 +52,45 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     if (initScreen == null) {
-      Timer(
+      new Future.delayed(const Duration(seconds: 3), () {
+        //
+        // Navigator.pop(context,true);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => IntroApp()),
+                (Route<dynamic> route) => false
+        );
+      });
+      /*Timer(
           Duration(seconds: 3),
-          () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => IntroApp())));
+          () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => IntroApp()),
+          ));*/
     } else if (initScreen == 1) {
-      Timer(
+
+      new Future.delayed(const Duration(seconds: 3), () {
+        //
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => Login()),
+                (Route<dynamic> route) => false
+        );
+        /*Navigator.pop(context,true);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Login()),
+        );*/
+      });
+      /*Timer(
           Duration(seconds: 3),
-          () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (BuildContext context) => Login())));
+          () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Login()),
+          ));*/
     }
   }
 

@@ -18,7 +18,7 @@ class MenuCards {
     this.links,
   });
 
-  List<MenuItem> items;
+  List<CardsMenuItem> items;
   bool hasMore;
   int limit;
   int offset;
@@ -26,7 +26,7 @@ class MenuCards {
   List<Link> links;
 
   factory MenuCards.fromJson(Map<String, dynamic> json) => MenuCards(
-    items: List<MenuItem>.from(json["items"].map((x) => MenuItem.fromJson(x))),
+    items: List<CardsMenuItem>.from(json["items"].map((x) => CardsMenuItem.fromJson(x))),
     hasMore: json["hasMore"],
     limit: json["limit"],
     offset: json["offset"],
@@ -44,8 +44,8 @@ class MenuCards {
   };
 }
 
-class MenuItem {
-  MenuItem({
+class CardsMenuItem {
+  CardsMenuItem({
     this.applicationName,
     this.applicationId,
     this.logo,
@@ -63,7 +63,7 @@ class MenuItem {
   IsPublic isPublic;
   int sno;
 
-  factory MenuItem.fromJson(Map<String, dynamic> json) => MenuItem(
+  factory CardsMenuItem.fromJson(Map<String, dynamic> json) => CardsMenuItem(
     applicationName: json["application_name"],
     applicationId: json["application_id"],
     logo: json["logo"],

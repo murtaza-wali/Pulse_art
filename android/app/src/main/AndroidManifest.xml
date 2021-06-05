@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="am.art.art">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="PULSE"
+        android:label="Pulse"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

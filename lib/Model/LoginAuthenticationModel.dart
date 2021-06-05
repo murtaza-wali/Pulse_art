@@ -27,7 +27,7 @@ class LoginAuth {
     } else if (result.statusCode == 400) {
       print('Data Not Found');
     } else if (result.statusCode == 404) {
-      final error = 'Data is not found';
+      final error = 'Textfield is empty';
     } else {
       throw Exception('Failed to create album.');
     }
@@ -35,7 +35,7 @@ class LoginAuth {
 }
 
 class MenuCard {
-  Future<List<MenuItem>> getMenus(int userId) async {
+  Future<List<CardsMenuItem>> getMenus(int userId) async {
     // parse URI .....
     var menuURL = Uri.parse(
         BaseURL().Auth + 'base' + '/' + 'cards' + '/' + userId.toString());
@@ -48,7 +48,7 @@ class MenuCard {
       print("MenuItemparse :- " + parse.toString());
       var data = parse['items'] as List;
       print("MenuItemdata :- " + data.toString());
-      var map = data.map<MenuItem>((json) => MenuItem.fromJson(json));
+      var map = data.map<CardsMenuItem>((json) => CardsMenuItem.fromJson(json));
       print('MenuItemmap ${map.toList()}');
       return map.toList();
     } else if (result.statusCode == 400) {

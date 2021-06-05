@@ -115,29 +115,25 @@ class IntroAppState extends State<IntroApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'IntroViews Flutter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Builder(
+    return Scaffold(
+      body:  Builder(
         builder: (context) => IntroViewsFlutter(
           pages,
           showNextButton: true,
           showBackButton: true,
           onTapSkipButton:() {
             // Use Navigator.push if you want the user to be able to slide across and back to the Intro Views.
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => Login()),
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) => Login()),
+                    (Route<dynamic> route) => false
             );
           } ,
           onTapDoneButton: () {
-            // Use Navigator.push if you want the user to be able to slide across and back to the Intro Views.
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => Login()),
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) => Login()),
+                    (Route<dynamic> route) => false
             );
           },
           pageButtonTextStyles:  TextStyle(

@@ -17,7 +17,7 @@ class ReusableWidgets {
         ],
       ),
       // leading: Image.asset("assets/images/artlogo.png"),
-      automaticallyImplyLeading: true, // hides default back button
+      automaticallyImplyLeading: false, // hides default back button
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

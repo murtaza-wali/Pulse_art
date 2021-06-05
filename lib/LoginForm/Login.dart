@@ -1,15 +1,16 @@
-import 'dart:math';
-
 import 'package:art/InternetConnection/Offline.dart';
-import 'package:art/LocalStorage/LocalStorage.dart';
-import 'package:art/Menu/MainMenu.dart';
+import 'package:art/LocalStorage/MySharedPref.dart';
+import 'package:art/Menu/MainMenuPopup.dart';
 import 'package:art/Model/LoginAuthenticationModel.dart';
 import 'package:art/Model/LoginUser.dart';
+import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:art/ReuseableWidget/ReuseButton.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Login extends StatefulWidget {
   // This widget is the root of your application.
@@ -18,6 +19,7 @@ class Login extends StatefulWidget {
 }
 
 class _State extends State<Login> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController username = new TextEditingController();
   TextEditingController userpassword = new TextEditingController();
   List<Item> _users;
@@ -42,8 +44,9 @@ class _State extends State<Login> {
     });
   }
 
-  Widget build(BuildContext buildContext) {
+  Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: new ReusableWidgets().getAppBar(appstring().login),
       body: ReuseOffline().getoffline(Container(
           decoration: Gradientbg().getbg(),
@@ -115,32 +118,41 @@ class _State extends State<Login> {
                 ),
                 ReuseButton(
                   buttonText: appstring().login,
-                  onPressed: () {
-                    // LoginAuth().getLoginUser(username.text, userpassword.text);
+                  onPressed: ()
+                  {
                     loginAuth
                         .getLoginUser(username.text, userpassword.text)
                         .then((users) {
                       setState(() {
                         //list of user
                         _users = users;
-                        showAlertDialog(context, 'You must fill correct data.', "Error" , "Ok");
-                        print('_users.len ${_users}');
+                        if (_users == null) {
+                          confirmationPopup(context, 'Error',
+                              'Please fill the required field.', 'OK');
+
+                        } else if (_users.length==0) {
+                          confirmationPopup(
+                              _scaffoldKey.currentContext,
+                              "Error",
+                              'Enter a valid Username and Password',
+                              "Ok");
+                        }
                       });
                       item = _users[0];
-                      print('_users.len ${item}');
-                      print('_users ${item.userId}');
-                      int userID = item.userId;
-                      LocalStorage().userIdSet(userID);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Menu()),
-                      );
+
+                      if (item != null) {
+
+                        int userID = item.userId;
+                        MySharedPreferences.instance
+                            .setIntValue("UserId", userID);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (BuildContext context) => MainMenuPopUp()),
+                                (Route<dynamic> route) => false
+                        );
+                      }
                     });
 
-                    /* Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Menu()),
-                    );*/
                   },
                 ),
                 /* Container(
@@ -162,37 +174,38 @@ class _State extends State<Login> {
           ))),
     );
   }
+
 }
-showAlertDialog(BuildContext context, String message, String heading, String buttonCancelTitle) {
-  // set up the buttons
-  Widget cancelButton = FlatButton(
-    child: Text(buttonCancelTitle),
-    onPressed: () {
-      Navigator.pop(context, null);
-    },
-  );
-  /*Widget continueButton = FlatButton(
-    child: Text(buttonAcceptTitle),
-    onPressed: () {
 
-    },
-  );*/
 
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text(heading),
-    content: Text(message),
-    actions: [
-      cancelButton,
-      // continueButton,
-    ],
+
+confirmationPopup(
+    BuildContext dialogContext, String title, String msg, String okbtn) {
+  var alertStyle = AlertStyle(
+    animationType: AnimationType.grow,
+    overlayColor: Colors.black87,
+    isCloseButton: true,
+    isOverlayTapDismiss: true,
+    titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    descStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+    animationDuration: Duration(milliseconds: 400),
   );
 
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+  Alert(
+      context: dialogContext,
+      style: alertStyle,
+      title: title,
+      desc: msg,
+      buttons: [
+        DialogButton(
+          child: Text(
+            okbtn,
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.of(dialogContext).pop(null);
+          },
+          color: ReColors().appMainColor,
+        ),
+      ]).show();
 }
