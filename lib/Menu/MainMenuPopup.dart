@@ -22,6 +22,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   GlobalKey btnKey2 = GlobalKey();
   int counter = 10;
   Color color2 = HexColor("#055e8e");
+  String username;
 
   List<CardsMenuItem> menuListData = [];
 
@@ -40,6 +41,13 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                 });
               });
             }));
+
+    MySharedPreferences.instance
+        .getStringValue("Username")
+        .then((name) => setState(() {
+              username = name;
+              print(username);
+            }));
   }
 
   void stateChanged(bool isShow) {
@@ -50,6 +58,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
     print('Click menu -> ${item.menuTitle}');
     if (item.menuTitle.contains('Sign Out')) {
       MySharedPreferences.instance.removeAll();
+      // Menu Item Conditions.....
       // pushAndRemoveUntil -> pushAndRemoveUntil
       // pushAndRemoveUntil -> pushReplacement-> crash app
       Navigator.pushAndRemoveUntil(
@@ -57,7 +66,6 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
           MaterialPageRoute(builder: (BuildContext context) => Login()),
           (Route<dynamic> route) => false);
     }
-    // yahan menu item hunge.....
   }
 
   void onDismiss() {
@@ -209,8 +217,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         Padding(
           padding: EdgeInsets.all(10),
           child: Text(
-            'Welcome to ',
-            // 'Welcome to $itemCount'',
+            'Welcome to $username',
             style: TextStyle(
               color: ReColors().appMainColor,
               fontSize: 20, // light
@@ -231,6 +238,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                 onTap: () {
                   print(menuList[index].applicationId);
                   // ignore: unrelated_type_equality_checks
+                  Colors.white;
                   if (menuList[index].applicationId == 403) {
                     Navigator.push(
                       context,
@@ -248,6 +256,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                   // semanticContainer: true,
                   // yeh shadow dekhata hai
                   // clipBehavior: Clip.antiAlias,
+
                   child: Container(
                     decoration: BoxDecoration(
                       // border: Border.all(color: Color(0xff940D5A)),

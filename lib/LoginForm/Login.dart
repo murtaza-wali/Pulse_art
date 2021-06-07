@@ -19,6 +19,7 @@ class Login extends StatefulWidget {
 }
 
 class _State extends State<Login> {
+  final focus = FocusNode();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController username = new TextEditingController();
   TextEditingController userpassword = new TextEditingController();
@@ -47,7 +48,7 @@ class _State extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: new ReusableWidgets().getAppBar(appstring().login),
+      appBar: new ReusableWidgets().getLoginAppBar(appstring().login),
       body: ReuseOffline().getoffline(Container(
           decoration: Gradientbg().getbg(),
           child: Padding(
@@ -78,12 +79,15 @@ class _State extends State<Login> {
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                     ),
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => focus.nextFocus(),
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
                   child: TextField(
+
                     obscureText: _isHidden,
                     obscuringCharacter: "*",
                     style: TextStyle(color: Colors.white),
@@ -109,6 +113,8 @@ class _State extends State<Login> {
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                     ),
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => focus.nextFocus(),
                   ),
                 ),
                 FlatButton(
@@ -143,8 +149,11 @@ class _State extends State<Login> {
                       if (item != null) {
 
                         int userID = item.userId;
+                        String name = item.empname;
                         MySharedPreferences.instance
                             .setIntValue("UserId", userID);
+                        MySharedPreferences.instance
+                            .setStringValue("Username", name);
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (BuildContext context) => MainMenuPopUp()),

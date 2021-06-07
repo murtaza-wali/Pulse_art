@@ -53,6 +53,9 @@ class _EapprovalState extends State<Eapproval> {
         length: choices.length,
         child: Scaffold(
           appBar: AppBar(
+            leading: BackButton(
+              color: ReColors().appTextWhiteColor,
+            ),
             title: new Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
