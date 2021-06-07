@@ -3,6 +3,7 @@ library popup_menu;
 import 'dart:core';
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class MenuItem extends MenuItemProvider {
 
   @override
   TextStyle get menuTextStyle =>
-      textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 10.0);
+      textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 13.0);
 
   @override
   TextAlign get menuTextAlign => textAlign ?? TextAlign.center;
@@ -48,7 +49,7 @@ typedef MenuClickCallback = Function(MenuItemProvider item);
 typedef PopupMenuStateChanged = Function(bool isShow);
 
 class PopupMenu {
-  static var itemWidth = 72.0;
+  static var itemWidth = 120.0;
   static var itemHeight = 65.0;
   static var arrowHeight = 10.0;
   OverlayEntry _entry;
@@ -94,14 +95,14 @@ class PopupMenu {
 
   PopupMenu(
       {MenuClickCallback onClickMenu,
-      BuildContext context,
-      VoidCallback onDismiss,
-      int maxColumn,
-      Color backgroundColor,
-      Color highlightColor,
-      Color lineColor,
-      PopupMenuStateChanged stateChanged,
-      List<MenuItemProvider> items}) {
+        BuildContext context,
+        VoidCallback onDismiss,
+        int maxColumn,
+        Color backgroundColor,
+        Color highlightColor,
+        Color lineColor,
+        PopupMenuStateChanged stateChanged,
+        List<MenuItemProvider> items}) {
     this.onClickMenu = onClickMenu;
     this.dismissCallback = onDismiss;
     this.stateChanged = stateChanged;
@@ -177,11 +178,17 @@ class PopupMenu {
   }
 
   double menuWidth() {
+    print('itemWidth * _col $itemWidth * _col');
+    print('_col $_col');
+    _col = 1;
     return itemWidth * _col;
   }
 
   // This height exclude the arrow
   double menuHeight() {
+    print('itemWidth * _row $itemWidth * _row');
+    print('_row $_row');
+    _row = 2;
     return itemHeight * _row;
   }
 
@@ -216,7 +223,7 @@ class PopupMenu {
                 child: CustomPaint(
                   size: Size(15.0, arrowHeight),
                   painter:
-                      TrianglePainter(isDown: _isDown, color: _backgroundColor),
+                  TrianglePainter(isDown: _isDown, color: _backgroundColor),
                 ),
               ),
               // menu content
@@ -226,7 +233,7 @@ class PopupMenu {
                 child: Container(
                   width: menuWidth(),
                   height: menuHeight(),
-                  child: Column(
+                  child: Row(
                     children: <Widget>[
                       ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
@@ -234,7 +241,7 @@ class PopupMenu {
                             width: menuWidth(),
                             height: menuHeight(),
                             decoration: BoxDecoration(
-                                color: _backgroundColor,
+                                color: _highlightColor,
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: Column(
                               children: _createRows(),
@@ -256,10 +263,10 @@ class PopupMenu {
     List<Widget> rows = [];
     for (int i = 0; i < _row; i++) {
       Color color =
-          (i < _row - 1 && _row != 1) ? _lineColor : Colors.transparent;
+      (i < _row - 1 && _row != 1) ? _lineColor : Colors.transparent;
       Widget rowWidget = Container(
         decoration:
-            BoxDecoration(border: Border(bottom: BorderSide(color: color))),
+        BoxDecoration(border: Border(bottom: BorderSide(color: color))),
         height: itemHeight,
         child: Row(
           children: _createRowItems(i),
@@ -275,7 +282,7 @@ class PopupMenu {
   // 创建一行的item,  row 从0开始算
   List<Widget> _createRowItems(int row) {
     List<MenuItemProvider> subItems =
-        items.sublist(row * _col, min(row * _col + _col, items.length));
+    items.sublist(row * _col, min(row * _col + _col, items.length));
     List<Widget> itemWidgets = [];
     int i = 0;
     for (var item in subItems) {
@@ -299,10 +306,12 @@ class PopupMenu {
     int itemCount = items.length;
 
     if (_calculateColCount() == 1) {
+      print('_calculateColCount $_calculateColCount');
       return itemCount;
     }
 
     int row = (itemCount - 1) ~/ _calculateColCount() + 1;
+    print('row $row');
 
     return row;
   }
@@ -316,23 +325,29 @@ class PopupMenu {
 
     int itemCount = items.length;
     if (_maxColumn != 4 && _maxColumn > 0) {
+      print('max $_maxColumn');
+      print('item $itemCount');
       return _maxColumn;
     }
 
     if (itemCount == 4) {
+      print('0 $itemCount');
       // 4个显示成两行
       return 2;
     }
 
     if (itemCount <= _maxColumn) {
+      print('1 $itemCount');
       return itemCount;
     }
 
     if (itemCount == 5) {
+      print('2 $itemCount');
       return 3;
     }
 
     if (itemCount == 6) {
+      print('3 $itemCount');
       return 3;
     }
 
@@ -395,11 +410,11 @@ class _MenuItemWidget extends StatefulWidget {
 
   _MenuItemWidget(
       {this.item,
-      this.showLine = false,
-      this.clickCallback,
-      this.lineColor,
-      this.backgroundColor,
-      this.highlightColor});
+        this.showLine = false,
+        this.clickCallback,
+        this.lineColor,
+        this.backgroundColor,
+        this.highlightColor});
 
   @override
   State<StatefulWidget> createState() {
@@ -455,7 +470,8 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
   Widget _createContent() {
     if (widget.item.menuImage != null) {
       // image and text
-      return Column(
+
+      return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
@@ -464,7 +480,6 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
             child: widget.item.menuImage,
           ),
           Container(
-            height: 22.0,
             child: Material(
               color: Colors.transparent,
               child: Text(
