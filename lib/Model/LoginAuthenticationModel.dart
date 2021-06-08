@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:art/APIUri/BaseUrl.dart';
 import 'package:http/http.dart' as http;
 
+import 'GPItemModel.dart';
 import 'LoginUser.dart';
 import 'MenuCardsModel.dart';
 
@@ -50,6 +51,33 @@ class MenuCard {
       print("MenuItemdata :- " + data.toString());
       var map = data.map<CardsMenuItem>((json) => CardsMenuItem.fromJson(json));
       print('MenuItemmap ${map.toList()}');
+      return map.toList();
+    } else if (result.statusCode == 400) {
+      print('Data Not Found');
+    } else if (result.statusCode == 404) {
+      print('Textfield is empty');
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+}
+
+class EapprovalGPItem {
+  Future<List<GPItem>> getGpItem() async {
+    // parse URI .....
+    var menuURL = Uri.parse(BaseURL().Auth + 'approvals' + '/' + 'gp');
+    print(menuURL);
+    final result = await http.get(menuURL);
+    print(result);
+
+    if (result.statusCode == 200) {
+      var parse = json.decode(result.body);
+
+      print("GP Itemparse :- " + parse.toString());
+      var data = parse['items'] as List;
+      print("GP Itemdata :- " + data.toString());
+      var map = data.map<GPItem>((json) => GPItem.fromJson(json));
+      print('GP Itemmap ${map.toList()}');
       return map.toList();
     } else if (result.statusCode == 400) {
       print('Data Not Found');

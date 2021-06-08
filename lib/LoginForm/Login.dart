@@ -29,6 +29,7 @@ class _State extends State<Login> {
   LoginAuth loginAuth;
   Item item;
   bool _isHidden = true;
+  bool _myBool = false;
 
   @override
   void initState() {
@@ -87,7 +88,6 @@ class _State extends State<Login> {
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
                   child: TextField(
-
                     obscureText: _isHidden,
                     obscuringCharacter: "*",
                     style: TextStyle(color: Colors.white),
@@ -117,15 +117,72 @@ class _State extends State<Login> {
                     onEditingComplete: () => focus.nextFocus(),
                   ),
                 ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(appstring().forget_psw),
-                  textColor: Colors.white,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 5,
+                          child: Container(
+                              child: FlatButton(
+                                  // here toggle the bool value so that when you click
+                                  // on the whole item, it will reflect changes in Checkbox
+                                  onPressed: () =>
+                                      setState(() => _myBool = !_myBool),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                            height: 24.0,
+                                            width: 24.0,
+                                            child: Checkbox(
+                                                side: BorderSide(
+                                                    color: ReColors()
+                                                        .appTextWhiteColor),
+                                                checkColor:
+                                                    ReColors().appMainColor,
+                                                // color of tick Mark
+                                                activeColor: Colors.white,
+                                                value: _myBool,
+                                                onChanged: (value) {
+                                                  setState(
+                                                      () => _myBool = value);
+                                                })),
+                                        // You can play with the width to adjust your
+                                        // desired spacing
+                                        SizedBox(width: 10.0),
+
+                                        Text(
+                                          appstring().remember,
+                                          style: TextStyle(
+                                              color:
+                                                  ReColors().appTextWhiteColor,
+                                              fontSize: 15.0),
+                                        )
+                                      ])))),
+                      Expanded(
+                          flex: 5,
+                          child: FlatButton(
+                              color: Colors.transparent,
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(8.0),
+                              splashColor: Colors.transparent,
+                              onPressed: () {
+                                /*...*/
+                              },
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(appstring().forget_psw,
+                                    style: TextStyle(fontSize: 15.0),
+                                    textAlign: TextAlign.right),
+                              )))
+                    ],
+                  ),
                 ),
                 ReuseButton(
                   buttonText: appstring().login,
-                  onPressed: ()
-                  {
+                  onPressed: () {
                     loginAuth
                         .getLoginUser(username.text, userpassword.text)
                         .then((users) {
@@ -135,8 +192,7 @@ class _State extends State<Login> {
                         if (_users == null) {
                           confirmationPopup(context, 'Error',
                               'Please fill the required field.', 'OK');
-
-                        } else if (_users.length==0) {
+                        } else if (_users.length == 0) {
                           confirmationPopup(
                               _scaffoldKey.currentContext,
                               "Error",
@@ -147,7 +203,6 @@ class _State extends State<Login> {
                       item = _users[0];
 
                       if (item != null) {
-
                         int userID = item.userId;
                         String name = item.empname;
                         MySharedPreferences.instance
@@ -156,12 +211,12 @@ class _State extends State<Login> {
                             .setStringValue("Username", name);
                         Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (BuildContext context) => MainMenuPopUp()),
-                                (Route<dynamic> route) => false
-                        );
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    MainMenuPopUp()),
+                            (Route<dynamic> route) => false);
                       }
                     });
-
                   },
                 ),
                 /* Container(
@@ -183,10 +238,7 @@ class _State extends State<Login> {
           ))),
     );
   }
-
 }
-
-
 
 confirmationPopup(
     BuildContext dialogContext, String title, String msg, String okbtn) {

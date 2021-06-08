@@ -10,6 +10,7 @@ class appstring{
   final description = 'Description';
   final name = 'Name';
   final forget_psw = 'Forget Password?';
+  final remember = 'Remember me';
   final psw = 'Password';
   final username = 'Username';
 }

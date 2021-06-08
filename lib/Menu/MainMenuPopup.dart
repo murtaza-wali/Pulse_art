@@ -3,6 +3,7 @@ import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/LoginForm/Login.dart';
 import 'package:art/PopMenuDir/popup_menu.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/eApproval/EapprovalGP.dart';
 import 'package:flutter/material.dart';
 import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/InternetConnection/Offline.dart';
@@ -185,7 +186,9 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
               ),
             ),
           ),
-          body: ReuseOffline().getoffline(FutureBuilder<List<CardsMenuItem>>(
+          body: ReuseOffline().getoffline(
+
+              FutureBuilder<List<CardsMenuItem>>(
             future: MenuCard().getMenus(getID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -200,8 +203,11 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                     AlwaysStoppedAnimation<Color>(ReColors().appMainColor),
               ));
             },
-          )),
+          )
+
+          ),
         ),
+        //Android back button disable to move back by this command.
         onWillPop: () => Future.value(false));
   }
 
@@ -217,7 +223,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         Padding(
           padding: EdgeInsets.all(10),
           child: Text(
-            'Welcome to $username',
+            'Welcome $username',
             style: TextStyle(
               color: ReColors().appMainColor,
               fontSize: 20, // light
@@ -243,7 +249,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => eApprovalNavigation()),
+                          builder: (context) => EapprovalGP()),
                     );
                   } else if (menuList[index].applicationName == 'GatePass') {
                     Navigator.push(

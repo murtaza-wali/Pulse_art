@@ -6,11 +6,14 @@ class ReuseButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onPressed;
 
+
   //constructor
   ReuseButton({this.buttonText, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceHight = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
       height: 50.0,
@@ -32,7 +35,8 @@ class ReuseButton extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(30.0)),
           child: Container(
-            constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+            margin: EdgeInsets.symmetric(horizontal: 0.05 * deviceWidth),
+            constraints: BoxConstraints(maxWidth: deviceWidth, minHeight: 50.0),
             alignment: Alignment.center,
             child: Text(
               buttonText,

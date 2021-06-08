@@ -18,8 +18,7 @@ class ReusableWidgets {
           Container(padding: const EdgeInsets.all(8.0), child: Text(title))
         ],
       ),
-      // leading: Image.asset("assets/images/artlogo.png"),
-      automaticallyImplyLeading: true, // hides default back button
+      // leading: Image.asset("assets/images/artlogo.png"),// hides default back button
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
