@@ -3,6 +3,8 @@ import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/LoginForm/Login.dart';
 import 'package:art/PopMenuDir/popup_menu.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/ReuseableWidget/GradientBG.dart';
+import 'package:art/Selfservice/UserProfile.dart';
 import 'package:art/eApproval/EapprovalGP.dart';
 import 'package:flutter/material.dart';
 import 'package:art/Gatepass/GatepassMenu.dart';
@@ -66,6 +68,17 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
           context,
           MaterialPageRoute(builder: (BuildContext context) => Login()),
           (Route<dynamic> route) => false);
+
+    }else if (item.menuTitle.contains('Self service')) {
+      // MySharedPreferences.instance.removeAll();
+      // Menu Item Conditions.....
+      // pushAndRemoveUntil -> pushAndRemoveUntil
+      // pushAndRemoveUntil -> pushReplacement-> crash app
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => UserProfile()),
+          );
+
     }
   }
 
@@ -186,9 +199,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
               ),
             ),
           ),
-          body: ReuseOffline().getoffline(
-
-              FutureBuilder<List<CardsMenuItem>>(
+          body: ReuseOffline().getoffline(FutureBuilder<List<CardsMenuItem>>(
             future: MenuCard().getMenus(getID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -203,9 +214,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                     AlwaysStoppedAnimation<Color>(ReColors().appMainColor),
               ));
             },
-          )
-
-          ),
+          )),
         ),
         //Android back button disable to move back by this command.
         onWillPop: () => Future.value(false));
@@ -217,8 +226,10 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  Column gridMenuData(menuList) {
-    return Column(
+  Container gridMenuData(menuList) {
+    return Container(
+      decoration: Gradientbg().getMenubg(),
+        child: Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.all(10),
@@ -248,8 +259,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                   if (menuList[index].applicationId == 403) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => EapprovalGP()),
+                      MaterialPageRoute(builder: (context) => eApprovalNav()),
                     );
                   } else if (menuList[index].applicationName == 'GatePass') {
                     Navigator.push(
@@ -273,13 +283,13 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                       ),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(17.0),
-                      boxShadow: <BoxShadow>[
+                      /*boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: Colors.grey,
                           offset: Offset(1.0, 15.0),
                           blurRadius: 20.0,
                         ),
-                      ],
+                      ]*/
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -316,7 +326,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
           }),
         )),
       ],
-    );
+    ));
   }
 
   void maxColumn() {

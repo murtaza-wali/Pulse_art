@@ -5,27 +5,10 @@ import 'package:art/Model/LoginAuthenticationModel.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:art/eApproval/eApprovalTabs.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
-List<Element> _elements = <Element>[
-  Element(DateTime(2020, 6, 24, 18), 'Got to gym', Icons.fitness_center),
-  Element(DateTime(2020, 6, 24, 9), 'Work', Icons.work),
-  Element(DateTime(2020, 6, 25, 8), 'Buy groceries', Icons.shopping_basket),
-  Element(DateTime(2020, 6, 25, 16), 'Cinema', Icons.movie),
-  Element(DateTime(2020, 6, 25, 20), 'Eat', Icons.fastfood),
-  Element(DateTime(2020, 6, 26, 12), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 27, 12), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 27, 13), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 27, 14), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 27, 15), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 28, 12), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 29, 12), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 29, 12), 'Car wash', Icons.local_car_wash),
-  Element(DateTime(2020, 6, 30, 12), 'Car wash', Icons.local_car_wash),
-];
+import 'eApproval.dart';
 
 class EapprovalGP extends StatefulWidget {
   @override
@@ -56,7 +39,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: new ReusableWidgets().getAppBar('E-Approval GP'),
+        appBar: new ReusableWidgets().getAppBar('GP'),
         body: ReuseOffline().getoffline(FutureBuilder<List<GPItem>>(
           future: EapprovalGPItem().getGpItem(),
           builder: (context, snapshot) {
@@ -64,7 +47,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
               _gplist = snapshot.data;
               return _groupedListView(_gplist);
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              return Text("No Data Found",style: TextStyle(fontSize: 20,color: Colors.black),);
             }
             return Center(
                 child: CircularProgressIndicator(
@@ -141,7 +124,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Eapproval()),
+                  MaterialPageRoute(builder: (context) => eApproval()),
                 );
               },
               child: Column(
@@ -189,7 +172,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
                               softWrap: false,
                               style: TextStyle(fontSize: 15.0),
                             ),
-                            /*Padding(
+/*Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Icon(
                               Icons.star_border,
@@ -211,37 +194,37 @@ class _EapprovalGPstate extends State<EapprovalGP> {
             ),
           );
 
-          /*return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-              elevation: 8.0,
-              margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              child: Container(
-                child: ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  leading: Text(
-                    element.sno,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                  ),
-                  title: Text(
-                    element.deptname,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                  ),
-                  trailing: Text(
-                    element.requestedBy,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                  ),
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            elevation: 8.0,
+            margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            child: Container(
+              child: ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                leading: Text(
+                  element.sno,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                ),
+                title: Text(
+                  element.deptname,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                ),
+                trailing: Text(
+                  element.requestedBy,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
                 ),
               ),
-            );*/
+            ),
+          );
         },
       ),
     );
@@ -264,15 +247,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
     ];
     var someDateTime = new DateTime.now();
     mon = someDateTime.month;
-    print(months[mon + 1]);
-    return months[mon + 1];
+    print(months[mon - 1]);
+    return months[mon - 1];
   }
-}
-
-class Element {
-  DateTime date;
-  String name;
-  IconData icon;
-
-  Element(this.date, this.name, this.icon);
 }

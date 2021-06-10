@@ -18,6 +18,11 @@ class ReusableWidgets {
           Container(padding: const EdgeInsets.all(8.0), child: Text(title))
         ],
       ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30),
+        ),
+      ),
       // leading: Image.asset("assets/images/artlogo.png"),// hides default back button
       flexibleSpace: Container(
         decoration: BoxDecoration(

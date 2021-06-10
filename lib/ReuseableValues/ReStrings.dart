@@ -13,4 +13,6 @@ class appstring{
   final remember = 'Remember me';
   final psw = 'Password';
   final username = 'Username';
+  final accept = 'Accept';
+  final reject = 'Reject';
 }

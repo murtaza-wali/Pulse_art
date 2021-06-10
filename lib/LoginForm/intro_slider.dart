@@ -37,15 +37,13 @@ class IntroAppState extends State<IntroApp> {
                   ]))),
       // iconImageAssetPath: 'assets/air-hostess.png',
       bubble: Image.asset('assets/images/eapprovals.png'),
-      body:  Text(
-        'E-Approval',
+      body:  Text('Artistic Milliners has accelerated its digitization through new interface was introduced, titled "ART".This PULSE software application redefined the way enterprise users work. With a new visual design and appearance, we are making next-generation workforce and drive employee engagement to ensure maximum utilization of the apps offering by enabling them through technology.',
       ),
-      title:  Text(
-        'E-Approval',
+      title:  Text('PULSE'
       ),
       titleTextStyle:
            TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white),
+      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white,fontSize: 18),
       mainImage: Image.asset(
         'assets/images/eapprovals.png',
         height: 285.0,
@@ -69,9 +67,9 @@ class IntroAppState extends State<IntroApp> {
                   ]))),
       iconImageAssetPath: 'assets/images/denim.png',
       body:  Text(
-        'Denim',
+        "Digital Rocket is a team initiative which is harmonizing business processes with next-generation automation-based technology.",
       ),
-      title:  Text('Denim'),
+      title:  Text('Digital Rocket'),
       mainImage: Image.asset(
         'assets/images/denim.png',
         height: 285.0,
@@ -80,7 +78,7 @@ class IntroAppState extends State<IntroApp> {
       ),
       titleTextStyle:
            TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white),
+      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white,fontSize: 18),
     ),
     PageViewModel(
       pageBackground: Container(
@@ -98,9 +96,9 @@ class IntroAppState extends State<IntroApp> {
                   ]))),
       iconImageAssetPath: 'assets/images/jarvis.png',
       body:  Text(
-        'J.A.R.V.I.S',
+        "     Whatever platform you choose for your cloud-enabled business applications, including custom code in just about any framework, we’ve got you covered.",
       ),
-      title:  Text('J.A.R.V.I.S'),
+      title:  Text('KODERS FARM'),
       mainImage: Image.asset(
         'assets/images/jarvis.png',
         height: 285.0,
@@ -109,7 +107,7 @@ class IntroAppState extends State<IntroApp> {
       ),
       titleTextStyle:
            TextStyle(fontFamily: 'MyFont', color: Colors.white),
-      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white),
+      bodyTextStyle:  TextStyle(fontFamily: 'MyFont', color: Colors.white,fontSize: 18),
     ),
   ];
 

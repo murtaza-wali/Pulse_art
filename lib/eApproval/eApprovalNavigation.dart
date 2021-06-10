@@ -4,7 +4,9 @@ import 'package:art/eApproval/WorklistAccess.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:foldable_sidebar/foldable_sidebar.dart';
+import 'EapprovalGP.dart';
 import 'VacationRules.dart';
+import 'eApprovalGPTabs.dart';
 import 'eApprovalTabs.dart';
 
 // ignore: camel_case_types
@@ -45,7 +47,7 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
               drawerStatus = FSBStatus.FSB_CLOSE;
             });
           },),
-          screenContents: Eapproval(),
+          screenContents: EapprovalGP(),
           status: drawerStatus,
         ),
         floatingActionButton: FloatingActionButton(
