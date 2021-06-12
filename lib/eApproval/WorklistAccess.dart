@@ -7,7 +7,6 @@ import 'package:art/eApproval/GrantAccessToModel.dart';
 import 'package:art/eApproval/GrantAcessItem.dart';
 import 'package:art/eApproval/SelectedGrantAccessModel.dart';
 import 'package:art/eApproval/WorklistNameModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -151,7 +150,7 @@ class _WorklistState extends State<WorklistAccess> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: new ReusableWidgets().getAppBar('Worklist Access'),
+        appBar: new ReusableWidgets().getAppBar(context,'Worklist Access'),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[

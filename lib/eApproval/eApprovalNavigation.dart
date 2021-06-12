@@ -1,7 +1,9 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/ScreensWithData/EApprovalScreens/EapprovalGPByID.dart';
 import 'package:art/eApproval/WorklistAccess.dart';
 import 'package:flutter/material.dart';
+
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:foldable_sidebar/foldable_sidebar.dart';
 import 'EapprovalGP.dart';
@@ -42,20 +44,27 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
         body: FoldableSidebarBuilder(
           //drawerBackgroudcolor........
           drawerBackgroundColor: ReColors().appMainColor,
-          drawer: CustomDrawer(closeDrawer: (){
-            setState(() {
-              drawerStatus = FSBStatus.FSB_CLOSE;
-            });
-          },),
-          screenContents: EapprovalGP(),
+          drawer: CustomDrawer(
+            closeDrawer: () {
+              setState(() {
+                drawerStatus = FSBStatus.FSB_CLOSE;
+              });
+            },
+          ),
+          screenContents: EapprovalGPById(),
           status: drawerStatus,
         ),
         floatingActionButton: FloatingActionButton(
             backgroundColor: ReColors().appMainColor,
-            child: Icon(Icons.menu,color: Colors.white,),
+            child: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
             onPressed: () {
               setState(() {
-                drawerStatus = drawerStatus == FSBStatus.FSB_OPEN ? FSBStatus.FSB_CLOSE : FSBStatus.FSB_OPEN;
+                drawerStatus = drawerStatus == FSBStatus.FSB_OPEN
+                    ? FSBStatus.FSB_CLOSE
+                    : FSBStatus.FSB_OPEN;
               });
             }),
       ),
@@ -63,12 +72,10 @@ class _MyeApprovalNavigationState extends State<eApprovalNavigation> {
   }
 }
 
-
 class CustomDrawer extends StatelessWidget {
-
   final Function closeDrawer;
 
-  const CustomDrawer({Key key,  this.closeDrawer}) : super(key: key);
+  const CustomDrawer({Key key, this.closeDrawer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +105,7 @@ class CustomDrawer extends StatelessWidget {
                 ],
               )),
           ListTile(
-            onTap: (){
+            onTap: () {
               debugPrint("Tapped Profile");
               Navigator.push(
                 context,
@@ -129,7 +136,6 @@ class CustomDrawer extends StatelessWidget {
             height: 1,
             color: Colors.grey,
           ),
-
         ],
       ),
     );

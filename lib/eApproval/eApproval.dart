@@ -5,7 +5,7 @@ import 'package:art/ReuseableWidget/appbar.dart';
 import 'package:flutter/material.dart';
 
 class eApproval extends StatefulWidget {
-  State<StatefulWidget> createState() => new _eApprovalState();
+  State<StatefulWidget> createState() => _eApprovalState();
 }
 
 // ignore: camel_case_types
@@ -17,7 +17,7 @@ class _eApprovalState extends State<eApproval> {
     // TODO: implement initState
     super.initState();
     MySharedPreferences.instance
-        .getStringValue("partyname")
+        .getStringValue("transactionID")
         .then((name) => setState(() {
               partname = name;
               print(partname);
@@ -33,7 +33,8 @@ class _eApprovalState extends State<eApproval> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new ReusableWidgets().getAppBar('E-Approval'),
+      backgroundColor: Colors.white,
+      appBar: new ReusableWidgets().getAppBar(context, 'E-Approval'),
       body: Container(
         decoration: Gradientbg().getbg(),
         child: Padding(
@@ -76,8 +77,8 @@ class _eApprovalState extends State<eApproval> {
                                     .textTheme
                                     .subtitle
                                     .copyWith(
-                                    color: ReColors().appMainColor,
-                                    fontSize: 15),
+                                        color: ReColors().appMainColor,
+                                        fontSize: 15),
                               ),
                               Expanded(
                                 child: SizedBox(),
@@ -88,8 +89,8 @@ class _eApprovalState extends State<eApproval> {
                                     .textTheme
                                     .subtitle
                                     .copyWith(
-                                    color: ReColors().appMainColor,
-                                    fontSize: 15),
+                                        color: ReColors().appMainColor,
+                                        fontSize: 15),
                               ),
                             ],
                           ),
@@ -168,17 +169,17 @@ class _eApprovalState extends State<eApproval> {
                               ),
                               Expanded(
                                   child: Text(
-                                    '${partname}',
-                                    maxLines: 1,
-                                    /*// overflow: TextOverflow.fade,
+                                '${partname}',
+                                maxLines: 1,
+                                /*// overflow: TextOverflow.fade,
                       softWrap: false,*/
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle
-                                        .copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle
+                                    .copyWith(
                                         color: ReColors().appMainColor,
                                         fontSize: 15),
-                                  )),
+                              )),
                               Expanded(
                                 child: SizedBox(),
                               ),
@@ -217,25 +218,25 @@ class _eApprovalState extends State<eApproval> {
                         ,
                         DataTable(
                           headingRowColor: MaterialStateColor.resolveWith(
-                                  (states) => ReColors().appMainColor),
+                              (states) => ReColors().appMainColor),
                           dataRowColor: MaterialStateColor.resolveWith(
-                                  (states) => Colors.white),
+                              (states) => Colors.white),
                           columns: [
                             DataColumn(
                                 label: Text(
-                                  'Item Description',
-                                  style: TextStyle(color: Colors.white),
-                                )),
+                              'Item Description',
+                              style: TextStyle(color: Colors.white),
+                            )),
                             DataColumn(
                                 label: Text(
-                                  'UOM',
-                                  style: TextStyle(color: Colors.white),
-                                )),
+                              'UOM',
+                              style: TextStyle(color: Colors.white),
+                            )),
                             DataColumn(
                                 label: Text(
-                                  'Qty',
-                                  style: TextStyle(color: Colors.white),
-                                )),
+                              'Qty',
+                              style: TextStyle(color: Colors.white),
+                            )),
                           ],
                           rows: [
                             DataRow(cells: [
@@ -257,20 +258,20 @@ class _eApprovalState extends State<eApproval> {
                         ),
                         Container(
                             child: Row(children: <Widget>[
-                              Expanded(
-                                  child: RaisedButton(
-                                      onPressed: () {},
-                                      color: Color(0xFF29A02F),
-                                      child: Text(
-                                        "Accept",
-                                        style: TextStyle(color: Colors.white),
-                                      ))),
-                              Expanded(
-                                  child: RaisedButton(
-                                      onPressed: () {},
-                                      color: Color(0xfff60000),
-                                      child: Text("Reject"))),
-                            ])),
+                          Expanded(
+                              child: RaisedButton(
+                                  onPressed: () {},
+                                  color: Color(0xFF29A02F),
+                                  child: Text(
+                                    "Accept",
+                                    style: TextStyle(color: Colors.white),
+                                  ))),
+                          Expanded(
+                              child: RaisedButton(
+                                  onPressed: () {},
+                                  color: Color(0xfff60000),
+                                  child: Text("Reject"))),
+                        ])),
                       ],
                     ),
                   ),
@@ -283,5 +284,3 @@ class _eApprovalState extends State<eApproval> {
     );
   }
 }
-
-

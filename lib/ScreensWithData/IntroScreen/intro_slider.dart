@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
-import 'Login.dart';
+import '../LoginScreen/Login.dart';
 
 /// This is the main method of app, from here execution starts.
 // void main() => runApp(App());
@@ -113,6 +114,7 @@ class IntroAppState extends State<IntroApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       body:  Builder(
         builder: (context) => IntroViewsFlutter(

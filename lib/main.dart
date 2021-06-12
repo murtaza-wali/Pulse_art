@@ -1,17 +1,22 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:art/LoginForm/intro_slider.dart';
+import 'package:art/ScreensWithData/IntroScreen/intro_slider.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'LoginForm/Login.dart';
+import 'LocalStorage/MySharedPref.dart';
+import 'ScreensWithData/LoginScreen/Login.dart';
+import 'ScreensWithData/Menu/MainMenuPopup.dart';
 
 int initScreen;
-class MyHttpOverrides extends HttpOverrides{
+
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext context){
+  HttpClient createHttpClient(SecurityContext context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -48,54 +53,59 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool remember;
+
   @override
   void initState() {
     super.initState();
-    if (initScreen == null) {
-      new Future.delayed(const Duration(seconds: 3), () {
-        //
-        // Navigator.pop(context,true);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => IntroApp()),
-                (Route<dynamic> route) => false
-        );
-      });
-      /*Timer(
-          Duration(seconds: 3),
-          () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => IntroApp()),
-          ));*/
-    } else if (initScreen == 1) {
+    MySharedPreferences.instance
+        .getBoolValue("remember")
+        .then((name) => setState(() {
+              remember = name;
+              print(remember);
 
-      new Future.delayed(const Duration(seconds: 3), () {
-        //
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => Login()),
-                (Route<dynamic> route) => false
-        );
-        /*Navigator.pop(context,true);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Login()),
-        );*/
-      });
-      /*Timer(
-          Duration(seconds: 3),
-          () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Login()),
-          ));*/
-    }
+              if (remember == true) {
+                print(remember);
+                new Future.delayed(const Duration(seconds: 3), () {
+                  //
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MainMenuPopUp()),
+                      (Route<dynamic> route) => false);
+                });
+              }
+              else if (remember == false) {
+                print('USER NAME 1 : ${name}');
+                if (initScreen == null) {
+                  new Future.delayed(const Duration(seconds: 3), () {
+                    //
+                    // Navigator.pop(context,true);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => IntroApp()),
+                        (Route<dynamic> route) => false);
+                  });
+
+                } else if (initScreen == 1) {
+                  new Future.delayed(const Duration(seconds: 3), () {
+                    //
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Login()),
+                        (Route<dynamic> route) => false);
+                  });
+
+                }
+              }
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       body: Container(
         decoration: Gradientbg().getbg(),

@@ -20,7 +20,7 @@ class _GetpassState extends State<Gatepass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new ReusableWidgets().getAppBar('Gatepass'),
+      appBar: new ReusableWidgets().getAppBar(context,'Gatepass'),
       body: Row(
         children: <Widget>[
           Expanded(

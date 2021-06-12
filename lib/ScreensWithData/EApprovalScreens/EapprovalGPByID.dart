@@ -3,19 +3,19 @@ import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/Model/GPbyID.dart';
 import 'package:art/ParsingJSON/GetJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/ReuseableWidget/CustomAppbarWidget.dart';
+import 'package:art/ReuseableWidget/WillpopWidget.dart';
 import 'package:art/ScreensWithData/EApprovalScreens/TransactionByID.dart';
 import 'package:art/ScreensWithData/Menu/MainMenuPopup.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
-import 'eApproval.dart';
-
-class EapprovalGP extends StatefulWidget {
+class EapprovalGPById extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _EapprovalGPstate();
+  State<StatefulWidget> createState() => new _EapprovalGPByIdstate();
 }
 
-class _EapprovalGPstate extends State<EapprovalGP> {
+class _EapprovalGPByIdstate extends State<EapprovalGPById> {
   List<GPbyIDitem> _gplist = [];
   List<GPbyIDitem> list = [];
 
@@ -45,47 +45,18 @@ class _EapprovalGPstate extends State<EapprovalGP> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: BackButton(
-            color: ReColors().appTextWhiteColor,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MainMenuPopUp()),
-              );
-            },
-          ),
-          title: new Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                'assets/images/artlogo.png',
-                fit: BoxFit.contain,
-                height: 20,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0), child: Text('E-Approval'))
-            ],
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
-            ),
-          ),
-          // leading: Image.asset("assets/images/artlogo.png"),// hides default back button
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
-                colors: [ReColors().appMainColor, Colors.black],
-              ),
-            ),
-          ),
-        ),
+    return Willpopwidget().getWillScope(Scaffold(
+        appBar: new CustomAppBar(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => MainMenuPopUp()),
+            );
+          },
+          Title: 'E-Approval',
+        )
+        ,
         body: ReuseOffline().getoffline(FutureBuilder<List<GPbyIDitem>>(
           future: GetJSON().getGpItemsById(getID),
           builder: (context, snapshot) {
@@ -103,7 +74,8 @@ class _EapprovalGPstate extends State<EapprovalGP> {
               } else {
                 return _groupedListView(_gplist);
               }
-            } else if (snapshot.hasError) {
+            }
+            else if (snapshot.hasError) {
               return Text(
                 "No Data Found",
                 style: TextStyle(fontSize: 20, color: Colors.black),
@@ -115,7 +87,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
                   AlwaysStoppedAnimation<Color>(ReColors().appMainColor),
             ));
           },
-        )));
+        ))));
   }
 
   RefreshIndicator _groupedListView(_gplist1) {
@@ -160,7 +132,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'Unit: ${element.unitName}',
+                          '${element.unitName}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           softWrap: false,
@@ -182,7 +154,8 @@ class _EapprovalGPstate extends State<EapprovalGP> {
             child: InkWell(
               onTap: () {
                 print('Transaction ID${element.transactionId}');
-                MySharedPreferences.instance.setIntValue("transactionID", element.transactionId);
+                MySharedPreferences.instance
+                    .setIntValue("transactionID", element.transactionId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => TransactionByID()),

@@ -1,6 +1,5 @@
 import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class VacationRules extends StatefulWidget {
@@ -15,7 +14,7 @@ class _VacationRulesState extends State<VacationRules> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color2,
-      appBar: new ReusableWidgets().getAppBar('Vacation Rules'),
+      appBar: new ReusableWidgets().getAppBar(context,'Vacation Rules'),
       body: Center(),
     );
   }

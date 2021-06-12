@@ -2,10 +2,11 @@ import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
 
 class ReusableWidgets {
-  getAppBar(String title) {
+  getAppBar(context, String title) {
     return AppBar(
+      automaticallyImplyLeading: false,
       leading: BackButton(
-        color: ReColors().appTextWhiteColor,
+          color: ReColors().appTextWhiteColor,
       ),
       title: new Row(
         mainAxisAlignment: MainAxisAlignment.start,

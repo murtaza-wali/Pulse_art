@@ -1,8 +1,12 @@
-import 'package:art/Menu/MainMenuPopup.dart';
+import 'package:art/Model/MaritalStatusModel.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
-import 'package:art/ReuseableWidget/GradientBG.dart';
-import 'package:art/ReuseableWidget/appbar.dart';
+import 'package:art/ReuseableValues/ReStrings.dart';
+import 'package:art/ReuseableWidget/CustomAppbarWidget.dart';
+import 'package:art/ReuseableWidget/WillpopWidget.dart';
+import 'package:art/ScreensWithData/Menu/MainMenuPopup.dart';
+import 'package:art/eApproval/CustomDropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -12,9 +16,19 @@ class UserProfile extends StatefulWidget {
 class _userprofileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // appBar: new ReusableWidgets().getAppBar('User Profile'),
-        body: profileView());
+    return Willpopwidget().getWillScope(Scaffold(
+        appBar: new CustomAppBar(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => MainMenuPopUp()),
+            );
+          },
+          Title: 'User Profile',
+        )
+        ,
+        body: profileView()));
   }
 
   Widget profileView() {
@@ -22,56 +36,6 @@ class _userprofileState extends State<UserProfile> {
       // decoration: Gradientbg().getMenubg(),
       child: Column(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [
-                  ReColors().appMainColor,
-                  Color.fromRGBO(0, 41, 102, 1)
-                ])),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      MainMenuPopUp()),
-                            );
-                          },
-                          child: Container(
-                              height: 50,
-                              width: 50,
-                              child: Icon(
-                                Icons.arrow_back,
-                                size: 28,
-                                color: Colors.white,
-                              )),
-                        ),
-                      ),
-                      Text(
-                        'User Profile',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                      Container(height: 24, width: 24)
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
               child: SingleChildScrollView(
             child: Column(
@@ -180,7 +144,7 @@ class _userprofileState extends State<UserProfile> {
                                     ),
                                   ),
                                 )),
-                                Expanded(
+                                /*Expanded(
                                     child: Align(
                                   alignment: Alignment.topRight,
                                   child: Padding(
@@ -192,7 +156,7 @@ class _userprofileState extends State<UserProfile> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                )),
+                                ))*/
                               ],
                             ),
                             Padding(
@@ -475,10 +439,13 @@ class _userprofileState extends State<UserProfile> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 28,
+                                    child: IconButton(
                                       color: Colors.black,
+                                      icon: new Icon(Icons.edit),
+                                      onPressed: () {
+                                        _displayPersonalDataDialog(context,
+                                            'marital_status', 'CNICExpiry');
+                                      },
                                     ),
                                   ),
                                 )),
@@ -777,13 +744,16 @@ class _userprofileState extends State<UserProfile> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 28,
+                                    child: IconButton(
                                       color: Colors.black,
+                                      icon: new Icon(Icons.edit),
+                                      onPressed: () {
+                                        _displayCommunicationDialog(context,
+                                            'marital_status', 'CNICExpiry', '');
+                                      },
                                     ),
                                   ),
-                                )),
+                                ))
                               ],
                             ),
                             Padding(
@@ -935,10 +905,13 @@ class _userprofileState extends State<UserProfile> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 28,
+                                    child: IconButton(
                                       color: Colors.black,
+                                      icon: new Icon(Icons.edit),
+                                      onPressed: () {
+                                        _displayAddressDialog(
+                                            context, 'marital_status');
+                                      },
                                     ),
                                   ),
                                 )),
@@ -1021,10 +994,13 @@ class _userprofileState extends State<UserProfile> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 28,
+                                    child: IconButton(
                                       color: Colors.black,
+                                      icon: new Icon(Icons.edit),
+                                      onPressed: () {
+                                        _displayEducationDialog(
+                                            context, 'marital_status');
+                                      },
                                     ),
                                   ),
                                 )),
@@ -1101,7 +1077,7 @@ class _userprofileState extends State<UserProfile> {
                                             color: Colors.black, fontSize: 20)),
                                   ),
                                 )),
-                                Expanded(
+                                /*Expanded(
                                     child: Align(
                                   alignment: Alignment.topRight,
                                   child: Padding(
@@ -1113,7 +1089,7 @@ class _userprofileState extends State<UserProfile> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                )),
+                                )),*/
                               ],
                             ),
                             Padding(
@@ -1268,6 +1244,367 @@ class _userprofileState extends State<UserProfile> {
         ],
       ),
     );
+  }
+
+  String codeDialog;
+  String valueText;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController educationController = TextEditingController();
+  TextEditingController adressController = TextEditingController();
+  MaritalStatus _worklistnameModel = MaritalStatus();
+  final List<MaritalStatus> _worklistnameModelList = [
+    MaritalStatus(status: 'Single'),
+    MaritalStatus(status: 'Divorced'),
+    MaritalStatus(status: 'Married'),
+  ];
+  List<DropdownMenuItem<MaritalStatus>> _worklistnameModelDropdownList;
+
+  List<DropdownMenuItem<MaritalStatus>> _buildworklistnameModelDropdown(
+      List worklistnameModelList) {
+    List<DropdownMenuItem<MaritalStatus>> items = List();
+    for (MaritalStatus WorklistnameModel in worklistnameModelList) {
+      items.add(DropdownMenuItem(
+        value: WorklistnameModel,
+        child: Text(WorklistnameModel.status),
+      ));
+    }
+    return items;
+  }
+
+  _onChangeworklistnameModelDropdown(MaritalStatus worklistnameModel) {
+    setState(() {
+      _worklistnameModel = worklistnameModel;
+    });
+  }
+
+  double _width;
+
+  String _setendDate, _setDate;
+
+  String _hour, _minute, _time;
+
+  String dateTime;
+
+  DateTime selectedDate = DateTime.now();
+  DateTime endselectedDate = DateTime.now();
+
+  TextEditingController _dateController = TextEditingController();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: ReColors().appMainColor,
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: ReColors().appMainColor,
+              ),
+              dialogBackgroundColor: ReColors().appTextWhiteColor,
+            ),
+            child: child,
+          );
+        },
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        _dateController.text = DateFormat.yMd().format(selectedDate);
+      });
+  }
+
+  Future<void> _displayCommunicationDialog(
+      BuildContext context, email, phone, mobile) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Communication',
+              textAlign: TextAlign.center,
+            ),
+            content: SingleChildScrollView(
+              child: Container(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: TextField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Email',
+                            ),
+                            onChanged: (emailtext) {
+                              setState(() {
+                                email = emailtext;
+                                //you can access nameController in its scope to get
+                                // the value of text entered as shown below
+                                //UserName = nameController.text;
+                              });
+                            },
+                          )),
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: TextField(
+                            controller: mobileController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Mobile',
+                            ),
+                            onChanged: (mobiletext) {
+                              setState(() {
+                                mobile = mobiletext;
+                                //you can access nameController in its scope to get
+                                // the value of text entered as shown below
+                                //UserName = nameController.text;
+                              });
+                            },
+                          )),
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: TextField(
+                            controller: phoneController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Phone',
+                            ),
+                            onChanged: (phonetext) {
+                              setState(() {
+                                phone = phonetext;
+                                //you can access nameController in its scope to get
+                                // the value of text entered as shown below
+                                //UserName = nameController.text;
+                              });
+                            },
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Container(
+                child: Center(
+                  child: FlatButton(
+                    color: ReColors().appMainColor,
+                    textColor: Colors.white,
+                    child: Text('Update'),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _displayPersonalDataDialog(BuildContext context, String marital_status, String CNICExpiry) async {
+    _worklistnameModelDropdownList =
+        _buildworklistnameModelDropdown(_worklistnameModelList);
+    _worklistnameModel = _worklistnameModelList[0];
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Personal Data',
+              textAlign: TextAlign.center,
+            ),
+            content: SingleChildScrollView(
+              child: Container(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10.0),
+                            child: CustomDropdown(
+                              dropdownMenuItemList:
+                                  _worklistnameModelDropdownList,
+                              onChanged: _onChangeworklistnameModelDropdown,
+                              value: _worklistnameModel,
+                              isEnabled: true,
+                              color: ReColors().appMainColor,
+                            ),
+                          )),
+                      InkWell(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: Container(
+                            width: 320,
+                            padding: EdgeInsets.all(10.0),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                              keyboardType: TextInputType.text,
+                              controller: _dateController,
+                              onSaved: (String val) {
+                                _setDate = val;
+                              },
+                              autocorrect: true,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.calendar_today_sharp,
+                                  color: ReColors().appMainColor,
+                                ),
+                                hintText: appstring().startdate,
+                                hintStyle:
+                                    TextStyle(color: ReColors().appMainColor),
+                                fillColor: Colors.white70,
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Container(
+                child: Center(
+                  child: FlatButton(
+                    color: ReColors().appMainColor,
+                    textColor: Colors.white,
+                    child: Text('Update'),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _displayAddressDialog(BuildContext context, address) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Address',
+              textAlign: TextAlign.center,
+            ),
+            content: SingleChildScrollView(
+              child: Container(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: TextField(
+                            controller: adressController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Email',
+                            ),
+                            onChanged: (addresstext) {
+                              setState(() {
+                                address = addresstext;
+                                //you can access nameController in its scope to get
+                                // the value of text entered as shown below
+                                //UserName = nameController.text;
+                              });
+                            },
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Container(
+                child: Center(
+                  child: FlatButton(
+                    color: ReColors().appMainColor,
+                    textColor: Colors.white,
+                    child: Text('Update'),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _displayEducationDialog(BuildContext context, education) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Education',
+              textAlign: TextAlign.center,
+            ),
+            content: SingleChildScrollView(
+              child: Container(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: TextField(
+                            controller: educationController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Email',
+                            ),
+                            onChanged: (educatiotext) {
+                              setState(() {
+                                education = educatiotext;
+                                //you can access nameController in its scope to get
+                                // the value of text entered as shown below
+                                //UserName = nameController.text;
+                              });
+                            },
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Container(
+                child: Center(
+                  child: FlatButton(
+                    color: ReColors().appMainColor,
+                    textColor: Colors.white,
+                    child: Text('Update'),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }
 

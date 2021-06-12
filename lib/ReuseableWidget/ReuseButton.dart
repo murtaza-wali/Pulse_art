@@ -13,7 +13,6 @@ class ReuseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHight = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
       height: 50.0,

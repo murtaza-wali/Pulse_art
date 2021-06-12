@@ -1,15 +1,15 @@
 import 'package:art/InternetConnection/Offline.dart';
 import 'package:art/LocalStorage/MySharedPref.dart';
-import 'package:art/Menu/MainMenuPopup.dart';
-import 'package:art/Model/LoginAuthenticationModel.dart';
 import 'package:art/Model/LoginUser.dart';
+import 'package:art/ParsingJSON/GetJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:art/ReuseableWidget/ReuseButton.dart';
 import 'package:art/ReuseableWidget/appbar.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:art/ScreensWithData/Menu/MainMenuPopup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Login extends StatefulWidget {
@@ -26,7 +26,7 @@ class _State extends State<Login> {
   List<Item> _users;
   String p_user;
   String p_psw;
-  LoginAuth loginAuth;
+  GetJSON loginAuth;
   Item item;
   bool _isHidden = true;
   bool _myBool = false;
@@ -36,7 +36,8 @@ class _State extends State<Login> {
     // TODO: implement initState
     super.initState();
     _users = [];
-    loginAuth = new LoginAuth();
+
+    loginAuth = new GetJSON();
     item = new Item();
   }
 
@@ -47,6 +48,7 @@ class _State extends State<Login> {
   }
 
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       key: _scaffoldKey,
       appBar: new ReusableWidgets().getLoginAppBar(appstring().login),
@@ -192,7 +194,8 @@ class _State extends State<Login> {
                         if (_users == null) {
                           confirmationPopup(context, 'Error',
                               'Please fill the required field.', 'OK');
-                        } else if (_users.length == 0) {
+                        }
+                        else if (_users.length == 0) {
                           confirmationPopup(
                               _scaffoldKey.currentContext,
                               "Error",
@@ -201,12 +204,13 @@ class _State extends State<Login> {
                         }
                       });
                       item = _users[0];
-
                       if (item != null) {
                         int userID = item.userId;
                         String name = item.empname;
                         MySharedPreferences.instance
                             .setIntValue("UserId", userID);
+                        MySharedPreferences.instance
+                            .setBoolValue("remember", _myBool);
                         MySharedPreferences.instance
                             .setStringValue("Username", name);
                         Navigator.pushAndRemoveUntil(
@@ -239,6 +243,7 @@ class _State extends State<Login> {
     );
   }
 }
+
 
 confirmationPopup(
     BuildContext dialogContext, String title, String msg, String okbtn) {
