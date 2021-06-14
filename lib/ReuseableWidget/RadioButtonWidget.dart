@@ -1,4 +1,4 @@
-import 'package:art/eApproval/GrantAccessToModel.dart';
+import 'package:art/Model/GrantAccessToModel.dart';
 import 'package:flutter/material.dart';
 
 class RadioItem extends StatelessWidget {

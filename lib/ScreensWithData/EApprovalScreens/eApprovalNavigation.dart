@@ -1,15 +1,11 @@
-import 'package:art/HexCodeConverter/Hexcode.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ScreensWithData/EApprovalScreens/EapprovalGPByID.dart';
-import 'package:art/eApproval/WorklistAccess.dart';
+import 'package:art/ScreensWithData/EApprovalScreens/WorklistAccess.dart';
 import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:foldable_sidebar/foldable_sidebar.dart';
-import 'EapprovalGP.dart';
 import 'VacationRules.dart';
-import 'eApprovalGPTabs.dart';
-import 'eApprovalTabs.dart';
 
 // ignore: camel_case_types
 class eApprovalNav extends StatelessWidget {

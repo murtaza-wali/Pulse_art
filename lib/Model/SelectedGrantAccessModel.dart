@@ -9,8 +9,7 @@ class CheckBoxListTileModel {
   static List<CheckBoxListTileModel> getUsers() {
     return <CheckBoxListTileModel>[
       CheckBoxListTileModel(
-          userId: 1,
-          img: 'assets/images/user.png',
+          userId: 1,          img: 'assets/images/user.png',
           title: "Concurrent Manager Access",
           isCheck: true),
       CheckBoxListTileModel(

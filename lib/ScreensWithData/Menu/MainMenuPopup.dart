@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/InternetConnection/Offline.dart';
 import 'package:art/Model/MenuCardsModel.dart';
-import 'package:art/eApproval/eApprovalNavigation.dart';
+import 'package:art/ScreensWithData/EApprovalScreens/eApprovalNavigation.dart';
 
 class MainMenuPopUp extends StatefulWidget {
   @override
