@@ -191,9 +191,10 @@ class _State extends State<Login> {
                       setState(() {
                         //list of user
                         _users = users;
+                        print('USER PRINT: ${_users}');
                         if (_users == null) {
                           confirmationPopup(context, 'Error',
-                              'Please fill the required field.', 'OK');
+                              'Please fill the required field or Check your Internet Connection', 'OK');
                         }
                         else if (_users.length == 0) {
                           confirmationPopup(

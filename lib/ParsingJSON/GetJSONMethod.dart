@@ -87,24 +87,33 @@ class GetJSON {
   }
 
   Future<List<Item>> getLoginUser(String username, String password) async {
-    // parse URI .....
-    var loginURL =
-        Uri.parse(BaseURL().Auth + 'auth' + '/' + username + '/' + password);
+    try {
+      //network request
+      // parse URI .....
+      var loginURL =
+          Uri.parse(BaseURL().Auth + 'auth' + '/' + username + '/' + password);
 
-    final result = await http.get(loginURL);
-    print(result.statusCode);
+      final result = await http.get(loginURL);
+      print('STATUSCODE : ${result.statusCode}');
 
-    if (result.statusCode == 200) {
-      var parse = json.decode(result.body);
-      var data = parse['items'] as List;
-      var map = data.map<Item>((json) => Item.fromJson(json));
-      return map.toList();
-    } else if (result.statusCode == 400) {
-      print('Data Not Found');
-    } else if (result.statusCode == 404) {
-      final error = 'Textfield is empty';
-    } else {
-      throw Exception('Failed to create album.');
+      if (result.statusCode == 200) {
+        var parse = json.decode(result.body);
+        var data = parse['items'] as List;
+        var map = data.map<Item>((json) => Item.fromJson(json));
+        return map.toList();
+      } else if (result.statusCode == 400) {
+        throw Exception('400.');
+      } else if (result.statusCode == 404) {
+        throw Exception('404.');
+      } else {
+        throw Exception('ERROR.');
+      }
+    } on SocketException catch (_) {
+      //handle socket exception here
+      print('Socket');
+      return throw Exception('ERROR.');
+    } catch (_) {
+      //handle other error
     }
   }
 }
