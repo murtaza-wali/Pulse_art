@@ -1,4 +1,5 @@
 import 'package:art/InternetConnection/Offline.dart';
+import 'package:art/LocalStorage/DatabaseHandler.dart';
 import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/Model/LoginUser.dart';
 import 'package:art/ParsingJSON/GetJSONMethod.dart';
@@ -193,27 +194,36 @@ class _State extends State<Login> {
                         _users = users;
                         print('USER PRINT: ${_users}');
                         if (_users == null) {
-                          confirmationPopup(context, 'Error',
-                              'Please fill the required field or Check your Internet Connection', 'OK');
-                        }
-                        else if (_users.length == 0) {
                           confirmationPopup(
-                              _scaffoldKey.currentContext,
-                              "Error",
-                              'Enter a valid Username and Password',
-                              "Ok");
+                              context,
+                              'Error',
+                              'Please fill the required field or Check your Internet Connection',
+                              'OK');
+                        } else if (_users.length == 0) {
+                          confirmationPopup(context, "Error",
+                              'Enter a valid Username and Password', "Ok");
                         }
                       });
                       item = _users[0];
                       if (item != null) {
                         int userID = item.userId;
                         String name = item.empname;
+                        int loginStatus = 0;
                         MySharedPreferences.instance
                             .setIntValue("UserId", userID);
                         MySharedPreferences.instance
                             .setBoolValue("remember", _myBool);
                         MySharedPreferences.instance
                             .setStringValue("Username", name);
+                        /*if (_myBool == false) {
+                          loginStatus = 0;
+                        } else if (_myBool == true) {
+                          loginStatus = 1;
+                        }
+                        DatabaseHandler().insertUser(user(
+                            user_id: item.userId,
+                            user_name: name,
+                            status: loginStatus));*/
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -244,7 +254,6 @@ class _State extends State<Login> {
     );
   }
 }
-
 
 confirmationPopup(
     BuildContext dialogContext, String title, String msg, String okbtn) {

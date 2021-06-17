@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:art/LocalStorage/DatabaseHandler.dart';
 import 'package:art/ScreensWithData/IntroScreen/intro_slider.dart';
 import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LocalStorage/MySharedPref.dart';
+import 'Model/LoginUser.dart';
 import 'ScreensWithData/LoginScreen/Login.dart';
 import 'ScreensWithData/Menu/MainMenuPopup.dart';
 
@@ -54,6 +56,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool remember;
+  user userLogin;
 
   @override
   void initState() {
@@ -87,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (BuildContext context) => IntroApp()),
                         (Route<dynamic> route) => false);
                   });
-
-                } else if (initScreen == 1) {
+                }
+                else if (initScreen == 1) {
                   new Future.delayed(const Duration(seconds: 3), () {
                     //
                     Navigator.pushAndRemoveUntil(
@@ -97,7 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (BuildContext context) => Login()),
                         (Route<dynamic> route) => false);
                   });
-
                 }
               }
             }));

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final loginUser = loginUserFromJson(jsonString);
-
 import 'dart:convert';
 
 LoginUser loginUserFromJson(String str) => LoginUser.fromJson(json.decode(str));
@@ -18,14 +14,14 @@ class LoginUser {
   First first;
 
   factory LoginUser.fromJson(Map<String, dynamic> json) => LoginUser(
-    items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-    first: First.fromJson(json["first"]),
-  );
+        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+        first: First.fromJson(json["first"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "items": List<dynamic>.from(items.map((x) => x.toJson())),
-    "first": first.toJson(),
-  };
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "first": first.toJson(),
+      };
 }
 
 class First {
@@ -36,12 +32,12 @@ class First {
   String ref;
 
   factory First.fromJson(Map<String, dynamic> json) => First(
-    ref: json["\u0024ref"],
-  );
+        ref: json["\u0024ref"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "\u0024ref": ref,
-  };
+        "\u0024ref": ref,
+      };
 }
 
 class Item {
@@ -58,16 +54,41 @@ class Item {
   String dept;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-    userId: json["user_id"],
-    userName: json["user_name"],
-    empname: json["empname"],
-    dept: json["dept"],
-  );
+        userId: json["user_id"],
+        userName: json["user_name"],
+        empname: json["empname"],
+        dept: json["dept"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "user_id": userId,
-    "user_name": userName,
-    "empname": empname,
-    "dept": dept,
-  };
+        "user_id": userId,
+        "user_name": userName,
+        "empname": empname,
+        "dept": dept,
+      };
 }
+
+class user {
+  user({
+    this.id,
+    this.user_id,
+    this.user_name,
+    this.status,
+  });
+
+  int id;
+  int user_id;
+  String user_name;
+  int status;
+
+  user.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        user_id = res["user_id"],
+        user_name = res["name"],
+        status = res["status"];
+
+  Map<String, Object> toMap() {
+    return {'id': id, 'user_id': user_id, 'name': user_name, 'status': status};
+  }
+}
+

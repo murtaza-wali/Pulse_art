@@ -18,6 +18,8 @@ class EapprovalGPById extends StatefulWidget {
 class _EapprovalGPByIdstate extends State<EapprovalGPById> {
   List<GPbyIDitem> _gplist = [];
   List<GPbyIDitem> list = [];
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -40,12 +42,16 @@ class _EapprovalGPByIdstate extends State<EapprovalGPById> {
             }));
   }
 
-  Future<void> _refresh(BuildContext context) async {
-    return GetJSON().getGpItemsById(getID);
+  Future<void> _refreshEapproval() async {
+    print('GET ID : ${getID}');
+    return await GetJSON().getGpItemsById(getID);
   }
 
+  // return GetJSON().getGpItemsById(getID);
+
   Widget build(BuildContext context) {
-    return Willpopwidget().getWillScope(Scaffold(
+    return Willpopwidget().getWillScope(
+        Scaffold(
         appBar: new CustomAppBar(
           onPressed: () {
             Navigator.push(
@@ -55,8 +61,7 @@ class _EapprovalGPByIdstate extends State<EapprovalGPById> {
             );
           },
           Title: 'E-Approval',
-        )
-        ,
+        ),
         body: ReuseOffline().getoffline(FutureBuilder<List<GPbyIDitem>>(
           future: GetJSON().getGpItemsById(getID),
           builder: (context, snapshot) {
@@ -74,8 +79,7 @@ class _EapprovalGPByIdstate extends State<EapprovalGPById> {
               } else {
                 return _groupedListView(_gplist);
               }
-            }
-            else if (snapshot.hasError) {
+            } else if (snapshot.hasError) {
               return Text(
                 "No Data Found",
                 style: TextStyle(fontSize: 20, color: Colors.black),
@@ -92,7 +96,8 @@ class _EapprovalGPByIdstate extends State<EapprovalGPById> {
 
   RefreshIndicator _groupedListView(_gplist1) {
     return RefreshIndicator(
-      onRefresh: () => _refresh(context),
+      key: _refreshIndicatorKey,
+      onRefresh: () => _refreshEapproval(),
       child: StickyGroupedListView<GPbyIDitem, DateTime>(
         elements: _gplist1,
         order: StickyGroupedListOrder.ASC,

@@ -51,9 +51,10 @@ dependencies:
   rflutter_alert: ^2.0.2
   scrollable_positioned_list: ^0.1.8
   sticky_grouped_list: ^1.3.0
-  grouped_list: ^4.0.0
+  grouped_list: ^3.5.0
   avatar_view: ^1.0.0+4
   sqflite: ^2.0.0+3
+  path: ^1.8.0
 
 
 dev_dependencies:
@@ -90,6 +91,8 @@ flutter:
     - assets/images/jarvis.png
     - assets/images/artlogo.png
     - assets/images/launcher_icon.png
+    - assets/images/ess_logo.png
+    - assets/images/signout_logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

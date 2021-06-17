@@ -4,13 +4,25 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   VoidCallback onPressed;
+  VoidCallback refreshonPressed;
   String Title;
 
-  CustomAppBar({this.onPressed, this.Title});
+  CustomAppBar({this.onPressed, this.Title,this.refreshonPressed});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      actions: [
+        new Stack(
+          alignment: Alignment.centerRight,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: refreshonPressed,
+            )
+          ],
+        )
+      ],
       automaticallyImplyLeading: false,
       leading: BackButton(
         color: ReColors().appTextWhiteColor,

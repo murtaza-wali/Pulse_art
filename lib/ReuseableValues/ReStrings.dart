@@ -8,6 +8,7 @@ class appstring{
   final enddate = 'End Date';
   final startdate = 'Start Date';
   final description = 'Description';
+  final remark = 'Remarks';
   final name = 'Name';
   final forget_psw = 'Forget Password?';
   final remember = 'Remember me';

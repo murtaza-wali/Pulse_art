@@ -1,16 +1,18 @@
+import 'dart:io';
+
+import 'package:art/Error/Error.dart';
 import 'package:art/InternetConnection/Offline.dart';
 import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/Model/transactionByID.dart';
 import 'package:art/ParsingJSON/GetJSONMethod.dart';
+import 'package:art/ParsingJSON/PostJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
+import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/CustomAppbarWidget.dart';
 import 'package:art/ReuseableWidget/WillpopWidget.dart';
-import 'package:art/ReuseableWidget/appbar.dart';
+import 'package:art/ScreensWithData/EApprovalScreens/EapprovalByUserID.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'EapprovalGPByID.dart';
 
 class TransactionByID extends StatefulWidget {
   State<StatefulWidget> createState() => _TransationByIDState();
@@ -19,11 +21,30 @@ class TransactionByID extends StatefulWidget {
 class _TransationByIDState extends State<TransactionByID> {
   List<DepReqItem> transactionList = [];
   int GettransID;
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  int getID;
+  int h_id;
+  TextEditingController _controllers = TextEditingController();
+
+  // List<TextEditingController> _controllers = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    MySharedPreferences.instance
+        .getIntValue("UserId")
+        .then((value) => setState(() {
+              getID = value;
+              print(getID);
+            }));
+    MySharedPreferences.instance
+        .getIntValue("hID")
+        .then((value) => setState(() {
+              h_id = value;
+              print(h_id);
+            }));
     MySharedPreferences.instance
         .getIntValue("transactionID")
         .then((value) => setState(() {
@@ -33,10 +54,19 @@ class _TransationByIDState extends State<TransactionByID> {
                 setState(() {
                   //list of user
                   transactionList = users;
-                  print('GettransID ${transactionList.length}');
+                  // _controllers[transactionList.length] =
+                  //     new TextEditingController();
+                  if (transactionList.length == 0) {
+                    return showError(
+                        'No data found', Icons.assignment_late_outlined);
+                  }
                 });
               });
             }));
+  }
+
+  Future<dynamic> _refreshMenu() async {
+    return await GetJSON().getTransationItemsById(GettransID);
   }
 
   @override
@@ -47,20 +77,62 @@ class _TransationByIDState extends State<TransactionByID> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => EapprovalGPById()),
+                builder: (BuildContext context) => EapprovalByUSERID()),
           );
         },
         Title: 'Transaction',
+        refreshonPressed: () {
+          _refreshMenu().then((list) => setState(() {
+                transactionList = list;
+                print(transactionList.length);
+              }));
+        },
       ),
       body: ReuseOffline().getoffline(FutureBuilder<List<DepReqItem>>(
         future: GetJSON().getTransationItemsById(GettransID),
         builder: (context, snapshot) {
+          print('hasData: ${snapshot.hasError}');
           if (snapshot.hasData) {
             transactionList = snapshot.data;
-            return getData(transactionList);
-            // return getListofTransactionByID(transactionList);
+            print('LIST: ${transactionList.length}');
+            print('Error: ${snapshot.error}');
+            if (transactionList.length == 0) {
+              return showError('No data found', Icons.assignment_late_outlined);
+            } else {
+              return getData(transactionList);
+            }
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            print('checking Error: ${snapshot.error}');
+            if (snapshot.error is HttpException) {
+              HttpException httpException = snapshot.error as HttpException;
+              return showError(httpException.message, Icons.error);
+            }
+            if (snapshot.error is NoInternetException) {
+              NoInternetException noInternetException =
+                  snapshot.error as NoInternetException;
+              return showError(noInternetException.message, Icons.error);
+            }
+            if (snapshot.error is NoServiceFoundException) {
+              NoServiceFoundException noServiceFoundException =
+                  snapshot.error as NoServiceFoundException;
+              return showError(noServiceFoundException.message, Icons.error);
+            }
+            if (snapshot.error is InvalidFormatException) {
+              InvalidFormatException invalidFormatException =
+                  snapshot.error as InvalidFormatException;
+              return showError(invalidFormatException.message, Icons.error);
+            }
+            if (snapshot.error is SocketException) {
+              SocketException socketException =
+                  snapshot.error as SocketException;
+              print('Socket checking: ${socketException.message}');
+              return showError('Please check your internet connection',
+                  Icons.signal_wifi_connected_no_internet_4);
+            } else {
+              UnknownException unknownException =
+                  snapshot.error as UnknownException;
+              return showError(unknownException.message, Icons.error);
+            }
           }
           return Center(
               child: CircularProgressIndicator(
@@ -88,8 +160,8 @@ class _TransationByIDState extends State<TransactionByID> {
                     child: Text("UOM", style: TextStyle(color: Colors.white)))),
             Expanded(
                 child: Center(
-                    child:
-                        Text("Item", style: TextStyle(color: Colors.white)))),
+                    child: Text("Quantity",
+                        style: TextStyle(color: Colors.white)))),
             Expanded(
                 child: Center(
               child: Text("Edit", style: TextStyle(color: Colors.white)),
@@ -99,309 +171,274 @@ class _TransationByIDState extends State<TransactionByID> {
       ),
       Expanded(
         child: Container(
-          child: ListView.builder(
-            itemCount: transList == null ? 0 : transList.length,
-            itemBuilder: (BuildContext context, int index) {
-              DepReqItem depReqItem = transactionList[0];
-              return ListTile(
-                  //return new ListTile(
-                  onTap: null,
-                  title: Column(
-                    children: [
-                      Row(children: <Widget>[
-                        Expanded(
-                            child: Text(
-                          depReqItem.itemDesc,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                        )),
-                        Expanded(
-                            child: Center(
-                          child: Text(
-                            depReqItem.uomCode,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                          ),
-                        )),
-                        Expanded(
-                            child: Text(
-                          depReqItem.itemCode,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                        )),
-                        Expanded(
-                            child: IconButton(
-                          color: Colors.black,
-                          icon: new Icon(Icons.edit),
-                          onPressed: () {
-                            print('helllllllo ${transactionList}');
-                          },
-                        )),
-                      ]),
-                      Divider(
-                        color: Colors.black,
-                      )
-                    ],
-                  ));
-            }, //itemBuilder
+          child: RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: () => _refreshMenu(),
+            child: Column(
+              children: <Widget>[
+                Expanded(child: ListView.builder(
+                  itemCount: transList == null ? 0 : transList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    DepReqItem depReqItem = transactionList[index];
+                    // _controllers.add(new TextEditingController());
+                    // _controllers[index].text = transactionList[index].toString();
+                    return ListTile(
+                      //return new ListTile(
+                        onTap: null,
+                        title: Column(
+                          children: [
+                            Row(children: <Widget>[
+                              Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      depReqItem.itemDesc,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
+                                    ),
+                                  )),
+                              Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      depReqItem.uomCode,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
+                                    ),
+                                  )),
+                              Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      depReqItem.approvedQuantity.toString(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
+                                    ),
+                                  )),
+                              Expanded(
+                                  child: Center(
+                                    child: IconButton(
+                                      color: Colors.black,
+                                      icon: new Icon(Icons.edit),
+                                      onPressed: () {
+                                        print('lineees ID${depReqItem.linesId}');
+                                        _displayQuantityDialog(context,
+                                            qtyController.text, depReqItem.linesId);
+                                      },
+                                    ),
+                                  )),
+                            ]),
+                            Divider(
+                              color: Colors.black,
+                            )
+                          ],
+                        ));
+                  }, //itemBuilder
+                ),),
+                ContainerWidgets()
+              ],
+            ),
           ),
         ),
       ),
     ]);
   }
 
-/*SingleChildScrollView getDataTableofTransaction() {
-    // Both Vertical and Horozontal Scrollview for the DataTable to
-    // scroll both Vertical and Horizontal...
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          headingRowColor: MaterialStateColor.resolveWith(
-              (states) => ReColors().appMainColor),
-          dataRowColor:
-              MaterialStateColor.resolveWith((states) => Colors.white),
-          columns: [
-            DataColumn(
-                label: Text(
-              'Description',
-              style: TextStyle(color: Colors.white),
-            )),
-            DataColumn(
-                label: Text(
-              'UOM',
-              style: TextStyle(color: Colors.white),
-            )),
-            */
-/*  DataColumn(
-                label: Text(
-              'Qty',
-              style: TextStyle(color: Colors.white),
-            )),
-            DataColumn(
-                label: Text(
-              'Edit',
-              style: TextStyle(color: Colors.white),
-            ))*/ /*
-          ],
-          rows: transactionList
-              .map(
-                (employee) => DataRow(cells: [
-                  DataCell(
-                    Expanded(
-                      child: Text(
-                        employee.itemDesc,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                      ),
-                    ),
-                    // Add tap in the row and populate the
-                    // textfields with the corresponding values to update
-                    */ /*onTap: () {
-                  _showValues(employee);
-                  // Set the Selected employee to Update
-                  _selectedEmployee = employee;
-                  setState(() {
-                    _isUpdating = true;
-                  });
-                },*/ /*
-                  ),
-                  DataCell(
-                    Text(
-                      employee.uomCode,
-                    ),
-                    // onTap: () {
-                    //   _showValues(employee);
-                    //   // Set the Selected employee to Update
-                    //   _selectedEmployee = employee;
-                    //   // Set flag updating to true to indicate in Update Mode
-                    //   setState(() {
-                    //     _isUpdating = true;
-                    //   });
-                    // },
-                  ),
-                  */ /* DataCell(
-                Text(
-                  employee.requiredQuantity.toString(),
+  Widget ContainerWidgets() {
+    return Padding(padding: EdgeInsets.all(10),child: Column(
+      children: <Widget>[
+        Container(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: appstring().remark,
+                labelStyle: TextStyle(color: ReColors().appMainColor),
+                fillColor: ReColors().appMainColor,
+                enabledBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  borderSide: BorderSide(color: ReColors().appMainColor),
                 ),
-                */ /* */ /*onTap: () {
-                  _showValues(employee);
-                  // Set the Selected employee to Update
-                  _selectedEmployee = employee;
-                  setState(() {
-                    _isUpdating = true;
-                  });
-                },*/ /* */ /*
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                  BorderSide(color: ReColors().appMainColor, width: 2.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: ReColors().appMainColor)),
               ),
-              DataCell(IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  print('helllllllo ${transactionList}');
-                },
-              )*/ /*
-                ]),
-              )
-              .toList(),
-        ),
-      ),
-    );
-  }*/
-
-/*Widget getDataTableofTransaction(transactionList){
-    return DataTable(
-      headingRowColor: MaterialStateColor.resolveWith(
-              (states) => ReColors().appMainColor),
-      dataRowColor: MaterialStateColor.resolveWith(
-              (states) => Colors.white),
-      columns: [
-        DataColumn(
-            label: Text(
-              'Item Description',
-              style: TextStyle(color: Colors.white),
-            )),
-        DataColumn(
-            label: Text(
-              'UOM',
-              style: TextStyle(color: Colors.white),
-            )),
-        DataColumn(
-            label: Text(
-              'Qty',
-              style: TextStyle(color: Colors.white),
-            )),
-      ],
-      rows: [
-        DataRow(cells: [
-          DataCell(Text('Fabric')),
-          DataCell(Text('MTR')),
-          DataCell(Text('60')),
-        ])
-      ],
-    );
-
-  }*/
-
-/*Widget getListofTransactionByID(transactionList) {
-    return Center(
-      child: Container(
-        child: ListView.builder(
-            itemCount: null == transactionList ? 0 : transactionList.length,
-            itemBuilder: (BuildContext context, int index) {
-              DepReqItem depReqItem = transactionList[0];
-              print('Result ${depReqItem}');
-              return Card(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          // border: Border.all(color: Color(0xff940D5A)),
-
-                          color: Colors.white,
-                          // borderRadius: BorderRadius.circular(17.0),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(1.0, 15.0),
-                              blurRadius: 20.0,
-                            ),
-                          ]),
-                      height: 70,
-                      // color: Colors.white,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text('${depReqItem.itemCode}'),
-                                  Text('${depReqItem.itemDesc}',
-                                      style: TextStyle(color: Colors.grey))
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Container(
-                              child: Center(
-                                  child: IconButton(
-                            color: Colors.black,
-                            icon: new Icon(Icons.edit),
-                            onPressed: () {
-                              print('helllllllo ${transactionList}');
-                              */ /*_displayPersonalDataDialog(context,
-                                    'marital_status', 'CNICExpiry');*/ /*
-                            },
-                          )))
-                          // Icon(Icons.arrow_forward_ios, color: Colors.blue),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
-      ),
-    );
-  }*/
-}
-/*
-*
-*
-*
-*
-* Padding(
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
-            decoration: BoxDecoration(
-              // border: Border.all(color: Color(0xff940D5A)),
-
-                color: Colors.white,
-                // borderRadius: BorderRadius.circular(17.0),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(1.0, 15.0),
-                    blurRadius: 20.0,
-                  ),
-                ]),
-            height: 70,
-            // color: Colors.white,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  decoration: Gradientbg().getbg(),
-
-                  width: 70,
-                  height: 70,
-                  child: Icon(Icons.edit, color: Colors.white),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('Test Title'),
-                      Text('Test Video', style: TextStyle(color: Colors.grey))
-                    ],
-                  ),
-                ),
-                // Icon(Icons.arrow_forward_ios, color: Colors.blue),
-              ],
+              maxLines: 1,
+              // controller: _controllers[index],
+              controller: _controllers,
             ),
           ),
         ),
-      )*/
+        Container(
+            child: Row(children: <Widget>[
+              Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: RaisedButton(
+                        onPressed: () {
+                          print('Accept ${getID},${h_id},${GettransID}');
+                          postJSON().postRemark(
+                              getID, h_id, 'A', GettransID, _controllers.text);
+                          // _controllers[index].text
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => EapprovalByUSERID()),
+                          );
+                        },
+                        color: Color(0xFF29A02F),
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                "Accept",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        )),
+                  )),
+              Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: RaisedButton(
+                        onPressed: () {
+                          print('Reject ${getID},${h_id},${GettransID}');
+                          postJSON().postRemark(
+                              getID, h_id, 'R', GettransID, _controllers.text);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => EapprovalByUSERID()),
+                          );
+                        },
+                        color: Color(0xfff60000),
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.cancel,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                "Reject",
+                                style: TextStyle(color: Colors.white),
+                              )
+                            ],
+                          ),
+                        )),
+                  )),
+            ])),
+      ],
+    ),);
+  }
+
+  Widget showError(String message, key) {
+    return Center(
+      child: Container(
+        alignment: FractionalOffset(0.5, 0.5),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        key,
+                        size: 60,
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    message,
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TextEditingController qtyController = TextEditingController();
+
+  Future<void> _displayQuantityDialog(
+      BuildContext context, quantity, lineID) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Quantity',
+              textAlign: TextAlign.center,
+            ),
+            content: SingleChildScrollView(
+              child: Container(
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.all(2),
+                          child: TextField(
+                            controller: qtyController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Quantity',
+                            ),
+                            onChanged: (Quantitytext) {
+                              setState(() {
+                                quantity = Quantitytext;
+                                //you can access nameController in its scope to get
+                                // the value of text entered as shown below
+                                //UserName = nameController.text;
+                              });
+                            },
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Container(
+                child: Center(
+                  child: FlatButton(
+                    color: ReColors().appMainColor,
+                    textColor: Colors.white,
+                    child: Text('Update'),
+                    onPressed: () {
+                      setState(() {
+                        //hit hogi api
+                        print('lines id: ${lineID}');
+                        print('user id :${getID}');
+                        postJSON().postqty(getID, qtyController.text, lineID);
+                        _refreshMenu().then((list) => setState(() {
+                              transactionList = list;
+                              print(transactionList.length);
+                            }));
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+}
