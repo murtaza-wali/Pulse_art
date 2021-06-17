@@ -285,111 +285,108 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         key: _refreshIndicatorKey,
         onRefresh: () => _refreshMenu(),
         child: Container(
-            decoration: Gradientbg().getMenubg(),
             child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Welcome $username',
-                    style: TextStyle(
-                      color: ReColors().appMainColor,
-                      fontSize: 20, // light
-                      fontWeight: FontWeight.bold, // italic
-                    ),
-                  ),
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'Welcome $username',
+                style: TextStyle(
+                  color: ReColors().appMainColor,
+                  fontSize: 20, // light
+                  fontWeight: FontWeight.bold, // italic
                 ),
-                Expanded(
-                  child: GridView.count(
-                    // Create a grid with 2 columns. If you change the scrollDirection to
-                    // horizontal, this would produce 2 rows.
-                    crossAxisCount: 2,
-                    // Generate 100 Widgets that display their index in the List
-                    children: List.generate(
-                        null == menuList ? 0 : menuList.length, (index) {
-                      return Container(
-                        child: InkWell(
-                          onTap: () {
-                            print(menuList[index].applicationId);
-                            // ignore: unrelated_type_equality_checks
-                            Colors.white;
-                            if (menuList[index].applicationId == 403) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          EapprovalByUSERID()),
-                                  (Route<dynamic> route) => false);
-                            } else if (menuList[index].applicationName ==
-                                'GatePass') {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Gatepass()),
-                              );
-                            }
-                          },
-                          child: Card(
-                            // semanticContainer: true,
-                            // yeh shadow dekhata hai
-                            // clipBehavior: Clip.antiAlias,
+              ),
+            ),
+            Expanded(
+              child: GridView.count(
+                // Create a grid with 2 columns. If you change the scrollDirection to
+                // horizontal, this would produce 2 rows.
+                crossAxisCount: 2,
+                // Generate 100 Widgets that display their index in the List
+                children: List.generate(null == menuList ? 0 : menuList.length,
+                    (index) {
+                  return Container(
+                    child: InkWell(
+                      onTap: () {
+                        print(menuList[index].applicationId);
+                        // ignore: unrelated_type_equality_checks
+                        Colors.white;
+                        if (menuList[index].applicationId == 104) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EapprovalByUSERID()),
+                              (Route<dynamic> route) => false);
+                        } else if (menuList[index].applicationName ==
+                            'GatePass') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Gatepass()),
+                          );
+                        }
+                      },
+                      child: Card(
+                        // semanticContainer: true,
+                        // yeh shadow dekhata hai
+                        // clipBehavior: Clip.antiAlias,
 
-                            child: Container(
-                              decoration: BoxDecoration(
-                                // border: Border.all(color: Color(0xff940D5A)),
-                                gradient: LinearGradient(
-                                  begin: Alignment(-0.6, -1),
-                                  end: Alignment(-1, -0),
-                                  colors: [Colors.black, color2],
-                                ),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(17.0),
-                                /*boxShadow: <BoxShadow>[
+                        child: Container(
+                          decoration: BoxDecoration(
+                            // border: Border.all(color: Color(0xff940D5A)),
+                            gradient: LinearGradient(
+                              begin: Alignment(-0.6, -1),
+                              end: Alignment(-1, -0),
+                              colors: [Colors.black, color2],
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(17.0),
+                            /*boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: Colors.grey,
                           offset: Offset(1.0, 15.0),
                           blurRadius: 20.0,
                         ),
                       ]*/
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    child: Center(
-                                      child: Image(
-                                        width: 100,
-                                        height: 100,
-                                        image:
-                                            NetworkImage(menuList[index].logo),
-                                      ),
-                                    ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                child: Center(
+                                  child: Image(
+                                    width: 100,
+                                    height: 100,
+                                    image: NetworkImage(menuList[index].logo),
                                   ),
-                                  Text(
-                                    menuList[index].applicationName,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14.0,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w600),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(17.0),
-                            ),
-                            elevation: 5,
-                            margin: EdgeInsets.all(10),
+                              Text(
+                                menuList[index].applicationName,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.0,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    }),
-                  ),
-                ),
-              ],
-            )));
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17.0),
+                        ),
+                        elevation: 5,
+                        margin: EdgeInsets.all(10),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        )));
   }
 
   void maxColumn() {
@@ -427,12 +424,12 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          key,
-                          size: 60,
-                        )),
+                    Center(
+                      child: Icon(
+                        key,
+                        size: 70,
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),

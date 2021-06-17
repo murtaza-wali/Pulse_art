@@ -7,6 +7,7 @@ class ReColors{
     final secondary = Colors.black;
     final background = Colors.white;
     final appMainColor = Color(0xff055e8e);
+    final lightappMainColor1 = Color(0xff1571a0);
 
     final appMainDarkColor = Color(0xff084c71);
     final appButtonColor = Color(0xff055e8e);

@@ -26,4 +26,17 @@ class Gradientbg {
           ReColors().menubglightgreyColor,
         ]));
   }
+
+  getallbg() {
+    return BoxDecoration(
+        gradient: new LinearGradient(
+      begin: FractionalOffset.topCenter,
+      end: FractionalOffset.bottomCenter,
+      colors: [
+        const Color.fromARGB(255, 5, 94, 142),
+        const Color.fromARGB(255, 23, 23, 23),
+      ],
+      stops: [0.0, 1.0],
+    ));
+  }
 }

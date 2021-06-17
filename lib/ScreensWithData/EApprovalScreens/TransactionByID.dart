@@ -9,6 +9,7 @@ import 'package:art/ParsingJSON/PostJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/CustomAppbarWidget.dart';
+import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:art/ReuseableWidget/WillpopWidget.dart';
 import 'package:art/ScreensWithData/EApprovalScreens/EapprovalByUserID.dart';
 import 'package:flutter/cupertino.dart';
@@ -144,247 +145,249 @@ class _TransationByIDState extends State<TransactionByID> {
   }
 
   Widget getData(transList) {
-    return Column(children: [
-      Container(
-        color: ReColors().appMainColor,
-        child: ListTile(
-          title: Row(children: <Widget>[
-            Expanded(
-                child: Center(
-                    child: Text(
-              "Description",
-              style: TextStyle(color: Colors.white),
-            ))),
-            Expanded(
-                child: Center(
-                    child: Text("UOM", style: TextStyle(color: Colors.white)))),
-            Expanded(
-                child: Center(
-                    child: Text("Quantity",
-                        style: TextStyle(color: Colors.white)))),
-            Expanded(
-                child: Center(
-              child: Text("Edit", style: TextStyle(color: Colors.white)),
-            )),
-          ]),
-        ),
-      ),
-      Expanded(
-        child: Container(
-          child: RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: () => _refreshMenu(),
-            child: Column(
-              children: <Widget>[
-                Expanded(child: ListView.builder(
-                  itemCount: transList == null ? 0 : transList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    DepReqItem depReqItem = transactionList[index];
-                    // _controllers.add(new TextEditingController());
-                    // _controllers[index].text = transactionList[index].toString();
-                    return ListTile(
-                      //return new ListTile(
-                        onTap: null,
-                        title: Column(
-                          children: [
-                            Row(children: <Widget>[
-                              Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      depReqItem.itemDesc,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                    ),
-                                  )),
-                              Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      depReqItem.uomCode,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                    ),
-                                  )),
-                              Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      depReqItem.approvedQuantity.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                    ),
-                                  )),
-                              Expanded(
-                                  child: Center(
-                                    child: IconButton(
-                                      color: Colors.black,
-                                      icon: new Icon(Icons.edit),
-                                      onPressed: () {
-                                        print('lineees ID${depReqItem.linesId}');
-                                        _displayQuantityDialog(context,
-                                            qtyController.text, depReqItem.linesId);
-                                      },
-                                    ),
-                                  )),
-                            ]),
-                            Divider(
-                              color: Colors.black,
-                            )
-                          ],
-                        ));
-                  }, //itemBuilder
-                ),),
-                ContainerWidgets()
-              ],
-            ),
+    return Container(
+      child: IntrinsicHeight(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
           ),
-        ),
-      ),
-    ]);
-  }
-
-  Widget ContainerWidgets() {
-    return Padding(padding: EdgeInsets.all(10),child: Column(
-      children: <Widget>[
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: appstring().remark,
-                labelStyle: TextStyle(color: ReColors().appMainColor),
-                fillColor: ReColors().appMainColor,
-                enabledBorder: new OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(5.0),
-                  borderSide: BorderSide(color: ReColors().appMainColor),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(children: [
+              Container(
+                color: ReColors().appMainColor,
+                child: ListTile(
+                  title: Row(children: <Widget>[
+                    Expanded(
+                        child: Center(
+                            child: Text(
+                      "Description",
+                      style: TextStyle(color: Colors.white),
+                    ))),
+                    Expanded(
+                        child: Center(
+                            child: Text("UOM",
+                                style: TextStyle(color: Colors.white)))),
+                    Expanded(
+                        child: Center(
+                            child: Text("Quantity",
+                                style: TextStyle(color: Colors.white)))),
+                    Expanded(
+                        child: Center(
+                      child:
+                          Text("Edit", style: TextStyle(color: Colors.white)),
+                    )),
+                  ]),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: ReColors().appMainColor, width: 2.0),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: ReColors().appMainColor)),
               ),
-              maxLines: 1,
-              // controller: _controllers[index],
-              controller: _controllers,
-            ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: transList == null ? 0 : transList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  DepReqItem depReqItem = transactionList[index];
+                  // _controllers.add(new TextEditingController());
+                  // _controllers[index].text = transactionList[index].toString();
+                  return ListTile(
+                      //return new ListTile(
+                      onTap: null,
+                      title: Column(
+                        children: [
+                          Row(children: <Widget>[
+                            Expanded(
+                                child: Center(
+                              child: Text(
+                                depReqItem.itemDesc,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                            )),
+                            Expanded(
+                                child: Center(
+                              child: Text(
+                                depReqItem.uomCode,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                            )),
+                            Expanded(
+                                child: Center(
+                              child: Text(
+                                depReqItem.approvedQuantity.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                            )),
+                            Expanded(
+                                child: Center(
+                              child: IconButton(
+                                color: Colors.black,
+                                icon: new Icon(Icons.edit),
+                                onPressed: () {
+                                  print('lineees ID${depReqItem.linesId}');
+                                  _displayQuantityDialog(
+                                      context,
+                                      depReqItem.approvedQuantity,
+                                      depReqItem.linesId,
+                                      depReqItem.itemDesc);
+                                },
+                              ),
+                            )),
+                          ]),
+                          Divider(
+                            color: Colors.black,
+                          )
+                        ],
+                      ));
+                }, //itemBuilder
+              ),
+              Column(
+                children: <Widget>[
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: appstring().remark,
+                          labelStyle: TextStyle(color: ReColors().appMainColor),
+                          fillColor: ReColors().appMainColor,
+                          enabledBorder: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                            borderSide:
+                                BorderSide(color: ReColors().appMainColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: ReColors().appMainColor, width: 2.0),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: ReColors().appMainColor)),
+                        ),
+                        maxLines: 1,
+                        // controller: _controllers[index],
+                        controller: _controllers,
+                      ),
+                    ),
+                  ),
+                  Container(
+                      child: Row(children: <Widget>[
+                    Expanded(
+                        child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: RaisedButton(
+                          onPressed: () {
+                            print('Accept ${getID},${h_id},${GettransID}');
+                            postJSON().postRemark(getID, h_id, 'A', GettransID,
+                                _controllers.text);
+                            // _controllers[index].text
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EapprovalByUSERID()),
+                            );
+                          },
+                          color: ReColors().appMainColor,
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "Accept",
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              ],
+                            ),
+                          )),
+                    )),
+                    Expanded(
+                        child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: RaisedButton(
+                          onPressed: () {
+                            print('Reject ${getID},${h_id},${GettransID}');
+                            postJSON().postRemark(getID, h_id, 'R', GettransID,
+                                _controllers.text);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      EapprovalByUSERID()),
+                            );
+                          },
+                          color: ReColors().appMainColor,
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.cancel,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "Reject",
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              ],
+                            ),
+                          )),
+                    )),
+                  ])),
+                ],
+              ),
+            ]),
           ),
         ),
-        Container(
-            child: Row(children: <Widget>[
-              Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: RaisedButton(
-                        onPressed: () {
-                          print('Accept ${getID},${h_id},${GettransID}');
-                          postJSON().postRemark(
-                              getID, h_id, 'A', GettransID, _controllers.text);
-                          // _controllers[index].text
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => EapprovalByUSERID()),
-                          );
-                        },
-                        color: Color(0xFF29A02F),
-                        child: Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.check_circle,
-                                color: Colors.white,
-                              ),
-                              Text(
-                                "Accept",
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ),
-                        )),
-                  )),
-              Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: RaisedButton(
-                        onPressed: () {
-                          print('Reject ${getID},${h_id},${GettransID}');
-                          postJSON().postRemark(
-                              getID, h_id, 'R', GettransID, _controllers.text);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => EapprovalByUSERID()),
-                          );
-                        },
-                        color: Color(0xfff60000),
-                        child: Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.cancel,
-                                color: Colors.white,
-                              ),
-                              Text(
-                                "Reject",
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
-                          ),
-                        )),
-                  )),
-            ])),
-      ],
-    ),);
+      ),
+    );
   }
 
   Widget showError(String message, key) {
-    return Center(
-      child: Container(
-        alignment: FractionalOffset(0.5, 0.5),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        key,
-                        size: 60,
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    message,
-                    style: TextStyle(fontSize: 20),
-                  )
-                ],
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Icon(
+                  key,
+                  size: 70,
+                ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                message,
+                style: TextStyle(fontSize: 20),
+              )
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
   TextEditingController qtyController = TextEditingController();
 
   Future<void> _displayQuantityDialog(
-      BuildContext context, quantity, lineID) async {
+      BuildContext context, int quantity, lineID, String description) async {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'Quantity',
+              description,
               textAlign: TextAlign.center,
             ),
             content: SingleChildScrollView(
@@ -395,14 +398,16 @@ class _TransationByIDState extends State<TransactionByID> {
                       Container(
                           margin: EdgeInsets.all(2),
                           child: TextField(
-                            controller: qtyController,
+                            keyboardType: TextInputType.number,
+                            controller: qtyController
+                              ..text = quantity.toString(),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Quantity',
                             ),
                             onChanged: (Quantitytext) {
                               setState(() {
-                                quantity = Quantitytext;
+                                quantity = int.parse(Quantitytext);
                                 //you can access nameController in its scope to get
                                 // the value of text entered as shown below
                                 //UserName = nameController.text;
