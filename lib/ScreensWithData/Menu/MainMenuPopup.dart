@@ -231,7 +231,13 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             menuListData = snapshot.data;
-            return gridMenuData(menuListData);
+            if(menuListData.length==0){
+              showError('No Data Found',Icons.error);
+            }
+            else{
+              return gridMenuData(menuListData);
+            }
+
           } else if (snapshot.hasError) {
             print('checking Error: ${snapshot.error}');
             if (snapshot.error is HttpException) {
@@ -285,6 +291,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         key: _refreshIndicatorKey,
         onRefresh: () => _refreshMenu(),
         child: Container(
+            decoration: Gradientbg().getMenubg(),
             child: Column(
           children: <Widget>[
             Padding(

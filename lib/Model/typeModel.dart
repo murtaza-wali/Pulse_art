@@ -10,23 +10,22 @@ String typeToJson(Type data) => json.encode(data.toJson());
 
 class Type {
   Type({
-    this.typeitems,
+    this.typeitem,
     this.first,
   });
 
-  List<Typeitem> typeitems;
+  List<Typeitem> typeitem;
   First first;
 
   factory Type.fromJson(Map<String, dynamic> json) => Type(
-        typeitems: List<Typeitem>.from(
-            json["typeitems"].map((x) => Typeitem.fromJson(x))),
-        first: First.fromJson(json["first"]),
-      );
+    typeitem: List<Typeitem>.from(json["Typeitem"].map((x) => Typeitem.fromJson(x))),
+    first: First.fromJson(json["first"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "typeitems": List<dynamic>.from(typeitems.map((x) => x.toJson())),
-        "first": first.toJson(),
-      };
+    "Typeitem": List<dynamic>.from(typeitem.map((x) => x.toJson())),
+    "first": first.toJson(),
+  };
 }
 
 class First {
@@ -37,26 +36,30 @@ class First {
   String ref;
 
   factory First.fromJson(Map<String, dynamic> json) => First(
-        ref: json["\u0024ref"],
-      );
+    ref: json["\u0024ref"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "\u0024ref": ref,
-      };
+    "\u0024ref": ref,
+  };
 }
 
 class Typeitem {
   Typeitem({
     this.type,
+    this.typecount,
   });
 
   String type;
+  int typecount;
 
   factory Typeitem.fromJson(Map<String, dynamic> json) => Typeitem(
-        type: json["type"],
-      );
+    type: json["type"],
+    typecount: json["typecount"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "type": type,
-      };
+    "type": type,
+    "typecount": typecount,
+  };
 }

@@ -100,7 +100,9 @@ class _TransationByIDState extends State<TransactionByID> {
             if (transactionList.length == 0) {
               return showError('No data found', Icons.assignment_late_outlined);
             } else {
-              return getData(transactionList);
+              return CompleteWidget(transactionList);
+              // return getListofTransactionByID(transactionList);
+              // return getData(transactionList);
             }
           } else if (snapshot.hasError) {
             print('checking Error: ${snapshot.error}');
@@ -163,20 +165,39 @@ class _TransationByIDState extends State<TransactionByID> {
                         child: Center(
                             child: Text(
                       "Description",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
                       style: TextStyle(color: Colors.white),
                     ))),
                     Expanded(
                         child: Center(
                             child: Text("UOM",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
                                 style: TextStyle(color: Colors.white)))),
                     Expanded(
                         child: Center(
-                            child: Text("Quantity",
+                            child: Text("Required Quantity",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
                                 style: TextStyle(color: Colors.white)))),
                     Expanded(
                         child: Center(
-                      child:
-                          Text("Edit", style: TextStyle(color: Colors.white)),
+                            child: Text("Approve Quantity",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                style: TextStyle(color: Colors.white)))),
+                    Expanded(
+                        child: Center(
+                      child: Text("Edit",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(color: Colors.white)),
                     )),
                   ]),
                 ),
@@ -215,6 +236,15 @@ class _TransationByIDState extends State<TransactionByID> {
                             Expanded(
                                 child: Center(
                               child: Text(
+                                depReqItem.requiredQuantity.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                              ),
+                            )),
+                            Expanded(
+                                child: Center(
+                              child: Text(
                                 depReqItem.approvedQuantity.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -224,7 +254,7 @@ class _TransationByIDState extends State<TransactionByID> {
                             Expanded(
                                 child: Center(
                               child: IconButton(
-                                color: Colors.black,
+                                color: Colors.white,
                                 icon: new Icon(Icons.edit),
                                 onPressed: () {
                                   print('lineees ID${depReqItem.linesId}');
@@ -238,7 +268,7 @@ class _TransationByIDState extends State<TransactionByID> {
                             )),
                           ]),
                           Divider(
-                            color: Colors.black,
+                            color: Colors.white,
                           )
                         ],
                       ));
@@ -445,5 +475,540 @@ class _TransationByIDState extends State<TransactionByID> {
             ],
           );
         });
+  }
+
+  Widget getListofTransactionByID(transactionList) {
+    return Column(
+      children: <Widget>[
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: null == transactionList ? 0 : transactionList.length,
+            itemBuilder: (BuildContext context, int index) {
+              DepReqItem depReqItem = transactionList[index];
+              print('Result ${depReqItem}');
+              return Card(
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          // border: Border.all(color: Color(0xff940D5A)),
+
+                          color: Colors.white,
+                          // borderRadius: BorderRadius.circular(17.0),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1.0, 15.0),
+                              blurRadius: 20.0,
+                            ),
+                          ]),
+                      height: 70,
+                      // color: Colors.white,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: Text(
+                                    '${depReqItem.itemDesc}',
+                                    style: TextStyle(fontSize: 18),
+                                  )),
+                                  Text('UOM : ${depReqItem.uomCode}'),
+                                  Text(
+                                      'Required Quantity  : ${depReqItem.requiredQuantity}'),
+                                  Text(
+                                      'Approved Quantity: ${depReqItem.approvedQuantity}')
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Container(
+                              child: Center(
+                                  child: IconButton(
+                            color: Colors.white,
+                            icon: new Icon(Icons.edit),
+                            onPressed: () {
+                              print('lineees ID${depReqItem.linesId}');
+                              _displayQuantityDialog(
+                                  context,
+                                  depReqItem.approvedQuantity,
+                                  depReqItem.linesId,
+                                  depReqItem.itemDesc);
+                            },
+                          )))
+                          // Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }),
+        Column(
+          children: <Widget>[
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: appstring().remark,
+                    labelStyle: TextStyle(color: ReColors().appMainColor),
+                    fillColor: ReColors().appMainColor,
+                    enabledBorder: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(5.0),
+                      borderSide: BorderSide(color: ReColors().appMainColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: ReColors().appMainColor, width: 2.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: ReColors().appMainColor)),
+                  ),
+                  maxLines: 1,
+                  // controller: _controllers[index],
+                  controller: _controllers,
+                ),
+              ),
+            ),
+            Container(
+                child: Row(children: <Widget>[
+              Expanded(
+                  child: Padding(
+                padding: EdgeInsets.all(10),
+                child: RaisedButton(
+                    onPressed: () {
+                      print('Accept ${getID},${h_id},${GettransID}');
+                      postJSON().postRemark(
+                          getID, h_id, 'A', GettransID, _controllers.text);
+                      // _controllers[index].text
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                EapprovalByUSERID()),
+                      );
+                    },
+                    color: ReColors().appMainColor,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Accept",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    )),
+              )),
+              Expanded(
+                  child: Padding(
+                padding: EdgeInsets.all(10),
+                child: RaisedButton(
+                    onPressed: () {
+                      print('Reject ${getID},${h_id},${GettransID}');
+                      postJSON().postRemark(
+                          getID, h_id, 'R', GettransID, _controllers.text);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                EapprovalByUSERID()),
+                      );
+                    },
+                    color: ReColors().appMainColor,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.cancel,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Reject",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    )),
+              )),
+            ])),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget CompleteWidget(transactionList) {
+    return SingleChildScrollView(
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          AllListview(transactionList),
+          widgetContainer(),
+        ],
+      ),
+    );
+  }
+
+  Widget widgetContainer() {
+    return Column(
+      children: <Widget>[
+        Container(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: appstring().remark,
+                labelStyle: TextStyle(color: ReColors().appMainColor),
+                fillColor: ReColors().appMainColor,
+                enabledBorder: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(5.0),
+                  borderSide: BorderSide(color: ReColors().appMainColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: ReColors().appMainColor, width: 2.0),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: ReColors().appMainColor)),
+              ),
+              maxLines: 1,
+              // controller: _controllers[index],
+              controller: _controllers,
+            ),
+          ),
+        ),
+        Container(
+            child: Row(children: <Widget>[
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: RaisedButton(
+                onPressed: () {
+                  print('Accept ${getID},${h_id},${GettransID}');
+                  postJSON().postRemark(
+                      getID, h_id, 'A', GettransID, _controllers.text);
+                  // _controllers[index].text
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => EapprovalByUSERID()),
+                  );
+                },
+                color: ReColors().appMainColor,
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        "Accept",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                )),
+          )),
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: RaisedButton(
+                onPressed: () {
+                  print('Reject ${getID},${h_id},${GettransID}');
+                  postJSON().postRemark(
+                      getID, h_id, 'R', GettransID, _controllers.text);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => EapprovalByUSERID()),
+                  );
+                },
+                color: ReColors().appMainColor,
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.cancel,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        "Reject",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                )),
+          )),
+        ])),
+      ],
+    );
+  }
+
+  Widget AllListview(transactionList) {
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: null == transactionList ? 0 : transactionList.length,
+        itemBuilder: (BuildContext context, int index) {
+          DepReqItem depReqItem = transactionList[index];
+          print('Result ${depReqItem}');
+          return Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      // border: Border.all(color: Color(0xff940D5A)),
+                      /*gradient: LinearGradient(
+                          begin: Alignment(-0.6, -1),
+                          end: Alignment(-1, -0),
+                          colors: [ReColors().darkgreyColor,
+                            ReColors().darkgreyColor,],
+                        ),*/
+                      gradient: LinearGradient(
+                        begin: Alignment(-0.9, -1),
+                        end: Alignment(-0.1, -0),
+                        colors: [
+                          ReColors().appMainColor,
+                          ReColors().lightappMainColor1
+                        ],
+                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(1.0, 15.0),
+                          blurRadius: 20.0,
+                        ),
+                      ]),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: [
+                          Flexible(
+                              child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            child: Text(
+                              depReqItem.itemDesc,
+                              softWrap: true,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                              child: IconButton(
+                                color: Colors.white,
+                                icon: new Icon(Icons.edit),
+                                onPressed: () {
+                                  print('lineees ID${depReqItem.linesId}');
+                                  _displayQuantityDialog(
+                                      context,
+                                      depReqItem.approvedQuantity,
+                                      depReqItem.linesId,
+                                      depReqItem.itemDesc);
+                                },
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            child: Text(
+                              'UOM',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              child: Text(
+                                depReqItem.uomCode.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            child: Text(
+                              'Required Quantity',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              child: Text(
+                                depReqItem.requiredQuantity.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            child: Text(
+                              'Approved Quantity',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              child: Text(
+                                depReqItem.approvedQuantity.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            child: Text(
+                              'Note to Buyer',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              child: Text(
+                                depReqItem.noteToBuyer.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 8),
+                            child: Text(
+                              'Need by Date',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              child: Text(
+                                '${getmonthName(depReqItem.needByDate.month)} ${depReqItem.needByDate.day}, ${depReqItem.needByDate.year}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  String getmonthName(var mon) {
+    List months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'April',
+      'May',
+      'Jun',
+      'July',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    var someDateTime = new DateTime.now();
+    mon = someDateTime.month;
+    print(months[mon - 1]);
+    return months[mon - 1];
   }
 }

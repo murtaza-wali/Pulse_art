@@ -22,13 +22,14 @@ class EapprovalByUSERID extends StatefulWidget {
 }
 
 class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
-  String selectedSpinnerItem = 'Internal Requisition';
+  String selectedSpinnerItem = 'Internal Department Requisition';
   List<Typeitem> listTypeItem = [];
   int getID;
   List<DataByTypeitem> dataList = [];
   GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   bool visible = false;
+  bool listvisible = false;
 
   @override
   void initState() {
@@ -59,6 +60,43 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
     print('GET ID : ${getID}');
     print('selectedSpinnerItem : ${selectedSpinnerItem}');
     return await GetJSON().gettypeItem(getID);
+  }
+
+/* avatar: CircleAvatar(
+        backgroundColor: Colors.grey.shade600,
+        child: Text(count.toString()),
+      )*/
+  /*Text(
+        label,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      )*/
+  Widget chip(String label, int count, Color color) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: ReColors().appMainColor,
+            ),
+          ),
+        ),
+        CircleAvatar(
+          radius: 13,
+          backgroundColor: Colors.red,
+          child: Center(
+            child: Text(count.toString(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                )),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -92,7 +130,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                   child: CustomDropdown(
                     dropdownMenuItemList: listTypeItem.map((item) {
                           return DropdownMenuItem(
-                            child: Text(item.type),
+                            child: chip(item.type, item.typecount, Colors.grey),
                             value: item.type,
                           );
                         }).toList() ??
@@ -100,10 +138,13 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                     onChanged: (newVal) {
                       setState(() {
                         selectedSpinnerItem = newVal;
+
                         GetJSON()
                             .getDatabytypeItem(getID, selectedSpinnerItem)
                             .then((value) {
                           dataList = value;
+
+
                         });
                       });
                     },
@@ -116,19 +157,23 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
               FutureBuilder<List<DataByTypeitem>>(
                 future: GetJSON().getDatabytypeItem(getID, selectedSpinnerItem),
                 builder: (context, snapshot) {
+                  print('SNAPSHOT: ${snapshot.data}');
                   if (snapshot.hasData) {
                     dataList = snapshot.data;
                     print('list len: ${dataList.length}');
-                    if (dataList.length == 0) {
-                      return showError(
-                          'No data found', Icons.assignment_late_outlined);
-                    } else {
-                      return getListofTransactionByID(dataList);
+                    if (visible == true) {
+                      listvisible = true;
+                      if (dataList.length == 0) {
+                        return showError(
+                            'No data found', Icons.assignment_late_outlined);
+                      } else {
+                        return getListofTransactionByID(dataList);
+                      }
                     }
 
                     // return getListofTransactionByID(transactionList);
-                  } else if (snapshot.hasError) {
-                    print('checking Error: ${snapshot.error}');
+                  }
+                  else if (snapshot.hasError) {
                     if (snapshot.error is HttpException) {
                       HttpException httpException =
                           snapshot.error as HttpException;
@@ -179,115 +224,120 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
   }
 
   Widget getListofTransactionByID(list) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: () => _refreshMenu(),
-          child: ListView.builder(
-            padding: EdgeInsets.fromLTRB(0,0,0,20),
-            shrinkWrap: true,
-            itemCount: null == list ? 0 : list.length,
-            itemBuilder: (BuildContext context, int index) {
-              DataByTypeitem depReqItem = list[index];
-              print('Result ${depReqItem}');
-              return GestureDetector(
-                  onTap: () {
-                    // MySharedPreferences.instance.removeValue("transactionID");
-                    MySharedPreferences.instance
-                        .setIntValue("transactionID", depReqItem.transactionId);
-                    print('transaction list: ${depReqItem.transactionId}');
-                    MySharedPreferences.instance
-                        .setIntValue("hID", depReqItem.hid);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TransactionByID()),
-                    );
-                  },
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Card(
-                        elevation: 25,
+    return Visibility(
+        visible: listvisible,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: () => _refreshMenu(),
+              child: ListView.builder(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                shrinkWrap: true,
+                itemCount: null == list ? 0 : list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  DataByTypeitem depReqItem = list[index];
+                  print('Result ${depReqItem}');
+                  return GestureDetector(
+                      onTap: () {
+                        // MySharedPreferences.instance.removeValue("transactionID");
+                        MySharedPreferences.instance.setIntValue(
+                            "transactionID", depReqItem.transactionId);
+                        print('transaction list: ${depReqItem.transactionId}');
+                        MySharedPreferences.instance
+                            .setIntValue("hID", depReqItem.hid);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TransactionByID()),
+                        );
+                      },
+                      child: Container(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 0.0, horizontal: 0.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                // border: Border.all(color: Color(0xff940D5A)),
-                                gradient: LinearGradient(
-                                  begin: Alignment(-0.9, -1),
-                                  end: Alignment(-0.1, -0),
-                                  colors: [
-                                    ReColors().appMainColor,
-                                    ReColors().lightappMainColor1
-                                  ],
-                                ),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              // color: Colors.white,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(
+                          padding: EdgeInsets.all(5),
+                          child: Card(
+                            elevation: 25,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 0.0, horizontal: 0.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    // border: Border.all(color: Color(0xff940D5A)),
+                                    gradient: LinearGradient(
+                                      begin: Alignment(-0.9, -1),
+                                      end: Alignment(-0.1, -0),
+                                      colors: [
+                                        ReColors().appMainColor,
+                                        ReColors().lightappMainColor1
+                                      ],
+                                    ),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  // color: Colors.white,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                10, 0, 0, 0),
+                                            child: Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                  '${depReqItem.fromUser}',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      '${depReqItem.fromUser}',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    Text(
+                                                        '${getmonthName(depReqItem.sentDate.month)} ${depReqItem.sentDate.day}, ${depReqItem.sentDate.year}',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white)),
+                                                  ],
                                                 ),
                                                 Text(
-                                                    '${getmonthName(depReqItem.sentDate.month)} ${depReqItem.sentDate.day}, ${depReqItem.sentDate.year}',
+                                                  '',
+                                                ),
+                                                Text('${depReqItem.subject}',
+                                                    maxLines: 3,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    softWrap: false,
                                                     style: TextStyle(
-                                                        color: Colors.white)),
+                                                        color: Colors.white))
                                               ],
                                             ),
-                                            Text(
-                                              '',
-                                            ),
-                                            Text('${depReqItem.subject}',
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: false,
-                                                style: TextStyle(
-                                                    color: Colors.white))
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
 
-                                    // Icon(Icons.arrow_forward_ios, color: Colors.blue),
-                                  ],
+                                        // Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ));
-            },
-          )),
-    );
+                      ));
+                },
+              )),
+        ));
   }
 
   Widget showError(String message, key) {
