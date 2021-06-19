@@ -7,7 +7,7 @@ class DatabaseHandler {
   Future<Database> initializeDB() async {
     String path = await getDatabasesPath();
     return openDatabase(
-      join(path, 'example.db'),
+      join(path, 'art.db'),
       onCreate: (database, version) async {
         await database.execute(
           "CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL, name TEXT NOT NULL,status INTEGER NOT NULL)",

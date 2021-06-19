@@ -29,17 +29,21 @@ class _State extends State<Login> {
   String p_psw;
   GetJSON loginAuth;
   Item item;
+  user _user;
   bool _isHidden = true;
   bool _myBool = false;
+  DatabaseHandler handler;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _users = [];
-
     loginAuth = new GetJSON();
     item = new Item();
+    this.handler = DatabaseHandler();
+    this.handler.insertUser(_user);
+
   }
 
   void _togglePasswordView() {
@@ -215,7 +219,7 @@ class _State extends State<Login> {
                             .setBoolValue("remember", _myBool);
                         MySharedPreferences.instance
                             .setStringValue("Username", name);
-                        /*if (_myBool == false) {
+                        if (_myBool == false) {
                           loginStatus = 0;
                         } else if (_myBool == true) {
                           loginStatus = 1;
@@ -223,7 +227,7 @@ class _State extends State<Login> {
                         DatabaseHandler().insertUser(user(
                             user_id: item.userId,
                             user_name: name,
-                            status: loginStatus));*/
+                            status: loginStatus));
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -285,3 +289,4 @@ confirmationPopup(
         ),
       ]).show();
 }
+

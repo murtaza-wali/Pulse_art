@@ -1149,25 +1149,25 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                            child: Text(
-                              'Note To Buyer',
-                              style:
+                                padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                child: Text(
+                                  'Need By Date',
+                                  style:
                                   TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          )),
+                                ),
+                              )),
                           Expanded(
                               child: Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
-                              child: Text(
-                                depReqItem.noteToBuyer.toString(),
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ))
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
+                                  child: Text(
+                                    '${getmonthName(depReqItem.needByDate.month)} ${depReqItem.needByDate.day}, ${depReqItem.needByDate.year}',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                ),
+                              ))
                         ],
                       ),
                       Divider(
@@ -1178,27 +1178,28 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                            child: Text(
-                              'Need By Date',
-                              style:
+                                padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                                child: Text(
+                                  'Note To Buyer',
+                                  style:
                                   TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          )),
+                                ),
+                              )),
                           Expanded(
                               child: Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
-                              child: Text(
-                                '${getmonthName(depReqItem.needByDate.month)} ${depReqItem.needByDate.day}, ${depReqItem.needByDate.year}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ))
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
+                                  child: Text(
+                                    depReqItem.noteToBuyer.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                ),
+                              ))
                         ],
                       ),
+
                       Divider(
                         height: 1,
                         color: Colors.grey,
