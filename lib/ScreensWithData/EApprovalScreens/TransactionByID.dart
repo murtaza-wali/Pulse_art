@@ -26,6 +26,8 @@ class _TransationByIDState extends State<TransactionByID> {
       GlobalKey<RefreshIndicatorState>();
   int getID;
   int h_id;
+  String dep_name, fromUser, des_name;
+  int doc_no;
   TextEditingController _controllers = TextEditingController();
 
   // List<TextEditingController> _controllers = [];
@@ -34,6 +36,31 @@ class _TransationByIDState extends State<TransactionByID> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    MySharedPreferences.instance
+        .getStringValue("fromUser")
+        .then((value) => setState(() {
+              fromUser = value;
+              print(fromUser);
+            }));
+    MySharedPreferences.instance
+        .getStringValue("department")
+        .then((value) => setState(() {
+              dep_name = value;
+              print(dep_name);
+            }));
+    MySharedPreferences.instance
+        .getStringValue("description")
+        .then((value) => setState(() {
+              des_name = value;
+              print(des_name);
+            }));
+    MySharedPreferences.instance
+        .getIntValue("doc_number")
+        .then((value) => setState(() {
+              doc_no = value;
+              print(doc_no);
+            }));
+
     MySharedPreferences.instance
         .getIntValue("UserId")
         .then((value) => setState(() {
@@ -144,6 +171,70 @@ class _TransationByIDState extends State<TransactionByID> {
         },
       )),
     ));
+  }
+
+  Widget tableWidget(uom, approve_qty, required_qty) {
+    return Padding(
+      padding: EdgeInsets.all(3),
+      child: Column(children: [
+        Container(
+          padding: EdgeInsets.all(3),
+          child: Row(children: <Widget>[
+            Expanded(
+                child: Center(
+                    child: Text("UOM",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white)))),
+            Expanded(
+                child: Center(
+                    child: Text("Required Quantity",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white)))),
+            Expanded(
+                child: Center(
+                    child: Text("Approved Quantity",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white)))),
+          ]),
+        ),
+        Divider(
+          height: 1,
+          color: Colors.grey,
+        ),
+        Container(
+          padding: EdgeInsets.all(3),
+          child: Row(children: <Widget>[
+            Expanded(
+                child: Center(
+                    child: Text(uom.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white)))),
+            Expanded(
+                child: Center(
+                    child: Text(required_qty.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white)))),
+            Expanded(
+                child: Center(
+                    child: Text(approve_qty.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white)))),
+          ]),
+        ),
+      ]),
+    );
   }
 
   Widget getData(transList) {
@@ -660,8 +751,61 @@ class _TransationByIDState extends State<TransactionByID> {
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
+          DetailsWidget(),
           AllListview(transactionList),
           widgetContainer(),
+        ],
+      ),
+    );
+  }
+
+  Widget DetailsWidget() {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: [
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    child: Text(
+                      fromUser,
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                  )),
+              Expanded(
+                  child: Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Text(
+                    'Document No. ${doc_no.toString()}',
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ),
+              ))
+            ],
+          ),
+          Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  dep_name,
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+              )),
+          Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  des_name,
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+              ))
         ],
       ),
     );
@@ -700,7 +844,7 @@ class _TransationByIDState extends State<TransactionByID> {
             child: Row(children: <Widget>[
           Expanded(
               child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
             child: RaisedButton(
                 onPressed: () {
                   print('Accept ${getID},${h_id},${GettransID}');
@@ -732,7 +876,7 @@ class _TransationByIDState extends State<TransactionByID> {
           )),
           Expanded(
               child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
             child: RaisedButton(
                 onPressed: () {
                   print('Reject ${getID},${h_id},${GettransID}');
@@ -761,9 +905,56 @@ class _TransationByIDState extends State<TransactionByID> {
                   ),
                 )),
           )),
+          Expanded(
+              child: Padding(
+            padding: EdgeInsets.all(5),
+            child: RaisedButton(
+                onPressed: () {
+                  print('Reject ${getID},${h_id},${GettransID}');
+                  /* postJSON().postRemark(
+                      getID, h_id, 'R', GettransID, _controllers.text);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => EapprovalByUSERID()),
+                  );*/
+                },
+                color: ReColors().appMainColor,
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.cancel,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                )),
+          )),
         ])),
       ],
     );
+  }
+
+  Icon getMyIcon(String urgent) {
+    if (urgent == 'Yes') {
+      return Icon(
+        Icons.check_circle,
+        color: Colors.green,
+        size: 20,
+      );
+    } else if (urgent == 'NO') {
+      return Icon(
+        Icons.cancel_rounded,
+        color: Colors.red,
+        size: 20,
+      );
+    }
   }
 
   Widget AllListview(transactionList) {
@@ -807,21 +998,21 @@ class _TransationByIDState extends State<TransactionByID> {
                     children: <Widget>[
                       Row(
                         children: [
-                          Flexible(
+                          Align(
+                              alignment: Alignment.topLeft,
                               child: Padding(
-                            padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
-                            child: Text(
-                              depReqItem.itemDesc,
-                              softWrap: true,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          )),
+                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: Text(
+                                  depReqItem.itemDesc,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              )),
                           Expanded(
                               child: Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                               child: IconButton(
                                 color: Colors.white,
                                 icon: new Icon(Icons.edit),
@@ -842,7 +1033,36 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 3),
+                            child: Text(
+                              'Urgent',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 3),
+                              child: getMyIcon(depReqItem.urgent),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      tableWidget(
+                          depReqItem.uomCode,
+                          depReqItem.approvedQuantity,
+                          depReqItem.requiredQuantity),
+                      /*Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                             child: Text(
                               'UOM',
                               style:
@@ -853,7 +1073,7 @@ class _TransationByIDState extends State<TransactionByID> {
                               child: Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: Text(
                                 depReqItem.uomCode.toString(),
                                 style: TextStyle(
@@ -871,7 +1091,7 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
                             child: Text(
                               'Required Quantity',
                               style:
@@ -882,7 +1102,7 @@ class _TransationByIDState extends State<TransactionByID> {
                               child: Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
                               child: Text(
                                 depReqItem.requiredQuantity.toString(),
                                 style: TextStyle(
@@ -900,7 +1120,7 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
                             child: Text(
                               'Approved Quantity',
                               style:
@@ -911,7 +1131,7 @@ class _TransationByIDState extends State<TransactionByID> {
                               child: Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
                               child: Text(
                                 depReqItem.approvedQuantity.toString(),
                                 style: TextStyle(
@@ -920,7 +1140,7 @@ class _TransationByIDState extends State<TransactionByID> {
                             ),
                           ))
                         ],
-                      ),
+                      ),*/
                       Divider(
                         height: 1,
                         color: Colors.grey,
@@ -929,9 +1149,9 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
                             child: Text(
-                              'Note to Buyer',
+                              'Note To Buyer',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
@@ -940,7 +1160,7 @@ class _TransationByIDState extends State<TransactionByID> {
                               child: Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
                               child: Text(
                                 depReqItem.noteToBuyer.toString(),
                                 style: TextStyle(
@@ -958,9 +1178,9 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 8),
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
                             child: Text(
-                              'Need by Date',
+                              'Need By Date',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
@@ -969,9 +1189,42 @@ class _TransationByIDState extends State<TransactionByID> {
                               child: Align(
                             alignment: Alignment.topRight,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
                               child: Text(
                                 '${getmonthName(depReqItem.needByDate.month)} ${depReqItem.needByDate.day}, ${depReqItem.needByDate.year}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                            child: Text(
+                              'Justification',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
+                              child: Text(
+                                ''
+                                /*'${getmonthName(depReqItem.needByDate
+                                        .month)} ${depReqItem.needByDate
+                                        .day}, ${depReqItem.needByDate.year}'*/
+                                ,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
@@ -983,7 +1236,7 @@ class _TransationByIDState extends State<TransactionByID> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 0,
                 )
               ],
             ),

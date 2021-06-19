@@ -22,7 +22,7 @@ class EapprovalByUSERID extends StatefulWidget {
 }
 
 class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
-  String selectedSpinnerItem = 'Internal Department Requisition';
+  String selectedSpinnerItem = 'Department Requisition';
   List<Typeitem> listTypeItem = [];
   int getID;
   List<DataByTypeitem> dataList = [];
@@ -143,8 +143,6 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                             .getDatabytypeItem(getID, selectedSpinnerItem)
                             .then((value) {
                           dataList = value;
-
-
                         });
                       });
                     },
@@ -172,8 +170,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                     }
 
                     // return getListofTransactionByID(transactionList);
-                  }
-                  else if (snapshot.hasError) {
+                  } else if (snapshot.hasError) {
                     if (snapshot.error is HttpException) {
                       HttpException httpException =
                           snapshot.error as HttpException;
@@ -244,7 +241,14 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                         // MySharedPreferences.instance.removeValue("transactionID");
                         MySharedPreferences.instance.setIntValue(
                             "transactionID", depReqItem.transactionId);
-                        print('transaction list: ${depReqItem.transactionId}');
+                        MySharedPreferences.instance
+                            .setStringValue("fromUser", depReqItem.fromUser);
+                        MySharedPreferences.instance.setIntValue(
+                            "doc_number", depReqItem.documentNumber);
+                        MySharedPreferences.instance.setStringValue(
+                            "department", depReqItem.department);
+                        MySharedPreferences.instance.setStringValue(
+                            "description", depReqItem.subject);
                         MySharedPreferences.instance
                             .setIntValue("hID", depReqItem.hid);
                         Navigator.push(
@@ -280,7 +284,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                   // color: Colors.white,
                                   child: Padding(
                                     padding:
-                                        EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
@@ -310,16 +314,44 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                                 Colors.white)),
                                                   ],
                                                 ),
-                                                Text(
-                                                  '',
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      0, 5, 0, 5),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        '${depReqItem.department}',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      Text(
+                                                          '${depReqItem.documentNumber}',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)),
+                                                    ],
+                                                  ),
                                                 ),
-                                                Text('${depReqItem.subject}',
-                                                    maxLines: 3,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    softWrap: false,
-                                                    style: TextStyle(
-                                                        color: Colors.white))
+                                                Divider(
+                                                  height: 1,
+                                                  color: Colors.grey,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      0, 5, 0, 5),
+                                                  child: Text(
+                                                      '${depReqItem.subject}',
+                                                      // maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      softWrap: false,
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                )
                                               ],
                                             ),
                                           ),

@@ -37,6 +37,8 @@ class DataByTypeitem {
     this.remarks,
     this.transactionId,
     this.hid,
+    this.department,
+    this.documentNumber,
   });
 
   String type;
@@ -46,6 +48,8 @@ class DataByTypeitem {
   String remarks;
   int transactionId;
   int hid;
+  String department;
+  int documentNumber;
 
   factory DataByTypeitem.fromJson(Map<String, dynamic> json) => DataByTypeitem(
     type: json["type"],
@@ -55,6 +59,8 @@ class DataByTypeitem {
     remarks: json["remarks"],
     transactionId: json["transaction_id"],
     hid: json["hid"],
+    department: json["department"],
+    documentNumber: json["document_number"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -65,6 +71,8 @@ class DataByTypeitem {
     "remarks": remarks,
     "transaction_id": transactionId,
     "hid": hid,
+    "department": department,
+    "document_number": documentNumber,
   };
 }
 
