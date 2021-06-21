@@ -57,7 +57,8 @@ class _State extends State<Login> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: new ReusableWidgets().getLoginAppBar(appstring().login),
-      body: ReuseOffline().getoffline(Container(
+      body: ReuseOffline().getoffline(
+          Container(
           decoration: Gradientbg().getbg(),
           child: Padding(
             padding: EdgeInsets.all(10),
@@ -203,7 +204,8 @@ class _State extends State<Login> {
                               'Error',
                               'Please fill the required field or Check your Internet Connection',
                               'OK');
-                        } else if (_users.length == 0) {
+                        }
+                        else if (_users.length == 0) {
                           confirmationPopup(context, "Error",
                               'Enter a valid Username and Password', "Ok");
                         }

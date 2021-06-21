@@ -748,6 +748,7 @@ class _TransationByIDState extends State<TransactionByID> {
 
   Widget CompleteWidget(transactionList) {
     return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -863,7 +864,7 @@ class _TransationByIDState extends State<TransactionByID> {
                   child: Column(
                     children: [
                       Icon(
-                        Icons.check_circle,
+                        Icons.thumb_up,
                         color: Colors.white,
                       ),
                       Text(
@@ -894,7 +895,7 @@ class _TransationByIDState extends State<TransactionByID> {
                   child: Column(
                     children: [
                       Icon(
-                        Icons.cancel,
+                        Icons.thumb_down,
                         color: Colors.white,
                       ),
                       Text(
@@ -910,14 +911,14 @@ class _TransationByIDState extends State<TransactionByID> {
             padding: EdgeInsets.all(5),
             child: RaisedButton(
                 onPressed: () {
-                  print('Reject ${getID},${h_id},${GettransID}');
-                  /* postJSON().postRemark(
-                      getID, h_id, 'R', GettransID, _controllers.text);
+                  print('Cancel ${getID},${h_id},${GettransID}');
+                  postJSON().postRemark(
+                      getID, h_id, 'C', GettransID, _controllers.text);
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => EapprovalByUSERID()),
-                  );*/
+                  );
                 },
                 color: ReColors().appMainColor,
                 child: Padding(
@@ -957,8 +958,11 @@ class _TransationByIDState extends State<TransactionByID> {
     }
   }
 
+// NeverScrollableScrollPhysics use if you use listview inside singlescrollview....
   Widget AllListview(transactionList) {
     return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        primary: false,
         shrinkWrap: true,
         itemCount: null == transactionList ? 0 : transactionList.length,
         itemBuilder: (BuildContext context, int index) {
@@ -1149,25 +1153,25 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                                child: Text(
-                                  'Need By Date',
-                                  style:
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                            child: Text(
+                              'Need By Date',
+                              style:
                                   TextStyle(color: Colors.white, fontSize: 16),
-                                ),
-                              )),
+                            ),
+                          )),
                           Expanded(
                               child: Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
-                                  child: Text(
-                                    '${getmonthName(depReqItem.needByDate.month)} ${depReqItem.needByDate.day}, ${depReqItem.needByDate.year}',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                ),
-                              ))
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
+                              child: Text(
+                                '${getmonthName(depReqItem.needByDate.month)} ${depReqItem.needByDate.day}, ${depReqItem.needByDate.year}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
                         ],
                       ),
                       Divider(
@@ -1178,28 +1182,27 @@ class _TransationByIDState extends State<TransactionByID> {
                         children: [
                           Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
-                                child: Text(
-                                  'Note To Buyer',
-                                  style:
+                            padding: const EdgeInsets.fromLTRB(10, 4, 0, 0),
+                            child: Text(
+                              'Note To Buyer',
+                              style:
                                   TextStyle(color: Colors.white, fontSize: 16),
-                                ),
-                              )),
+                            ),
+                          )),
                           Expanded(
                               child: Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
-                                  child: Text(
-                                    depReqItem.noteToBuyer.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                ),
-                              ))
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
+                              child: Text(
+                                depReqItem.noteToBuyer.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
                         ],
                       ),
-
                       Divider(
                         height: 1,
                         color: Colors.grey,
@@ -1221,11 +1224,7 @@ class _TransationByIDState extends State<TransactionByID> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 4, 10, 0),
                               child: Text(
-                                ''
-                                /*'${getmonthName(depReqItem.needByDate
-                                        .month)} ${depReqItem.needByDate
-                                        .day}, ${depReqItem.needByDate.year}'*/
-                                ,
+                                depReqItem.justification,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
