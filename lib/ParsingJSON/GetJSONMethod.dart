@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:art/APIUri/BaseUrl.dart';
 import 'package:art/Error/Error.dart';
+import 'package:art/Model/ApkItem.dart';
+import 'package:art/Model/Count.dart';
 import 'package:art/Model/DatabyType.dart';
 import 'package:art/Model/LoginUser.dart';
 import 'package:art/Model/MenuCardsModel.dart';
@@ -45,7 +47,7 @@ class GetJSON {
   }
 
   Future<List<DepReqItem>> getTransationItemsById(int userid) async {
-    // try {
+    try {
       // Uri.parse must when you are passing URL.
       var transactionURL = Uri.parse(BaseURL().Auth +
           'approvals' +
@@ -71,7 +73,7 @@ class GetJSON {
       } else {
         throw HttpException('Http Error');
       }
-  /*  } on SocketException catch (e) {
+    } on SocketException catch (e) {
       throw NoInternetException('No Internet');
     } on HttpException {
       throw NoServiceFoundException('No Service Found');
@@ -79,36 +81,33 @@ class GetJSON {
       throw InvalidFormatException('Invalid Data Format');
     } catch (e) {
       throw UnknownException('Data Not Found');
-    }*/
+    }
   }
 
   Future<List<CardsMenuItem>> getMenus(int userId) async {
-    // try {
-    // parse URI .....
-    var menuURL = Uri.parse(
-        BaseURL().Auth + 'base' + '/' + 'cards' + '/' + userId.toString());
-    print(menuURL);
-    final result = await http.get(menuURL);
-    print(result);
-
-    if (result.statusCode == 200) {
+    try {
+      // parse URI .....
+      var menuURL = Uri.parse(
+          BaseURL().Auth + 'base' + '/' + 'cards' + '/' + userId.toString());
+      print(menuURL);
+      final result = await http.get(menuURL);
       var parse = json.decode(result.body);
-      print("MenuItemparse :- " + parse.toString());
       var data = parse['items'] as List;
-      print("MenuItemdata :- " + data.toString());
-      var map = data.map<CardsMenuItem>((json) => CardsMenuItem.fromJson(json));
-      print('MenuItemmap ${map.toList()}');
+      var map =
+      data.map<CardsMenuItem>((json) => CardsMenuItem.fromJson(json));
       return map.toList();
-    } else if (result.statusCode == 400) {
-      throw HttpException('400 Error');
-    } else if (result.statusCode == 404) {
-      throw HttpException('404 NOT FOUND');
-    } else if (result.statusCode == 503) {
-      throw HttpException('503 Error');
-    } else {
-      throw HttpException('Http Error');
-    }
-    /* } on SocketException catch (e) {
+     /* if (result.statusCode == 200) {
+
+      } else if (result.statusCode == 400) {
+        throw HttpException('400 Error');
+      } else if (result.statusCode == 404) {
+        throw HttpException('404 NOT FOUND');
+      } else if (result.statusCode == 503) {
+        throw HttpException('503 Error');
+      } else {
+        throw HttpException('Http Error');
+      }*/
+    } on SocketException catch (e) {
       throw NoInternetException(e.message);
     } on HttpException {
       throw NoServiceFoundException('No Service Found');
@@ -116,29 +115,36 @@ class GetJSON {
       throw InvalidFormatException('Invalid Data Format');
     } catch (e) {
       throw UnknownException(e.message);
-    }*/
+    }
   }
 
   Future<List<Typeitem>> gettypeItem(int userId) async {
-    try {
-      // parse URI .....
-      var menuURL = Uri.parse(BaseURL().Auth +
-          'approvals' +
-          '/' +
-          'typelist' +
-          '/' +
-          userId.toString());
-      print(menuURL);
-      final result = await http.get(menuURL);
-      print(result);
-
+    // try {
+    // parse URI .....
+    var menuURL = Uri.parse(BaseURL().Auth +
+        'approvals' +
+        '/' +
+        'typelist' +
+        '/' +
+        userId.toString());
+    print('Type URL${menuURL}');
+    final result = await http.get(menuURL);
+    print(result);
+    var parse = json.decode(result.body);
+    print("type item :- " + parse.toString());
+    var data = parse['items'] as List;
+    print("type data :- " + data.toString());
+    var map = data.map<Typeitem>((json) => Typeitem.fromJson(json));
+    print('type map ${map.toList()}');
+    return map.toList();
+/*
       if (result.statusCode == 200) {
         var parse = json.decode(result.body);
-        print("MenuItemparse :- " + parse.toString());
+        print("type item :- " + parse.toString());
         var data = parse['items'] as List;
-        print("MenuItemdata :- " + data.toString());
+        print("type data :- " + data.toString());
         var map = data.map<Typeitem>((json) => Typeitem.fromJson(json));
-        print('MenuItemmap ${map.toList()}');
+        print('type map ${map.toList()}');
         return map.toList();
       } else if (result.statusCode == 400) {
         throw HttpException('400 Error');
@@ -157,11 +163,10 @@ class GetJSON {
       throw InvalidFormatException('Invalid Data Format');
     } catch (e) {
       throw UnknownException(e.message);
-    }
+    }*/
   }
 
-  Future<List<DataByTypeitem>> getDatabytypeItem(
-      int userId, String type) async {
+  Future<List<DataByTypeitem>> getDatabytypeItem(int userId, String type) async {
     try {
       // parse URI .....
       var menuURL = Uri.parse(BaseURL().Auth +
@@ -171,20 +176,23 @@ class GetJSON {
           '/' +
           userId.toString() +
           '/' +
-          type);
+          type.toString());
       print(menuURL);
       final result = await http.get(menuURL);
-      print(result);
 
-      if (result.statusCode == 200) {
-        var parse = json.decode(result.body);
-        print("MenuItemparse :- " + parse.toString());
-        var data = parse['items'] as List;
-        print("MenuItemdata :- " + data.toString());
-        var map =
-            data.map<DataByTypeitem>((json) => DataByTypeitem.fromJson(json));
-        print('MenuItemmap ${map.toList()}');
-        return map.toList();
+      var parse = json.decode(result.body);
+      print('DATA: ${parse}');
+      var data = parse["items"] as List;
+      print('DATA: ${data}');
+      var map =
+          data.map<DataByTypeitem>((json) => DataByTypeitem.fromJson(json));
+      // print('data by map ${map.toList()}');
+      return map.toList();
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
+    }
+    /*  if (result.statusCode == 200) {
+
       } else if (result.statusCode == 400) {
         throw HttpException('400 Error');
       } else if (result.statusCode == 404) {
@@ -202,7 +210,52 @@ class GetJSON {
       throw InvalidFormatException('Invalid Data Format');
     } catch (e) {
       throw UnknownException(e.message);
+    }*/
+  }
+  Future<List<Totalcount>> getTotalCount(int userId) async {
+    try {
+      // parse URI .....
+      var menuURL = Uri.parse(BaseURL().Auth +
+          'approvals' +
+          '/' +
+          'pendingCounts' +
+          '/' +
+          userId.toString());
+      print(menuURL);
+      final result = await http.get(menuURL);
+
+      var parse = json.decode(result.body);
+      print('DATA: ${parse}');
+      var data = parse["items"] as List;
+      print('DATA: ${data}');
+      var map =
+          data.map<Totalcount>((json) => Totalcount.fromJson(json));
+      print('data b ${map.toList()}');
+      // print('data by map ${map.toList()}');
+      return map.toList();
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
     }
+    /*  if (result.statusCode == 200) {
+
+      } else if (result.statusCode == 400) {
+        throw HttpException('400 Error');
+      } else if (result.statusCode == 404) {
+        throw HttpException('404 Error');
+      } else if (result.statusCode == 503) {
+        throw HttpException('503 Error');
+      } else {
+        throw HttpException('Http Error');
+      }
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
+    } on HttpException {
+      throw NoServiceFoundException('No Service Found');
+    } on FormatException {
+      throw InvalidFormatException('Invalid Data Format');
+    } catch (e) {
+      throw UnknownException(e.message);
+    }*/
   }
 
   Future<List<Item>> getLoginUser(String username, String password) async {
@@ -236,5 +289,21 @@ class GetJSON {
     } catch (e) {
       throw UnknownException(e.message);
     }
+  }
+
+  Future<List<ApkItem>> getApkVersion() async {
+    // parse URI .....
+    var menuURL = Uri.parse(
+        'https://art.artisticmilliners.com:8081/ords/art/apis/apkversion/');
+    print(menuURL);
+    final result = await http.get(menuURL);
+
+    var parse = json.decode(result.body);
+    print('DATA: ${parse}');
+    var data = parse["items"] as List;
+    print('DATA: ${data}');
+    var map = data.map<ApkItem>((json) => ApkItem.fromJson(json));
+    // print('data by map ${map.toList()}');
+    return map.toList();
   }
 }

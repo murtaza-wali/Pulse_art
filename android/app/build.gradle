@@ -38,9 +38,10 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "am.art.art"
         minSdkVersion 16
-        targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
+        targetSdkVersion 29
+        versionCode 8
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -53,7 +54,7 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
     }
 

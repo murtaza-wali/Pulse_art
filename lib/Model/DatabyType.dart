@@ -32,46 +32,46 @@ class DataByTypeitem {
   DataByTypeitem({
     this.type,
     this.subject,
-    this.fromUser,
+    this.fromUserName,
     this.sentDate,
     this.remarks,
     this.transactionId,
     this.hid,
-    this.department,
+    this.departmentName,
     this.documentNumber,
   });
 
   String type;
   String subject;
-  String fromUser;
+  String fromUserName;
   DateTime sentDate;
-  String remarks;
+  dynamic remarks;
   int transactionId;
   int hid;
-  String department;
-  int documentNumber;
+  String departmentName;
+  String documentNumber;
 
   factory DataByTypeitem.fromJson(Map<String, dynamic> json) => DataByTypeitem(
     type: json["type"],
     subject: json["subject"],
-    fromUser: json["from_user"],
+    fromUserName: json["from_user_name"],
     sentDate: DateTime.parse(json["sent_date"]),
     remarks: json["remarks"],
     transactionId: json["transaction_id"],
     hid: json["hid"],
-    department: json["department"],
+    departmentName: json["department_name"],
     documentNumber: json["document_number"],
   );
 
   Map<String, dynamic> toJson() => {
     "type": type,
     "subject": subject,
-    "from_user": fromUser,
+    "from_user_name": fromUserName,
     "sent_date": sentDate.toIso8601String(),
     "remarks": remarks,
     "transaction_id": transactionId,
     "hid": hid,
-    "department": department,
+    "department_name": departmentName,
     "document_number": documentNumber,
   };
 }

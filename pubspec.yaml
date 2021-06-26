@@ -55,6 +55,22 @@ dependencies:
   avatar_view: ^1.0.0+4
   sqflite: ^2.0.0+3
   path: ^1.8.0
+  progress_dialog: ^1.2.4
+  intro_slider: ^3.0.1
+  package_info_plus: ^1.0.2
+  permission: ^0.1.7
+  path_provider: ^2.0.2
+  permission_handler: ^8.1.1
+  onesignal_flutter: ^3.0.0
+  firebase_messaging: ^10.0.2
+  open_file: ^3.2.1
+  cached_network_image: ^3.0.0
+  future_progress_dialog: ^0.2.0
+  percent_indicator: ^3.0.1
+
+
+
+
 
 
 dev_dependencies:
@@ -65,7 +81,7 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
-  image_path: "assets/images/launcher_icon.png"
+  image_path: "assets/images/am_launchericon.png"
   android: true
   ios: true
 # The following section is specific to Flutter.
@@ -93,6 +109,10 @@ flutter:
     - assets/images/launcher_icon.png
     - assets/images/ess_logo.png
     - assets/images/signout_logo.png
+    - assets/images/am_launchericon.png
+    - assets/images/Koder_farm_logo.png
+    - assets/images/digital_rocket_logo.png
+    - assets/images/pulse_logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

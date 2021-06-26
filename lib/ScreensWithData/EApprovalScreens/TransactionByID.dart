@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:art/Error/Error.dart';
@@ -14,6 +15,7 @@ import 'package:art/ReuseableWidget/WillpopWidget.dart';
 import 'package:art/ScreensWithData/EApprovalScreens/EapprovalByUserID.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class TransactionByID extends StatefulWidget {
   State<StatefulWidget> createState() => _TransationByIDState();
@@ -22,13 +24,14 @@ class TransactionByID extends StatefulWidget {
 class _TransationByIDState extends State<TransactionByID> {
   List<DepReqItem> transactionList = [];
   int GettransID;
-  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
   int getID;
   int h_id;
   String dep_name, fromUser, des_name;
-  int doc_no;
+  String doc_no;
   TextEditingController _controllers = TextEditingController();
+  int seconds = 3;
+  ProgressDialog progressDialog;
+  bool _isloading = false;
 
   // List<TextEditingController> _controllers = [];
 
@@ -36,6 +39,7 @@ class _TransationByIDState extends State<TransactionByID> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    progressDialog = new ProgressDialog(context);
     MySharedPreferences.instance
         .getStringValue("fromUser")
         .then((value) => setState(() {
@@ -55,7 +59,7 @@ class _TransationByIDState extends State<TransactionByID> {
               print(des_name);
             }));
     MySharedPreferences.instance
-        .getIntValue("doc_number")
+        .getStringValue("doc_number")
         .then((value) => setState(() {
               doc_no = value;
               print(doc_no);
@@ -852,11 +856,27 @@ class _TransationByIDState extends State<TransactionByID> {
                   postJSON().postRemark(
                       getID, h_id, 'A', GettransID, _controllers.text);
                   // _controllers[index].text
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => EapprovalByUSERID()),
-                  );
+                  setState(() {
+                    _isloading = true;
+                    print('is loading?${_isloading}');
+                    if (_isloading) {
+                      progressDialog.show();
+                    }
+                  });
+                  Future.delayed(Duration(seconds: 3)).then((value) => {
+                        print('is loading1?${_isloading}'),
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  EapprovalByUSERID()),
+                        ),
+                        /* setState(() {
+                          print('is loading2?${_isloading}');
+                          _isloading = false;
+                          progressDialog.hide();
+                        })*/
+                      });
                 },
                 color: ReColors().appMainColor,
                 child: Padding(
@@ -883,11 +903,27 @@ class _TransationByIDState extends State<TransactionByID> {
                   print('Reject ${getID},${h_id},${GettransID}');
                   postJSON().postRemark(
                       getID, h_id, 'R', GettransID, _controllers.text);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => EapprovalByUSERID()),
-                  );
+                  setState(() {
+                    _isloading = true;
+                    print('is loading?${_isloading}');
+                    if (_isloading) {
+                      progressDialog.show();
+                    }
+                  });
+                  Future.delayed(Duration(seconds: 3)).then((value) => {
+                        print('is loading1?${_isloading}'),
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  EapprovalByUSERID()),
+                        ),
+                        /* setState(() {
+                          print('is loading2?${_isloading}');
+                          _isloading = false;
+                          progressDialog.hide();
+                        })*/
+                      });
                 },
                 color: ReColors().appMainColor,
                 child: Padding(
@@ -914,11 +950,27 @@ class _TransationByIDState extends State<TransactionByID> {
                   print('Cancel ${getID},${h_id},${GettransID}');
                   postJSON().postRemark(
                       getID, h_id, 'C', GettransID, _controllers.text);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => EapprovalByUSERID()),
-                  );
+                  setState(() {
+                    _isloading = true;
+                    print('is loading?${_isloading}');
+                    if (_isloading) {
+                      progressDialog.show();
+                    }
+                  });
+                  Future.delayed(Duration(seconds: 3)).then((value) => {
+                        print('is loading1?${_isloading}'),
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  EapprovalByUSERID()),
+                        ),
+                        /* setState(() {
+                          print('is loading2?${_isloading}');
+                          _isloading = false;
+                          progressDialog.hide();
+                        })*/
+                      });
                 },
                 color: ReColors().appMainColor,
                 child: Padding(

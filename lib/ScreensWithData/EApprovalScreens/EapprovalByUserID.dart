@@ -22,7 +22,8 @@ class EapprovalByUSERID extends StatefulWidget {
 }
 
 class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
-  String selectedSpinnerItem = 'Department Requisition';
+  String selectedSpinnerItem;
+  int spinnerId;
   List<Typeitem> listTypeItem = [];
   int getID;
   List<DataByTypeitem> dataList = [];
@@ -39,6 +40,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
         .then((value) => setState(() {
               getID = value;
               print(getID);
+
               GetJSON().gettypeItem(getID).then((users) {
                 setState(() {
                   //list of user
@@ -49,6 +51,8 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                     return showError(
                         'No data found', Icons.assignment_late_outlined);
                   } else {
+                    selectedSpinnerItem = listTypeItem.first.type;
+                    spinnerId = listTypeItem.first.typeId;
                     visible = true;
                   }
                 });
@@ -138,9 +142,9 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                     onChanged: (newVal) {
                       setState(() {
                         selectedSpinnerItem = newVal;
-
+                        print('spinnerID: ${selectedSpinnerItem}');
                         GetJSON()
-                            .getDatabytypeItem(getID, selectedSpinnerItem)
+                            .getDatabytypeItem(getID, spinnerId.toString())
                             .then((value) {
                           dataList = value;
                         });
@@ -153,12 +157,10 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                 ),
               ),
               FutureBuilder<List<DataByTypeitem>>(
-                future: GetJSON().getDatabytypeItem(getID, selectedSpinnerItem),
+                future: GetJSON().getDatabytypeItem(getID, spinnerId.toString()),
                 builder: (context, snapshot) {
-                  print('SNAPSHOT: ${snapshot.data}');
                   if (snapshot.hasData) {
                     dataList = snapshot.data;
-                    print('list len: ${dataList.length}');
                     if (visible == true) {
                       listvisible = true;
                       if (dataList.length == 0) {
@@ -167,11 +169,26 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                       } else {
                         return getListofTransactionByID(dataList);
                       }
+                    } else {
+                      return showError(
+                          'No data found', Icons.assignment_late_outlined);
                     }
 
                     // return getListofTransactionByID(transactionList);
                   } else if (snapshot.hasError) {
-                    if (snapshot.error is HttpException) {
+                    if (snapshot.error is NoInternetException) {
+                      NoInternetException noInternetException =
+                      snapshot.error as NoInternetException;
+                      return showError(
+                          noInternetException.message, Icons.error);
+                    } if (snapshot.error is SocketException) {
+                      SocketException socketException =
+                      snapshot.error as SocketException;
+                      print('Socket checking: ${socketException.message}');
+                      return showError('Please check your internet connection',
+                          Icons.signal_wifi_connected_no_internet_4);
+                    }
+                   /* if (snapshot.error is HttpException) {
                       HttpException httpException =
                           snapshot.error as HttpException;
                       return showError(httpException.message, Icons.error);
@@ -204,7 +221,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                       UnknownException unknownException =
                           snapshot.error as UnknownException;
                       return showError(unknownException.message, Icons.error);
-                    }
+                    }*/
                   }
                   return Center(
                       child: CircularProgressIndicator(
@@ -242,13 +259,13 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                         MySharedPreferences.instance.setIntValue(
                             "transactionID", depReqItem.transactionId);
                         MySharedPreferences.instance
-                            .setStringValue("fromUser", depReqItem.fromUser);
-                        MySharedPreferences.instance.setIntValue(
+                            .setStringValue("fromUser", depReqItem.fromUserName);
+                        MySharedPreferences.instance.setStringValue(
                             "doc_number", depReqItem.documentNumber);
                         MySharedPreferences.instance.setStringValue(
-                            "department", depReqItem.department);
-                        MySharedPreferences.instance.setStringValue(
-                            "description", depReqItem.subject);
+                            "department", depReqItem.departmentName);
+                        MySharedPreferences.instance
+                            .setStringValue("description", depReqItem.subject);
                         MySharedPreferences.instance
                             .setIntValue("hID", depReqItem.hid);
                         Navigator.push(
@@ -303,7 +320,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                           .spaceBetween,
                                                   children: <Widget>[
                                                     Text(
-                                                      '${depReqItem.fromUser}',
+                                                      '${depReqItem.fromUserName}',
                                                       style: TextStyle(
                                                           color: Colors.white),
                                                     ),
@@ -323,7 +340,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                             .spaceBetween,
                                                     children: <Widget>[
                                                       Text(
-                                                        '${depReqItem.department}',
+                                                        '${depReqItem.departmentName}',
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),

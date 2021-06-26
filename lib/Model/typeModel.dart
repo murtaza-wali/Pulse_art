@@ -47,19 +47,23 @@ class First {
 class Typeitem {
   Typeitem({
     this.type,
+    this.typeId,
     this.typecount,
   });
 
   String type;
+  int typeId;
   int typecount;
 
   factory Typeitem.fromJson(Map<String, dynamic> json) => Typeitem(
     type: json["type"],
+    typeId: json["type_id"],
     typecount: json["typecount"],
   );
 
   Map<String, dynamic> toJson() => {
     "type": type,
+    "type_id": typeId,
     "typecount": typecount,
   };
 }
