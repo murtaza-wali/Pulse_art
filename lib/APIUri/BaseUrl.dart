@@ -1,6 +1,3 @@
 class BaseURL{
-  String Auth = 'https://art.artisticmilliners.com:8081/ords/art/apis/';
-
-
-
+  String Auth = 'https://artlive.artisticmilliners.com:8081/ords/art/apis/';
 }

@@ -31,16 +31,20 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
       GlobalKey<RefreshIndicatorState>();
   bool visible = false;
   bool listvisible = false;
+  int cunt;
 
   @override
   void initState() {
     super.initState();
+    MySharedPreferences.instance.getIntValue("count").then((value) {
+      cunt = value;
+      print('Count: ${cunt}');
+    });
     MySharedPreferences.instance
         .getIntValue("UserId")
         .then((value) => setState(() {
               getID = value;
               print(getID);
-
               GetJSON().gettypeItem(getID).then((users) {
                 setState(() {
                   //list of user
@@ -66,16 +70,6 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
     return await GetJSON().gettypeItem(getID);
   }
 
-/* avatar: CircleAvatar(
-        backgroundColor: Colors.grey.shade600,
-        child: Text(count.toString()),
-      )*/
-  /*Text(
-        label,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      )*/
   Widget chip(String label, int count, Color color) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,7 +151,8 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                 ),
               ),
               FutureBuilder<List<DataByTypeitem>>(
-                future: GetJSON().getDatabytypeItem(getID, spinnerId.toString()),
+                future:
+                    GetJSON().getDatabytypeItem(getID, spinnerId.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     dataList = snapshot.data;
@@ -176,52 +171,52 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
 
                     // return getListofTransactionByID(transactionList);
                   } else if (snapshot.hasError) {
-                    if (snapshot.error is NoInternetException) {
-                      NoInternetException noInternetException =
-                      snapshot.error as NoInternetException;
-                      return showError(
-                          noInternetException.message, Icons.error);
-                    } if (snapshot.error is SocketException) {
-                      SocketException socketException =
-                      snapshot.error as SocketException;
-                      print('Socket checking: ${socketException.message}');
-                      return showError('Please check your internet connection',
-                          Icons.signal_wifi_connected_no_internet_4);
-                    }
-                   /* if (snapshot.error is HttpException) {
+                    print('checking Error: ${snapshot.error}');
+                    if (snapshot.error is HttpException) {
                       HttpException httpException =
                           snapshot.error as HttpException;
-                      return showError(httpException.message, Icons.error);
+                      return showError(
+                          'An http error occured.Page not found. Please try again.',
+                          Icons.error);
                     }
                     if (snapshot.error is NoInternetException) {
                       NoInternetException noInternetException =
                           snapshot.error as NoInternetException;
-                      return showError(
-                          noInternetException.message, Icons.error);
+                      return showError('Please check your internet connection',
+                          Icons.signal_wifi_connected_no_internet_4_sharp);
                     }
                     if (snapshot.error is NoServiceFoundException) {
                       NoServiceFoundException noServiceFoundException =
                           snapshot.error as NoServiceFoundException;
-                      return showError(
-                          noServiceFoundException.message, Icons.error);
+                      return showError('Server Error.', Icons.error);
                     }
                     if (snapshot.error is InvalidFormatException) {
-                      InvalidFormatException invalidFormatException =
-                          snapshot.error as InvalidFormatException;
-                      return showError(
-                          invalidFormatException.message, Icons.error);
+                      if (cunt == 0) {
+                        print('Count2: ${cunt}');
+                        return showError("You haven't any pending approvals",
+                            Icons.pending_actions_sharp);
+                      } else if (listTypeItem.length == 0) {
+                        return showError("You haven't any pending approvals",
+                            Icons.pending_actions_sharp);
+                      } else {
+                        print('Count3: ${cunt}');
+                        return showError(
+                            "There is a problem with your request.",
+                            Icons.error);
+                      }
                     }
                     if (snapshot.error is SocketException) {
                       SocketException socketException =
                           snapshot.error as SocketException;
                       print('Socket checking: ${socketException.message}');
                       return showError('Please check your internet connection',
-                          Icons.signal_wifi_connected_no_internet_4);
+                          Icons.signal_wifi_connected_no_internet_4_sharp);
                     } else {
                       UnknownException unknownException =
                           snapshot.error as UnknownException;
-                      return showError(unknownException.message, Icons.error);
-                    }*/
+                      return showError(
+                          'An Unknown error occured.', Icons.error);
+                    }
                   }
                   return Center(
                       child: CircularProgressIndicator(
@@ -258,8 +253,8 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                         // MySharedPreferences.instance.removeValue("transactionID");
                         MySharedPreferences.instance.setIntValue(
                             "transactionID", depReqItem.transactionId);
-                        MySharedPreferences.instance
-                            .setStringValue("fromUser", depReqItem.fromUserName);
+                        MySharedPreferences.instance.setStringValue(
+                            "fromUser", depReqItem.fromUserName);
                         MySharedPreferences.instance.setStringValue(
                             "doc_number", depReqItem.documentNumber);
                         MySharedPreferences.instance.setStringValue(
@@ -346,7 +341,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                                 Colors.white),
                                                       ),
                                                       Text(
-                                                          '${depReqItem.documentNumber}',
+                                                          'Document No: ${depReqItem.documentNumber}',
                                                           style: TextStyle(
                                                               color: Colors
                                                                   .white)),

@@ -27,20 +27,27 @@ class GetJSON {
 
       final GPresult = await http.get(gpURL);
 
+      var parse = json.decode(GPresult.body);
+      var data = parse['items'] as List;
+      var GPmap = data.map<GPbyIDitem>((json) => GPbyIDitem.fromJson(json));
       if (GPresult.statusCode == 200) {
-        var parse = json.decode(GPresult.body);
-        var data = parse['items'] as List;
-        var GPmap = data.map<GPbyIDitem>((json) => GPbyIDitem.fromJson(json));
         return GPmap.toList();
+      } else if (GPresult.statusCode == 400) {
+        throw HttpException('400 Bad Request error');
+      } else if (GPresult.statusCode == 404) {
+        throw HttpException('404 NOT FOUND');
+      } else if (GPresult.statusCode == 503) {
+        throw HttpException('503 Service Unavailable error');
       } else {
-        throw Exception('Failed to create album.');
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
       }
     } on SocketException catch (e) {
       throw NoInternetException(e.message);
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
     } catch (e) {
       throw UnknownException(e.message);
     }
@@ -58,29 +65,30 @@ class GetJSON {
 
       final transactionresult = await http.get(transactionURL);
 
+      var parse = json.decode(transactionresult.body);
+      var data = parse['items'] as List;
+      var Transactionmap =
+          data.map<DepReqItem>((json) => DepReqItem.fromJson(json));
       if (transactionresult.statusCode == 200) {
-        var parse = json.decode(transactionresult.body);
-        var data = parse['items'] as List;
-        var Transactionmap =
-            data.map<DepReqItem>((json) => DepReqItem.fromJson(json));
         return Transactionmap.toList();
       } else if (transactionresult.statusCode == 400) {
-        throw HttpException('400 Error');
+        throw HttpException('400 Bad Request error');
       } else if (transactionresult.statusCode == 404) {
         throw HttpException('404 NOT FOUND');
       } else if (transactionresult.statusCode == 503) {
-        throw HttpException('503 Error');
+        throw HttpException('503 Service Unavailable error');
       } else {
-        throw HttpException('Http Error');
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
       }
     } on SocketException catch (e) {
-      throw NoInternetException('No Internet');
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
+      throw NoInternetException(e.message);
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
     } catch (e) {
-      throw UnknownException('Data Not Found');
+      throw UnknownException(e.message);
     }
   }
 
@@ -93,80 +101,73 @@ class GetJSON {
       final result = await http.get(menuURL);
       var parse = json.decode(result.body);
       var data = parse['items'] as List;
-      var map =
-      data.map<CardsMenuItem>((json) => CardsMenuItem.fromJson(json));
-      return map.toList();
-     /* if (result.statusCode == 200) {
-
+      var map = data.map<CardsMenuItem>((json) => CardsMenuItem.fromJson(json));
+      if (result.statusCode == 200) {
+        return map.toList();
       } else if (result.statusCode == 400) {
-        throw HttpException('400 Error');
+        throw HttpException('400 Bad Request error');
       } else if (result.statusCode == 404) {
         throw HttpException('404 NOT FOUND');
       } else if (result.statusCode == 503) {
-        throw HttpException('503 Error');
+        throw HttpException('503 Service Unavailable error');
       } else {
-        throw HttpException('Http Error');
-      }*/
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
+      }
     } on SocketException catch (e) {
       throw NoInternetException(e.message);
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
     } catch (e) {
       throw UnknownException(e.message);
     }
   }
 
   Future<List<Typeitem>> gettypeItem(int userId) async {
-    // try {
-    // parse URI .....
-    var menuURL = Uri.parse(BaseURL().Auth +
-        'approvals' +
-        '/' +
-        'typelist' +
-        '/' +
-        userId.toString());
-    print('Type URL${menuURL}');
-    final result = await http.get(menuURL);
-    print(result);
-    var parse = json.decode(result.body);
-    print("type item :- " + parse.toString());
-    var data = parse['items'] as List;
-    print("type data :- " + data.toString());
-    var map = data.map<Typeitem>((json) => Typeitem.fromJson(json));
-    print('type map ${map.toList()}');
-    return map.toList();
-/*
+    try {
+      // parse URI .....
+      var menuURL = Uri.parse(BaseURL().Auth +
+          'approvals' +
+          '/' +
+          'typelist' +
+          '/' +
+          userId.toString());
+      print('Type URL${menuURL}');
+      final result = await http.get(menuURL);
+      print(result);
+      var parse = json.decode(result.body);
+      print("type item :- " + parse.toString());
+      var data = parse['items'] as List;
+      print("type data :- " + data.toString());
+      var map = data.map<Typeitem>((json) => Typeitem.fromJson(json));
+      print('type map ${map.toList()}');
       if (result.statusCode == 200) {
-        var parse = json.decode(result.body);
-        print("type item :- " + parse.toString());
-        var data = parse['items'] as List;
-        print("type data :- " + data.toString());
-        var map = data.map<Typeitem>((json) => Typeitem.fromJson(json));
-        print('type map ${map.toList()}');
         return map.toList();
       } else if (result.statusCode == 400) {
-        throw HttpException('400 Error');
+        throw HttpException('400 Bad Request error');
       } else if (result.statusCode == 404) {
-        throw HttpException('404 Error');
+        throw HttpException('404 NOT FOUND');
       } else if (result.statusCode == 503) {
-        throw HttpException('503 Error');
+        throw HttpException('503 Service Unavailable error');
       } else {
-        throw HttpException('Http Error');
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
       }
     } on SocketException catch (e) {
       throw NoInternetException(e.message);
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
     } catch (e) {
       throw UnknownException(e.message);
-    }*/
+    }
   }
 
-  Future<List<DataByTypeitem>> getDatabytypeItem(int userId, String type) async {
+  Future<List<DataByTypeitem>> getDatabytypeItem(
+      int userId, String type) async {
     try {
       // parse URI .....
       var menuURL = Uri.parse(BaseURL().Auth +
@@ -187,31 +188,29 @@ class GetJSON {
       var map =
           data.map<DataByTypeitem>((json) => DataByTypeitem.fromJson(json));
       // print('data by map ${map.toList()}');
-      return map.toList();
-    } on SocketException catch (e) {
-      throw NoInternetException(e.message);
-    }
-    /*  if (result.statusCode == 200) {
-
+      if (result.statusCode == 200) {
+        return map.toList();
       } else if (result.statusCode == 400) {
-        throw HttpException('400 Error');
+        throw HttpException('400 Bad Request error');
       } else if (result.statusCode == 404) {
-        throw HttpException('404 Error');
+        throw HttpException('404 NOT FOUND');
       } else if (result.statusCode == 503) {
-        throw HttpException('503 Error');
+        throw HttpException('503 Service Unavailable error');
       } else {
-        throw HttpException('Http Error');
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
       }
     } on SocketException catch (e) {
       throw NoInternetException(e.message);
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
     } catch (e) {
       throw UnknownException(e.message);
-    }*/
+    }
   }
+
   Future<List<Totalcount>> getTotalCount(int userId) async {
     try {
       // parse URI .....
@@ -228,34 +227,13 @@ class GetJSON {
       print('DATA: ${parse}');
       var data = parse["items"] as List;
       print('DATA: ${data}');
-      var map =
-          data.map<Totalcount>((json) => Totalcount.fromJson(json));
+      var map = data.map<Totalcount>((json) => Totalcount.fromJson(json));
       print('data b ${map.toList()}');
       // print('data by map ${map.toList()}');
       return map.toList();
     } on SocketException catch (e) {
       throw NoInternetException(e.message);
     }
-    /*  if (result.statusCode == 200) {
-
-      } else if (result.statusCode == 400) {
-        throw HttpException('400 Error');
-      } else if (result.statusCode == 404) {
-        throw HttpException('404 Error');
-      } else if (result.statusCode == 503) {
-        throw HttpException('503 Error');
-      } else {
-        throw HttpException('Http Error');
-      }
-    } on SocketException catch (e) {
-      throw NoInternetException(e.message);
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
-    } catch (e) {
-      throw UnknownException(e.message);
-    }*/
   }
 
   Future<List<Item>> getLoginUser(String username, String password) async {
@@ -268,24 +246,27 @@ class GetJSON {
       final result = await http.get(loginURL);
       print('STATUSCODE : ${result.statusCode}');
 
+      var parse = json.decode(result.body);
+      var data = parse['items'] as List;
+      var map = data.map<Item>((json) => Item.fromJson(json));
       if (result.statusCode == 200) {
-        var parse = json.decode(result.body);
-        var data = parse['items'] as List;
-        var map = data.map<Item>((json) => Item.fromJson(json));
         return map.toList();
       } else if (result.statusCode == 400) {
-        throw Exception('400.');
+        throw HttpException('400 Bad Request error');
       } else if (result.statusCode == 404) {
-        throw Exception('404.');
+        throw HttpException('404 NOT FOUND');
+      } else if (result.statusCode == 503) {
+        throw HttpException('503 Service Unavailable error');
       } else {
-        throw Exception('ERROR.');
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
       }
     } on SocketException catch (e) {
-      throw NoInternetException('No Internet');
-    } on HttpException {
-      throw NoServiceFoundException('No Service Found');
-    } on FormatException {
-      throw InvalidFormatException('Invalid Data Format');
+      throw NoInternetException(e.message);
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
     } catch (e) {
       throw UnknownException(e.message);
     }
@@ -294,7 +275,7 @@ class GetJSON {
   Future<List<ApkItem>> getApkVersion() async {
     // parse URI .....
     var menuURL = Uri.parse(
-        'https://art.artisticmilliners.com:8081/ords/art/apis/apkversion/');
+        BaseURL().Auth + 'apkversion/');
     print(menuURL);
     final result = await http.get(menuURL);
 

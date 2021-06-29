@@ -34,7 +34,7 @@ class IntroScreenState extends State<IntroApp> {
             'Artistic Milliners has accelerated its digitization through new interface was introduced, titled "ART".This PULSE software application redefined the way enterprise users work. With a new visual design and appearance, we are making next-generation workforce and drive employee engagement to ensure maximum utilization of the apps offering by enabling them through technology.',
         styleDescription: TextStyle(
           color: Colors.white,
-          fontSize: 20.0,
+          fontSize: 18.0,
         ),
         marginDescription:
             EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 70.0),
@@ -61,7 +61,7 @@ class IntroScreenState extends State<IntroApp> {
             "Digital Rocket is a team initiative which is harmonizing business processes with next-generation automation-based technology.",
         styleDescription: TextStyle(
           color: Colors.white,
-          fontSize: 20.0,
+          fontSize: 18.0,
           /*fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'*/
         ),
@@ -85,7 +85,7 @@ class IntroScreenState extends State<IntroApp> {
             "Whatever platform you choose for your cloud-enabled business applications, including custom code in just about any framework, we’ve got you covered.",
         styleDescription: TextStyle(
           color: Colors.white,
-          fontSize: 20.0,
+          fontSize: 18.0,
           /*fontStyle: FontStyle.italic,
             fontFamily: 'Raleway'*/
         ),

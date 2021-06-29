@@ -50,7 +50,7 @@ class _TransationByIDState extends State<TransactionByID> {
         .getStringValue("department")
         .then((value) => setState(() {
               dep_name = value;
-              print(dep_name);
+              print('dep_name: ${dep_name}');
             }));
     MySharedPreferences.instance
         .getStringValue("description")
@@ -139,33 +139,37 @@ class _TransationByIDState extends State<TransactionByID> {
             print('checking Error: ${snapshot.error}');
             if (snapshot.error is HttpException) {
               HttpException httpException = snapshot.error as HttpException;
-              return showError(httpException.message, Icons.error);
+              return showError(
+                  'An http error occured.Page not found. Please try again.',
+                  Icons.error);
             }
             if (snapshot.error is NoInternetException) {
               NoInternetException noInternetException =
                   snapshot.error as NoInternetException;
-              return showError(noInternetException.message, Icons.error);
+              return showError('Please check your internet connection',
+                  Icons.signal_wifi_connected_no_internet_4_sharp);
             }
             if (snapshot.error is NoServiceFoundException) {
               NoServiceFoundException noServiceFoundException =
                   snapshot.error as NoServiceFoundException;
-              return showError(noServiceFoundException.message, Icons.error);
+              return showError('Server Error.', Icons.error);
             }
             if (snapshot.error is InvalidFormatException) {
               InvalidFormatException invalidFormatException =
                   snapshot.error as InvalidFormatException;
-              return showError(invalidFormatException.message, Icons.error);
+              return showError(
+                  'There is a problem with your request.', Icons.error);
             }
             if (snapshot.error is SocketException) {
               SocketException socketException =
                   snapshot.error as SocketException;
               print('Socket checking: ${socketException.message}');
               return showError('Please check your internet connection',
-                  Icons.signal_wifi_connected_no_internet_4);
+                  Icons.signal_wifi_connected_no_internet_4_sharp);
             } else {
               UnknownException unknownException =
                   snapshot.error as UnknownException;
-              return showError(unknownException.message, Icons.error);
+              return showError('An Unknown error occured.', Icons.error);
             }
           }
           return Center(
@@ -184,13 +188,13 @@ class _TransationByIDState extends State<TransactionByID> {
         Container(
           padding: EdgeInsets.all(3),
           child: Row(children: <Widget>[
-            Expanded(
+            /*Expanded(
                 child: Center(
                     child: Text("UOM",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
-                        style: TextStyle(color: Colors.white)))),
+                        style: TextStyle(color: Colors.white)))),*/
             Expanded(
                 child: Center(
                     child: Text("Required Quantity",
@@ -214,13 +218,13 @@ class _TransationByIDState extends State<TransactionByID> {
         Container(
           padding: EdgeInsets.all(3),
           child: Row(children: <Widget>[
-            Expanded(
+            /* Expanded(
                 child: Center(
                     child: Text(uom.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
-                        style: TextStyle(color: Colors.white)))),
+                        style: TextStyle(color: Colors.white)))),*/
             Expanded(
                 child: Center(
                     child: Text(required_qty.toString(),
@@ -417,7 +421,7 @@ class _TransationByIDState extends State<TransactionByID> {
                                       EapprovalByUSERID()),
                             );
                           },
-                          color: ReColors().appMainColor,
+                          color: ReColors().greenColor,
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: Column(
@@ -449,7 +453,7 @@ class _TransationByIDState extends State<TransactionByID> {
                                       EapprovalByUSERID()),
                             );
                           },
-                          color: ReColors().appMainColor,
+                          color: ReColors().blueColor,
                           child: Padding(
                             padding: EdgeInsets.all(5),
                             child: Column(
@@ -524,15 +528,15 @@ class _TransationByIDState extends State<TransactionByID> {
                           margin: EdgeInsets.all(2),
                           child: TextField(
                             keyboardType: TextInputType.number,
-                            controller: qtyController
-                              ..text = quantity.toString(),
+                            controller: qtyController,
+                              // ..text = quantity,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Quantity',
+                              labelText: 'Required Quantity',
                             ),
                             onChanged: (Quantitytext) {
                               setState(() {
-                                quantity = int.parse(Quantitytext);
+                                // quantity = 'Required Quantity';
                                 //you can access nameController in its scope to get
                                 // the value of text entered as shown below
                                 //UserName = nameController.text;
@@ -878,7 +882,7 @@ class _TransationByIDState extends State<TransactionByID> {
                         })*/
                       });
                 },
-                color: ReColors().appMainColor,
+                color: ReColors().greenColor,
                 child: Padding(
                   padding: EdgeInsets.all(5),
                   child: Column(
@@ -925,7 +929,7 @@ class _TransationByIDState extends State<TransactionByID> {
                         })*/
                       });
                 },
-                color: ReColors().appMainColor,
+                color: ReColors().blueColor,
                 child: Padding(
                   padding: EdgeInsets.all(5),
                   child: Column(
@@ -972,7 +976,7 @@ class _TransationByIDState extends State<TransactionByID> {
                         })*/
                       });
                 },
-                color: ReColors().appMainColor,
+                color: Colors.red,
                 child: Padding(
                   padding: EdgeInsets.all(5),
                   child: Column(
@@ -1087,7 +1091,7 @@ class _TransationByIDState extends State<TransactionByID> {
                       ),
                       Row(
                         children: [
-                          Expanded(
+                          /*Expanded(
                               child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 0, 3),
                             child: Text(
@@ -1095,7 +1099,7 @@ class _TransationByIDState extends State<TransactionByID> {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
-                          )),
+                          )),*/
                           Expanded(
                               child: Align(
                             alignment: Alignment.topRight,
@@ -1110,10 +1114,40 @@ class _TransationByIDState extends State<TransactionByID> {
                         height: 1,
                         color: Colors.grey,
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 3),
+                            child: Text(
+                              'UOM',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          )),
+                          Expanded(
+                              child: Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 3),
+                              child: Text(
+                                depReqItem.uomCode.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ))
+                        ],
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
                       tableWidget(
                           depReqItem.uomCode,
                           depReqItem.approvedQuantity,
                           depReqItem.requiredQuantity),
+
                       /*Row(
                         children: [
                           Expanded(

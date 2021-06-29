@@ -14,7 +14,9 @@ class ReColors{
     final appTextWhiteColor = Color(0xffffffff);
     final appTextBlackColor = Color(0xff000000);
     final BlueGreyColor = Color(0xffe7eeed);
-    final darkgreyColor = Color(0xff218081);
+    final darkgreyColor = Color(0xff000000);
+    final greenColor = Color(0xff067906);
+    final blueColor = Color(0xff0db7ee);
 
 
     final lightappMainColor = Color(0xff0680c2);

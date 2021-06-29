@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:art/Error/Error.dart';
 import 'package:art/HexCodeConverter/Hexcode.dart';
@@ -21,11 +22,13 @@ import 'package:flutter/material.dart';
 import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/InternetConnection/Offline.dart';
 import 'package:art/Model/MenuCardsModel.dart';
+import 'package:flutter/services.dart';
+import 'package:get_version/get_version.dart';
 import 'package:open_file/open_file.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+/*if you change version code you should run pub get and pub upgrade commands*/
 class MainMenuPopUp extends StatefulWidget {
   @override
   _MainMenuPopUpState createState() => _MainMenuPopUpState();
@@ -46,23 +49,22 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  final apkUrl = "https://art.artisticmilliners.com:8081/ords/art/apis/apk/";
+  final apkUrl = "https://artlive.artisticmilliners.com:8081/ords/art/apis/apk/";
   bool downloading = false;
   var progressString = "";
   List<ApkItem> list = [];
-  String mobileversionCode;
   String uploadversionCode;
   String message;
   String totalpercentage = "";
   bool downloadbtn = false;
   ProgressDialog progressDialog;
-
   var dir;
   PermissionName permissionName = PermissionName.Storage;
 
   requestPermissions() async {
     List<PermissionName> permissionNames = [];
     permissionNames.add(PermissionName.Storage);
+    permissionNames.add(PermissionName.Internet);
     message = '';
     var permissions = await Permission.requestPermissions(permissionNames);
     permissions.forEach((permission) {
@@ -76,6 +78,11 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   }
 
   int click;
+  String _platformVersion = 'Unknown';
+  String _projectVersion = '';
+  String _projectCode = '';
+  String _projectAppID = '';
+  String _projectName = '';
 
   @override
   void initState() {
@@ -110,11 +117,10 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
     GetJSON().getApkVersion().then((value) {
       list = value;
       uploadversionCode = list.first.versionCode;
-      package().then((value) {
-        mobileversionCode = value;
+      initPlatformState().then((value) {
+        _projectCode = value;
         print('uploadversionCode1: ${uploadversionCode}');
-        print('mobileversionCode1: ${mobileversionCode}');
-        EnableButton(uploadversionCode, mobileversionCode);
+        print('mobileversionCode1: ${_projectCode}');
       });
     });
 
@@ -124,28 +130,61 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
     });
   }
 
-  bool enablebtn = false;
-  bool downloadfile;
-  final key = GlobalKey();
-
-  Widget EnableButton(uploadversionCode1, mobileversionCode1) {
-    print(
-        'condition: ${int.parse(uploadversionCode1) == int.parse(mobileversionCode1)}');
-
-    if (int.parse(uploadversionCode1) == int.parse(mobileversionCode1)) {
-      enablebtn = false;
-    } else {
-      enablebtn = true;
-      downloadFile().then((value) {});
-      confirmationPopup(
-          context, 'Updating...', 'Your app is updating. Please wait...', 'OK');
+  // Platform messages are asynchronous, so we initialize in an async method.
+  initPlatformState() async {
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      platformVersion = await GetVersion.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
     }
-  }
 
-  Future<String> package() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String code = packageInfo.buildNumber;
-    return code;
+    String projectVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectVersion = await GetVersion.projectVersion;
+    } on PlatformException {
+      projectVersion = 'Failed to get project version.';
+    }
+
+    String projectCode;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectCode = await GetVersion.projectCode;
+    } on PlatformException {
+      projectCode = 'Failed to get build number.';
+    }
+
+    String projectAppID;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectAppID = await GetVersion.appID;
+    } on PlatformException {
+      projectAppID = 'Failed to get app ID.';
+    }
+
+    String projectName;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectName = await GetVersion.appName;
+    } on PlatformException {
+      projectName = 'Failed to get app name.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
+      _projectVersion = projectVersion;
+      _projectCode = projectCode;
+      _projectAppID = projectAppID;
+      _projectName = projectName;
+    });
+    return projectCode;
   }
 
   Future<void> deleteFile(File file) async {
@@ -159,7 +198,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   }
 
   Future<String> createFolder() async {
-    final path = Directory("storage/emulated/0/Download/pulse_/apk");
+    final path = Directory("storage/emulated/0/Download");
     print('path : ${path}');
     if ((await path.exists())) {
       return path.path;
@@ -176,36 +215,26 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   Future<void> downloadFile() async {
     Dio dio = Dio();
     try {
-      file = new File("${dir}/pulse.apk");
+      file = new File("${dir}/pulse${_projectCode}.apk");
       deleteFile(File(file.absolute.path));
-      dio.download(apkUrl, "${dir}/pulse.apk",
-          options: Options(
-              responseType: ResponseType.bytes,
-              followRedirects: false,
-              validateStatus: (status) {
-                return status < 500;
-              }), onReceiveProgress: (rec, total) {
-        total = 3131585;
-        downloading = true;
-        totalpercentage = ((rec / total) * 100).toStringAsFixed(0);
-        valueOfTotal = totalpercentage;
-        if (int.parse(totalpercentage) >= 738) {
-          downloading = false;
-          OpenFile.open("${dir}/pulse.apk");
-          getMyIcon();
-        }
+      await dio.download(apkUrl, '${dir}/pulse${uploadversionCode}.apk',
+          onReceiveProgress: (rec, total) {
+        print('Rec: $rec , Total: $total');
+        total = 23100681;
+        setState(() {
+          downloading = true;
+          progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
+        });
       });
     } catch (e) {
-      print('catchinf ............ ${e}');
+      print(e);
     }
-  }
-
-  Widget getMyIcon() {
-    return Icon(
-      Icons.download_sharp,
-      color: Colors.blue,
-      size: 20,
-    );
+    setState(() {
+      downloading = false;
+      progressString = 'Completed';
+    });
+    OpenFile.open("${dir}/pulse${uploadversionCode}.apk");
+    print('Download completed');
   }
 
   void stateChanged(bool isShow) {
@@ -215,6 +244,12 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   Future<dynamic> _refreshMenu() async {
     print('GET ID : ${getID}');
     return await GetJSON().getMenus(getID);
+  }
+
+  Future<dynamic> _refreshCount() async {
+    print('GET ID : ${getID}');
+    return await GetJSON().getTotalCount(getID);
+    ;
   }
 
   void onClickMenu(MenuItemProvider item) {
@@ -237,64 +272,12 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
           context,
           MaterialPageRoute(builder: (BuildContext context) => UserProfile()),
           (Route<dynamic> route) => false);
-      /* Navigator.push(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => UserProfile()),
-          );*/
-
     }
   }
 
   void onDismiss() {
     print('Menu is dismiss');
   }
-
-  Future<bool> _onWillPop() {
-    return showDialog(
-          builder: (context) => new AlertDialog(
-            title: new Text('Logout'),
-            content: new Text('Are you sure you want to log out? '),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('No'),
-              ),
-              new FlatButton(
-                onPressed: () {
-                  MySharedPreferences.instance.removeAll();
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Login()),
-                      (Route<dynamic> route) => false);
-                  /*Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );*/
-                },
-                child: new Text('Yes'),
-              ),
-            ],
-          ),
-          context: context,
-        ) ??
-        false;
-  }
-
-/*  Future<String> createFolder(String cow) async {
-    final folderName = cow;
-    final path = Directory("storage/emulated/0/$folderName");
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-    if ((await path.exists())) {
-      return path.path;
-    } else {
-      path.create();
-      return path.path;
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -323,6 +306,10 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                         menuListData = list;
                         print(menuListData.length);
                       }));
+                  _refreshCount().then((list) => setState(() {
+                        countList = list;
+                        print(countList.length);
+                      }));
                 },
               )
             ],
@@ -330,24 +317,76 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
           new Stack(
             alignment: Alignment.centerRight,
             children: <Widget>[
-              enablebtn == true
-                  ? new Transform.scale(
-                      scale: 0.5,
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          Text('${mobileversionCode}/${uploadversionCode}')
-                        ],
-                      ),
-                    )
-                  : IconButton(
-                      icon: Icon(Icons.download_sharp),
-                      color: Colors.white,
-                      onPressed: () {
+              IconButton(
+                icon: Icon(Icons.download_sharp),
+                color: Colors.white,
+                onPressed: () {
+                  GetJSON().getApkVersion().then((value) {
+                    list = value;
+                    uploadversionCode = list.first.versionCode;
+                    initPlatformState().then((value) {
+                      _projectCode = value;
+                      print('uploadversionCode1: ${uploadversionCode}');
+                      print('mobileversionCode1: ${_projectCode}');
+                      if (int.parse(uploadversionCode) == int.parse(_projectCode)) {
                         confirmationPopup(
                             context, 'Updated', 'No update available', 'OK');
-                      },
+                      } else if (int.parse(uploadversionCode) <
+                          int.parse(_projectCode)) {
+                        confirmationPopup(
+                            context, 'Updated', 'No update available', 'OK');
+                      } else {
+                        /*print(
+                        'FILE PULSE: ${new File("${dir}/pulse.apk").lengthSync()}');*/
+                        downloadFile();
+                        confirmationPopup(context, 'Updating...',
+                            'Your app is updating. Please wait...', 'OK');
+                      }
+                    });
+                  });
+
+                },
+              ),
+              downloading
+                  ? new Positioned(
+                      right: 11,
+                      top: 8,
+                      child: new Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: new BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 14,
+                          minHeight: 14,
+                        ),
+                        child: Text(
+                          '${progressString}',
+                          style: TextStyle(color: Colors.white, fontSize: 8),
+                        ),
+                      ),
                     )
+                  : FutureBuilder(
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text('');
+                          case ConnectionState.waiting:
+                            print('waiting');
+                            return CircularProgressIndicator();
+                          case ConnectionState.active:
+                            print('active');
+                            return CircularProgressIndicator();
+                          case ConnectionState.done:
+                            print('done');
+                            if (snapshot.hasData) {
+                              return snapshot.data;
+                            }
+                        }
+                        return Text('');
+                      },
+                    ),
             ],
           ),
           new Stack(
@@ -369,6 +408,8 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                   icon: Icon(Icons.notifications),
                   onPressed: () {
                     setState(() {
+                      MySharedPreferences.instance
+                          .setIntValue("count", countList[0].totCount);
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -422,6 +463,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             menuListData = snapshot.data;
+
             if (menuListData.length == 0) {
               showError('No Data Found', Icons.error);
             } else {
@@ -431,33 +473,37 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
             print('checking Error: ${snapshot.error}');
             if (snapshot.error is HttpException) {
               HttpException httpException = snapshot.error as HttpException;
-              return showError(httpException.message, Icons.error);
+              return showError(
+                  'An http error occured.Page not found. Please try again.',
+                  Icons.error);
             }
             if (snapshot.error is NoInternetException) {
               NoInternetException noInternetException =
                   snapshot.error as NoInternetException;
-              return showError('noInternetException.message', Icons.error);
+              return showError('Please check your internet connection',
+                  Icons.signal_wifi_connected_no_internet_4_sharp);
             }
             if (snapshot.error is NoServiceFoundException) {
               NoServiceFoundException noServiceFoundException =
                   snapshot.error as NoServiceFoundException;
-              return showError(noServiceFoundException.message, Icons.error);
+              return showError('Server Error.', Icons.error);
             }
             if (snapshot.error is InvalidFormatException) {
               InvalidFormatException invalidFormatException =
                   snapshot.error as InvalidFormatException;
-              return showError(invalidFormatException.message, Icons.error);
+              return showError(
+                  'There is a problem with your request.', Icons.error);
             }
             if (snapshot.error is SocketException) {
               SocketException socketException =
                   snapshot.error as SocketException;
               print('Socket checking: ${socketException.message}');
               return showError('Please check your internet connection',
-                  Icons.signal_wifi_connected_no_internet_4);
+                  Icons.signal_wifi_connected_no_internet_4_sharp);
             } else {
               UnknownException unknownException =
                   snapshot.error as UnknownException;
-              return showError(unknownException.message, Icons.error);
+              return showError('An Unknown error occured.', Icons.error);
             }
           }
           return Center(
@@ -485,13 +531,32 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Welcome $username',
-                    style: TextStyle(
-                      color: ReColors().appMainColor,
-                      fontSize: 20, // light
-                      fontWeight: FontWeight.bold, // italic
-                    ),
+                  child: Row(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          'Welcome $username',
+                          style: TextStyle(
+                            color: ReColors().appMainColor,
+                            fontSize: 20, // light
+                            fontWeight: FontWeight.bold, // italic
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          'v$_projectCode',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: ReColors().appMainColor,
+                            fontSize: 15, // light
+                            fontWeight: FontWeight.bold, // italic
+                          ),
+                        ),
+                      ))
+                    ],
                   ),
                 ),
                 Expanded(
@@ -511,6 +576,9 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                             // ignore: unrelated_type_equality_checks
                             Colors.white;
                             if (_cardsMenuItem.applicationId == 104) {
+                              print('Count1: ${countList[0].totCount}');
+                              MySharedPreferences.instance
+                                  .setIntValue("count", countList[0].totCount);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -563,7 +631,8 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                                                     CircularProgressIndicator(
                                                   strokeWidth: 2.0,
                                                 ),
-                                                imageUrl: _cardsMenuItem.logo,
+
+                                                imageUrl: 'https://artlive.artisticmilliners.com:8081${_cardsMenuItem.logo}',
                                                 height: 100,
                                                 width: 100,
                                               )),
@@ -619,6 +688,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
       onTap: () {
         setState(() {
           _refreshMenu();
+          _refreshCount();
         });
       },
       child: Center(
@@ -685,61 +755,3 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         ]).show();
   }
 }
-
-Future download2(Dio dio, String url, String savePath) async {
-  try {
-    Response response = await dio.get(
-      url,
-      onReceiveProgress: showDownloadProgress,
-      //Received data with List<int>
-      options: Options(
-          responseType: ResponseType.bytes,
-          followRedirects: false,
-          validateStatus: (status) {
-            return status < 500;
-          }),
-    );
-    print(response.headers);
-    File file = File(savePath);
-    var raf = file.openSync(mode: FileMode.write);
-    // response.data is List<int> type
-    raf.writeFromSync(response.data);
-    await raf.close();
-  } catch (e) {
-    print(e);
-  }
-}
-
-void showDownloadProgress(received, total) {
-  if (total != -1) {
-    print((received / total * 100).toStringAsFixed(0) + "%");
-  }
-}
-
-// Future<String> downloadFile(String url, String dir) async {
-//   HttpClient httpClient = new HttpClient();
-//   File file;
-//   String filePath = '';
-//   String myUrl = '';
-//
-//   try {
-//     myUrl = url;
-//     // myUrl = url+'/'+fileName;
-//     var request = await httpClient.getUrl(Uri.parse(myUrl));
-//     var response = await request.close();
-//     if (response.statusCode == 200) {
-//       var bytes = await consolidateHttpClientResponseBytes(response);
-//       Directory tempDir = await DownloadsPathProvider.downloadsDirectory;
-//       String tempPath = tempDir.path;
-//       filePath = tempPath + '/$dir';
-//       file = File(filePath);
-//       print('FILE : ${file}');
-//       await file.writeAsBytes(bytes);
-//     } else
-//       filePath = 'Error code: ' + response.statusCode.toString();
-//   } catch (ex) {
-//     filePath = 'Can not fetch url';
-//   }
-//
-//   return filePath;
-// }
