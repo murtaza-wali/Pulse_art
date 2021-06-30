@@ -28,7 +28,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  retrofit: ^2.0.0
   dio: ^4.0.0
   built_value: ^8.0.6
   json_annotation: ^4.0.1
@@ -36,8 +35,6 @@ dependencies:
   json_serializable: ^4.1.2
   built_value_generator: ^8.0.6
   http: ^0.13.3
-  device_info_plus: ^1.0.1
-  localstorage: ^4.0.0+1
   shared_preferences: ^2.0.6
   connectivity: ^3.0.6
   provider: ^5.0.0
@@ -45,15 +42,13 @@ dependencies:
   foldable_sidebar: ^1.0.0
   date_format: ^2.0.2
   intl: ^0.17.0
-  progress_state_button: ^1.0.3
   intro_views_flutter: ^3.1.1
-  back_button_interceptor: ^5.0.0
   rflutter_alert: ^2.0.2
+  back_button_interceptor: ^5.0.0
   scrollable_positioned_list: ^0.1.8
   sticky_grouped_list: ^1.3.0
   grouped_list: ^3.5.0
   avatar_view: ^1.0.0+4
-  sqflite: ^2.0.0+3
   path: ^1.8.0
   progress_dialog: ^1.2.4
   intro_slider: ^3.0.1
@@ -61,18 +56,10 @@ dependencies:
   permission: ^0.1.7
   path_provider: ^2.0.2
   permission_handler: ^8.1.1
-  onesignal_flutter: ^3.0.0
-  firebase_messaging: ^10.0.2
   open_file: ^3.2.1
   cached_network_image: ^3.0.0
-  future_progress_dialog: ^0.2.0
-  percent_indicator: ^3.0.1
   get_version: ^0.2.2
-
-
-
-
-
+  device_info_plus: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -99,15 +86,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/eapprovals.png
-    - assets/images/gatekeep_logo.png
-    - assets/images/isupplier.png
-    - assets/images/tcrm.png
-    - assets/images/dam.png
-    - assets/images/denim.png
-    - assets/images/denimcosting.png
-    - assets/images/jarvis.png
     - assets/images/artlogo.png
-    - assets/images/launcher_icon.png
     - assets/images/ess_logo.png
     - assets/images/signout_logo.png
     - assets/images/am_launchericon.png

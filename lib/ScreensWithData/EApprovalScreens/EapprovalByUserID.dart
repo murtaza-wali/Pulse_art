@@ -193,10 +193,10 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                     if (snapshot.error is InvalidFormatException) {
                       if (cunt == 0) {
                         print('Count2: ${cunt}');
-                        return showError("You haven't any pending approvals",
+                        return showError("You have no pending approvals at this time.",
                             Icons.pending_actions_sharp);
                       } else if (listTypeItem.length == 0) {
-                        return showError("You haven't any pending approvals",
+                        return showError("You have no pending approvals at this time.",
                             Icons.pending_actions_sharp);
                       } else {
                         print('Count3: ${cunt}');

@@ -19,7 +19,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:art/Gatepass/GatepassMenu.dart';
 import 'package:art/InternetConnection/Offline.dart';
 import 'package:art/Model/MenuCardsModel.dart';
 import 'package:flutter/services.dart';
@@ -586,11 +585,11 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                                           EapprovalByUSERID()),
                                   (Route<dynamic> route) => false);
                             } else if (_cardsMenuItem.applicationId == '105') {
-                              Navigator.push(
+                             /* Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Gatepass()),
-                              );
+                              );*/
                             }
                           },
                           child: Card(

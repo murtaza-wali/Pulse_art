@@ -54,6 +54,7 @@ android {
     }
     buildTypes {
         release {
+            shrinkResources true
             signingConfig signingConfigs.debug
         }
     }

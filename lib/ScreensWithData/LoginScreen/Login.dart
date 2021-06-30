@@ -1,5 +1,4 @@
 import 'package:art/InternetConnection/Offline.dart';
-import 'package:art/LocalStorage/DatabaseHandler.dart';
 import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/Model/LoginUser.dart';
 import 'package:art/ParsingJSON/GetJSONMethod.dart';
@@ -29,10 +28,8 @@ class _State extends State<Login> {
   String p_psw;
   GetJSON loginAuth;
   Item item;
-  user _user;
   bool _isHidden = true;
   bool _myBool = false;
-  DatabaseHandler handler;
 
   @override
   void initState() {
@@ -41,8 +38,6 @@ class _State extends State<Login> {
     _users = [];
     loginAuth = new GetJSON();
     item = new Item();
-    this.handler = DatabaseHandler();
-    this.handler.insertUser(_user);
 
   }
 
@@ -226,10 +221,6 @@ class _State extends State<Login> {
                         } else if (_myBool == true) {
                           loginStatus = 1;
                         }
-                        DatabaseHandler().insertUser(user(
-                            user_id: item.userId,
-                            user_name: name,
-                            status: loginStatus));
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -256,7 +247,8 @@ class _State extends State<Login> {
             )*/
               ],
             ),
-          ))),
+          ))
+      ),
     );
   }
 }
