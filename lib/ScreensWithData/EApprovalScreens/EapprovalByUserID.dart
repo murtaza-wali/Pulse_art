@@ -13,6 +13,7 @@ import 'package:art/ReuseableWidget/WillpopWidget.dart';
 import 'package:art/ScreensWithData/Menu/MainMenuPopup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'TransactionByID.dart';
 
@@ -110,10 +111,22 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
         },
         Title: 'E-Approval',
         refreshonPressed: () {
-          _refreshMenu().then((list) => setState(() {
-                listTypeItem = list;
-                print(listTypeItem.length);
-              }));
+          _refreshMenu().then((list) {
+            setState(() {
+              //list of user
+              listTypeItem = list;
+              print('list type item: ${listTypeItem.length}');
+              if (listTypeItem.length == 0) {
+                visible = false;
+                return showError(
+                    'No data found', Icons.assignment_late_outlined);
+              } else {
+                selectedSpinnerItem = listTypeItem.first.type;
+                spinnerId = listTypeItem.first.typeId;
+                visible = true;
+              }
+            });
+          });
         },
       ),
       body: Container(
@@ -193,10 +206,12 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                     if (snapshot.error is InvalidFormatException) {
                       if (cunt == 0) {
                         print('Count2: ${cunt}');
-                        return showError("You have no pending approvals at this time.",
+                        return showError(
+                            "You have no pending approvals at this time.",
                             Icons.pending_actions_sharp);
                       } else if (listTypeItem.length == 0) {
-                        return showError("You have no pending approvals at this time.",
+                        return showError(
+                            "You have no pending approvals at this time.",
                             Icons.pending_actions_sharp);
                       } else {
                         print('Count3: ${cunt}');
@@ -310,20 +325,15 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: <Widget>[
                                                     Text(
                                                       '${depReqItem.fromUserName}',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
+                                                      style: TextStyle(color: Colors.white),
                                                     ),
                                                     Text(
-                                                        '${getmonthName(depReqItem.sentDate.month)} ${depReqItem.sentDate.day}, ${depReqItem.sentDate.year}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white)),
+                                                        '${getmonthName(depReqItem.sentDate.month)} ${depReqItem.sentDate.day},${depReqItem.sentDate.year} ${DateFormat.jm().format(DateFormat("hh:mm:ss").parse('${depReqItem.sentDate.hour}:${depReqItem.sentDate.minute}:${depReqItem.sentDate.second} '))} ',
+                                                        style: TextStyle(color: Colors.white)),
                                                   ],
                                                 ),
                                                 Padding(

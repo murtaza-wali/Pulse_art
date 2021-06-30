@@ -48,7 +48,8 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  final apkUrl = "https://artlive.artisticmilliners.com:8081/ords/art/apis/apk/";
+  final apkUrl =
+      "https://artlive.artisticmilliners.com:8081/ords/art/apis/apk/";
   bool downloading = false;
   var progressString = "";
   List<ApkItem> list = [];
@@ -120,6 +121,13 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
         _projectCode = value;
         print('uploadversionCode1: ${uploadversionCode}');
         print('mobileversionCode1: ${_projectCode}');
+        if (int.parse(uploadversionCode) > int.parse(_projectCode)) {
+          confirmationPopup(
+              context,
+              'Update is ready',
+              'Please update you app for getting new features and bugfixes.',
+              'OK');
+        }
       });
     });
 
@@ -189,7 +197,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
   Future<void> deleteFile(File file) async {
     try {
       if (await file.exists()) {
-        await file.delete();
+        if (file.path.contains('pulse')) await file.delete();
       }
     } catch (e) {
       // Error in getting access to the file.
@@ -327,7 +335,8 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                       _projectCode = value;
                       print('uploadversionCode1: ${uploadversionCode}');
                       print('mobileversionCode1: ${_projectCode}');
-                      if (int.parse(uploadversionCode) == int.parse(_projectCode)) {
+                      if (int.parse(uploadversionCode) ==
+                          int.parse(_projectCode)) {
                         confirmationPopup(
                             context, 'Updated', 'No update available', 'OK');
                       } else if (int.parse(uploadversionCode) <
@@ -343,7 +352,6 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                       }
                     });
                   });
-
                 },
               ),
               downloading
@@ -585,7 +593,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                                           EapprovalByUSERID()),
                                   (Route<dynamic> route) => false);
                             } else if (_cardsMenuItem.applicationId == '105') {
-                             /* Navigator.push(
+                              /* Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Gatepass()),
@@ -630,8 +638,8 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                                                     CircularProgressIndicator(
                                                   strokeWidth: 2.0,
                                                 ),
-
-                                                imageUrl: 'https://artlive.artisticmilliners.com:8081${_cardsMenuItem.logo}',
+                                                imageUrl:
+                                                    'https://artlive.artisticmilliners.com:8081${_cardsMenuItem.logo}',
                                                 height: 100,
                                                 width: 100,
                                               )),

@@ -688,8 +688,14 @@ class _TransationByIDState extends State<TransactionByID> {
                 child: RaisedButton(
                     onPressed: () {
                       print('Accept ${getID},${h_id},${GettransID}');
-                      postJSON().postRemark(
-                          getID, h_id, 'A', GettransID, _controllers.text);
+                      if(_controllers.text==null){
+                        postJSON().postRemark(
+                            getID, h_id, 'A', GettransID, 'A');
+                      }else{
+                        postJSON().postRemark(
+                            getID, h_id, 'A', GettransID, _controllers.text);
+                      }
+
                       // _controllers[index].text
                       Navigator.pushReplacement(
                         context,
@@ -856,9 +862,16 @@ class _TransationByIDState extends State<TransactionByID> {
             padding: EdgeInsets.all(5),
             child: RaisedButton(
                 onPressed: () {
-                  print('Accept ${getID},${h_id},${GettransID}');
-                  postJSON().postRemark(
-                      getID, h_id, 'A', GettransID, _controllers.text);
+
+                  if(_controllers.text==''){
+                    print('Accept 1${getID},${h_id},${GettransID},${_controllers.text}');
+                    postJSON().postRemark(
+                        getID, h_id, 'A', GettransID, 'A');
+                  }else{
+                    print('Accept 2 ${getID},${h_id},${GettransID},${_controllers.text}');
+                    postJSON().postRemark(
+                        getID, h_id, 'A', GettransID, _controllers.text);
+                  }
                   // _controllers[index].text
                   setState(() {
                     _isloading = true;
@@ -905,8 +918,14 @@ class _TransationByIDState extends State<TransactionByID> {
             child: RaisedButton(
                 onPressed: () {
                   print('Reject ${getID},${h_id},${GettransID}');
-                  postJSON().postRemark(
-                      getID, h_id, 'R', GettransID, _controllers.text);
+                  if(_controllers.text==''){
+                    postJSON().postRemark(
+                        getID, h_id, 'R', GettransID, 'R');
+                  }else{
+                    postJSON().postRemark(
+                        getID, h_id, 'R', GettransID, _controllers.text);
+                  }
+
                   setState(() {
                     _isloading = true;
                     print('is loading?${_isloading}');
@@ -952,8 +971,14 @@ class _TransationByIDState extends State<TransactionByID> {
             child: RaisedButton(
                 onPressed: () {
                   print('Cancel ${getID},${h_id},${GettransID}');
-                  postJSON().postRemark(
-                      getID, h_id, 'C', GettransID, _controllers.text);
+                  if(_controllers.text==''){
+                    postJSON().postRemark(
+                        getID, h_id, 'C', GettransID, 'C');
+                  }else{
+                    postJSON().postRemark(
+                        getID, h_id, 'C', GettransID, _controllers.text);
+                  }
+
                   setState(() {
                     _isloading = true;
                     print('is loading?${_isloading}');
