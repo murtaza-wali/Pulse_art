@@ -24,7 +24,7 @@ class TransactionByID extends StatefulWidget {
 class _TransationByIDState extends State<TransactionByID> {
   List<DepReqItem> transactionList = [];
   int GettransID;
-  int getID;
+  int getID, typeid;
   int h_id;
   String dep_name, fromUser, des_name;
   String doc_no;
@@ -72,13 +72,20 @@ class _TransationByIDState extends State<TransactionByID> {
               print(getID);
             }));
     MySharedPreferences.instance
+        .getIntValue("typeID")
+        .then((value) => setState(() {
+              typeid = value;
+              print('TYPE ID${typeid}');
+            }));
+    MySharedPreferences.instance
         .getIntValue("hID")
         .then((value) => setState(() {
               h_id = value;
               print(h_id);
             }));
+
     MySharedPreferences.instance
-        .getIntValue("transactionID")
+        .getIntValue("notificationID")
         .then((value) => setState(() {
               GettransID = value;
               print('GettransID ${GettransID}');
@@ -99,6 +106,19 @@ class _TransationByIDState extends State<TransactionByID> {
 
   Future<dynamic> _refreshMenu() async {
     return await GetJSON().getTransationItemsById(GettransID);
+  }
+
+  bool editvisibility(int typeid) {
+    bool editVisible = false;
+    if (typeid == 14) {
+      print('is typeid false?${typeid}');
+      editVisible = false;
+    } else {
+      print('is typeid true?${typeid}');
+
+      editVisible = true;
+    }
+    return editVisible;
   }
 
   @override
@@ -352,17 +372,20 @@ class _TransationByIDState extends State<TransactionByID> {
                             )),
                             Expanded(
                                 child: Center(
-                              child: IconButton(
-                                color: Colors.white,
-                                icon: new Icon(Icons.edit),
-                                onPressed: () {
-                                  print('lineees ID${depReqItem.linesId}');
-                                  _displayQuantityDialog(
-                                      context,
-                                      depReqItem.approvedQuantity,
-                                      depReqItem.linesId,
-                                      depReqItem.itemDesc);
-                                },
+                              child: Visibility(
+                                visible: editvisibility(typeid),
+                                child: IconButton(
+                                  color: Colors.white,
+                                  icon: new Icon(Icons.edit),
+                                  onPressed: () {
+                                    print('lineees ID${depReqItem.linesId}');
+                                    _displayQuantityDialog(
+                                        context,
+                                        depReqItem.approvedQuantity,
+                                        depReqItem.linesId,
+                                        depReqItem.itemDesc);
+                                  },
+                                ),
                               ),
                             )),
                           ]),
@@ -529,7 +552,7 @@ class _TransationByIDState extends State<TransactionByID> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: qtyController,
-                              // ..text = quantity,
+                            // ..text = quantity,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Required Quantity',
@@ -632,17 +655,20 @@ class _TransationByIDState extends State<TransactionByID> {
                           SizedBox(width: 10),
                           Container(
                               child: Center(
-                                  child: IconButton(
-                            color: Colors.white,
-                            icon: new Icon(Icons.edit),
-                            onPressed: () {
-                              print('lineees ID${depReqItem.linesId}');
-                              _displayQuantityDialog(
-                                  context,
-                                  depReqItem.approvedQuantity,
-                                  depReqItem.linesId,
-                                  depReqItem.itemDesc);
-                            },
+                                  child: Visibility(
+                            visible: editvisibility(typeid),
+                            child: IconButton(
+                              color: Colors.white,
+                              icon: new Icon(Icons.edit),
+                              onPressed: () {
+                                print('lineees ID${depReqItem.linesId}');
+                                _displayQuantityDialog(
+                                    context,
+                                    depReqItem.approvedQuantity,
+                                    depReqItem.linesId,
+                                    depReqItem.itemDesc);
+                              },
+                            ),
                           )))
                           // Icon(Icons.arrow_forward_ios, color: Colors.blue),
                         ],
@@ -688,10 +714,10 @@ class _TransationByIDState extends State<TransactionByID> {
                 child: RaisedButton(
                     onPressed: () {
                       print('Accept ${getID},${h_id},${GettransID}');
-                      if(_controllers.text==null){
-                        postJSON().postRemark(
-                            getID, h_id, 'A', GettransID, 'A');
-                      }else{
+                      if (_controllers.text == null) {
+                        postJSON()
+                            .postRemark(getID, h_id, 'A', GettransID, 'A');
+                      } else {
                         postJSON().postRemark(
                             getID, h_id, 'A', GettransID, _controllers.text);
                       }
@@ -796,7 +822,8 @@ class _TransationByIDState extends State<TransactionByID> {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Text(
-                    'Document No. ${doc_no.toString()}',
+                    '${doc_no.toString()}',
+                    textAlign: TextAlign.right,
                     style: TextStyle(color: Colors.black, fontSize: 16),
                   ),
                 ),
@@ -862,13 +889,13 @@ class _TransationByIDState extends State<TransactionByID> {
             padding: EdgeInsets.all(5),
             child: RaisedButton(
                 onPressed: () {
-
-                  if(_controllers.text==''){
-                    print('Accept 1${getID},${h_id},${GettransID},${_controllers.text}');
-                    postJSON().postRemark(
-                        getID, h_id, 'A', GettransID, 'A');
-                  }else{
-                    print('Accept 2 ${getID},${h_id},${GettransID},${_controllers.text}');
+                  if (_controllers.text == '') {
+                    print(
+                        'Accept 1${getID},${h_id},${GettransID},${_controllers.text}');
+                    postJSON().postRemark(getID, h_id, 'A', GettransID, 'A');
+                  } else {
+                    print(
+                        'Accept 2 ${getID},${h_id},${GettransID},${_controllers.text}');
                     postJSON().postRemark(
                         getID, h_id, 'A', GettransID, _controllers.text);
                   }
@@ -918,10 +945,9 @@ class _TransationByIDState extends State<TransactionByID> {
             child: RaisedButton(
                 onPressed: () {
                   print('Reject ${getID},${h_id},${GettransID}');
-                  if(_controllers.text==''){
-                    postJSON().postRemark(
-                        getID, h_id, 'R', GettransID, 'R');
-                  }else{
+                  if (_controllers.text == '') {
+                    postJSON().postRemark(getID, h_id, 'R', GettransID, 'R');
+                  } else {
                     postJSON().postRemark(
                         getID, h_id, 'R', GettransID, _controllers.text);
                   }
@@ -971,10 +997,9 @@ class _TransationByIDState extends State<TransactionByID> {
             child: RaisedButton(
                 onPressed: () {
                   print('Cancel ${getID},${h_id},${GettransID}');
-                  if(_controllers.text==''){
-                    postJSON().postRemark(
-                        getID, h_id, 'C', GettransID, 'C');
-                  }else{
+                  if (_controllers.text == '') {
+                    postJSON().postRemark(getID, h_id, 'C', GettransID, 'C');
+                  } else {
                     postJSON().postRemark(
                         getID, h_id, 'C', GettransID, _controllers.text);
                   }
@@ -1048,7 +1073,7 @@ class _TransationByIDState extends State<TransactionByID> {
         itemCount: null == transactionList ? 0 : transactionList.length,
         itemBuilder: (BuildContext context, int index) {
           DepReqItem depReqItem = transactionList[index];
-          print('Result ${depReqItem}');
+          print('editVisible ${editvisibility(typeid)}');
           return Padding(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -1086,7 +1111,7 @@ class _TransationByIDState extends State<TransactionByID> {
                           Align(
                               alignment: Alignment.topLeft,
                               child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                padding: EdgeInsets.fromLTRB(10, 7, 0, 7),
                                 child: Text(
                                   depReqItem.itemDesc,
                                   style: TextStyle(
@@ -1098,17 +1123,20 @@ class _TransationByIDState extends State<TransactionByID> {
                             alignment: Alignment.topRight,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: IconButton(
-                                color: Colors.white,
-                                icon: new Icon(Icons.edit),
-                                onPressed: () {
-                                  print('lineees ID${depReqItem.linesId}');
-                                  _displayQuantityDialog(
-                                      context,
-                                      depReqItem.approvedQuantity,
-                                      depReqItem.linesId,
-                                      depReqItem.itemDesc);
-                                },
+                              child: Visibility(
+                                visible: editvisibility(typeid),
+                                child: IconButton(
+                                  color: Colors.white,
+                                  icon: new Icon(Icons.edit),
+                                  onPressed: () {
+                                    print('lineees ID${depReqItem.linesId}');
+                                    _displayQuantityDialog(
+                                        context,
+                                        depReqItem.approvedQuantity,
+                                        depReqItem.linesId,
+                                        depReqItem.itemDesc);
+                                  },
+                                ),
                               ),
                             ),
                           ))

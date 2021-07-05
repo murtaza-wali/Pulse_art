@@ -39,6 +39,8 @@ class DataByTypeitem {
     this.hid,
     this.departmentName,
     this.documentNumber,
+    this.notificationId,
+    this.forwarderRemarks,
   });
 
   String type;
@@ -50,6 +52,8 @@ class DataByTypeitem {
   int hid;
   String departmentName;
   String documentNumber;
+  int notificationId;
+  String forwarderRemarks;
 
   factory DataByTypeitem.fromJson(Map<String, dynamic> json) => DataByTypeitem(
     type: json["type"],
@@ -61,6 +65,8 @@ class DataByTypeitem {
     hid: json["hid"],
     departmentName: json["department_name"],
     documentNumber: json["document_number"],
+    notificationId: json["notification_id"],
+    forwarderRemarks: json["forwarder_remarks"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -73,6 +79,8 @@ class DataByTypeitem {
     "hid": hid,
     "department_name": departmentName,
     "document_number": documentNumber,
+    "notification_id": notificationId,
+    "forwarder_remarks": forwarderRemarks,
   };
 }
 

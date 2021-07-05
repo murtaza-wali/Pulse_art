@@ -32,7 +32,7 @@ class MySharedPreferences {
 
   Future<int> getIntValue(String key) async {
     SharedPreferences myPrefs = await SharedPreferences.getInstance();
-    return myPrefs.getInt(key) ?? "";
+    return myPrefs.getInt(key) ?? 0;
   }
 
   Future<bool> containsKey(String key) async {

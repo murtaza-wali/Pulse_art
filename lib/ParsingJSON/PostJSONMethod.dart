@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 class postJSON {
-  Future<String> postqty(int userId, qty, int lineID) async {
+  Future<String> postqty(int userId, qty, int cardID) async {
     var url = Uri.parse(BaseURL().Auth +
         'depreq' +
         '/' +
@@ -14,10 +14,9 @@ class postJSON {
         '/' +
         qty.toString() +
         '/' +
-        lineID.toString());
+        cardID.toString());
     print('POST URL${url}');
     final http.Response response = await http.post(url);
-    print('Response body: ${response.body}');
     print('Response status: ${response.statusCode}');
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -29,7 +28,7 @@ class postJSON {
   /*https://art.artisticmilliners.com:8081/ords/art/apis/approvals/deptreq/fwd/1110/134/R/50/abc*/
 
   Future<String> postRemark(
-      int userId, int hid, String status, int transID, String remark) async {
+      int userId, int hid, String status, int notifyID, String remark) async {
     var url = Uri.parse(BaseURL().Auth +
         'approvals' +
         '/' +
@@ -43,12 +42,11 @@ class postJSON {
         '/' +
         status +
         '/' +
-        transID.toString() +
+        notifyID.toString() +
         '/' +
         remark);
     print('POST URL${url}');
     final http.Response response = await http.post(url);
-    print('Response body: ${response.body}');
     print('Response status: ${response.statusCode}');
     if (response.statusCode == 200) {
       return json.encode(jsonDecode(response.body));

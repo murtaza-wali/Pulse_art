@@ -203,7 +203,8 @@ class _State extends State<Login> {
                         else if (_users.length == 0) {
                           confirmationPopup(context, "Error",
                               'Enter a valid Username and Password', "Ok");
-                        }
+                        }else{confirmationPopup(context, "Error",
+                            'Check Internet connection', "Ok");}
                       });
                       item = _users[0];
                       if (item != null) {

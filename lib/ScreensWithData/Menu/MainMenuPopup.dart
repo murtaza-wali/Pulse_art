@@ -344,8 +344,6 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                         confirmationPopup(
                             context, 'Updated', 'No update available', 'OK');
                       } else {
-                        /*print(
-                        'FILE PULSE: ${new File("${dir}/pulse.apk").lengthSync()}');*/
                         downloadFile();
                         confirmationPopup(context, 'Updating...',
                             'Your app is updating. Please wait...', 'OK');
@@ -543,6 +541,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                       Center(
                         child: Text(
                           'Welcome $username',
+                          maxLines: 2,
                           style: TextStyle(
                             color: ReColors().appMainColor,
                             fontSize: 20, // light
@@ -583,9 +582,12 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                             // ignore: unrelated_type_equality_checks
                             Colors.white;
                             if (_cardsMenuItem.applicationId == 104) {
-                              print('Count1: ${countList[0].totCount}');
-                              MySharedPreferences.instance
-                                  .setIntValue("count", countList[0].totCount);
+                              /*Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EapprovalByUSERID()),
+                                  (Route<dynamic> route) => false); */
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

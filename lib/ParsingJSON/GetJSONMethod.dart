@@ -6,8 +6,11 @@ import 'package:art/Error/Error.dart';
 import 'package:art/Model/ApkItem.dart';
 import 'package:art/Model/Count.dart';
 import 'package:art/Model/DatabyType.dart';
+import 'package:art/Model/DetailCards.dart';
 import 'package:art/Model/LoginUser.dart';
 import 'package:art/Model/MenuCardsModel.dart';
+import 'package:art/Model/testingModel.dart';
+import 'package:art/Model/testingline.dart';
 import 'package:art/Model/transactionByID.dart';
 import 'package:art/Model/typeModel.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +18,81 @@ import 'package:http/http.dart' as http;
 import '../Model/GPbyID.dart';
 
 class GetJSON {
+  Future<List<Lineitem>> getTestingline() async {
+    try {
+      // Uri.parse must when you are passing URL.
+      var gpURL = Uri.parse('https://artlive.artisticmilliners.com:8081/ords/art/apis/testcard/1');
+
+      final GPresult = await http.get(gpURL);
+
+      var parse = json.decode(GPresult.body);
+      print('line id${parse}');
+      var data = parse['items'] as List;
+
+      var GPmap = data.map<Lineitem>((json) => Lineitem.fromJson(json));
+      if (GPresult.statusCode == 200) {
+        print('line id${GPmap}');
+
+        return GPmap.toList();
+      } else if (GPresult.statusCode == 400) {
+        throw HttpException('400 Bad Request error');
+      } else if (GPresult.statusCode == 404) {
+        throw HttpException('404 NOT FOUND');
+      } else if (GPresult.statusCode == 503) {
+        throw HttpException('503 Service Unavailable error');
+      } else {
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
+      }
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
+    } catch (e) {
+      throw UnknownException(e.message);
+    }
+  }
+
+  Future<List<Testingitem>> getTestingCode() async {
+    try {
+      // Uri.parse must when you are passing URL.
+      var gpURL = Uri.parse('https://artlive.artisticmilliners.com:8081/ords/art/apis/testcard/1');
+
+      final GPresult = await http.get(gpURL);
+
+      var parse = json.decode(GPresult.body);
+      print('line id${parse}');
+      var data = parse['items'] as List;
+
+      var GPmap = data.map<Testingitem>((json) => Testingitem.fromJson(json));
+      if (GPresult.statusCode == 200) {
+        print('line id${GPmap}');
+
+        return GPmap.toList();
+      } else if (GPresult.statusCode == 400) {
+        throw HttpException('400 Bad Request error');
+      } else if (GPresult.statusCode == 404) {
+        throw HttpException('404 NOT FOUND');
+      } else if (GPresult.statusCode == 503) {
+        throw HttpException('503 Service Unavailable error');
+      } else {
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
+      }
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
+    } catch (e) {
+      throw UnknownException(e.message);
+    }
+  }
+
+
   Future<List<GPbyIDitem>> getGpItemsById(int userid) async {
     try {
       // Uri.parse must when you are passing URL.
@@ -53,6 +131,47 @@ class GetJSON {
     }
   }
 
+  Future<List<Detailcardsitem>> getTrasactionByNotifyId(int notifyID) async {
+    //https://art.artisticmilliners.com:8081/ords/art/apis/detailcard/:notf_id
+    try {
+      // Uri.parse must when you are passing URL.
+      var transactionURL = Uri.parse(BaseURL().Auth +
+          'detailcard' +
+          '/'+
+          notifyID.toString());
+
+      final transactionresult = await http.get(transactionURL);
+
+      var parse = json.decode(transactionresult.body);
+      var data = parse['items'] as List;
+
+      var Transactionmap =
+          data.map<Detailcardsitem>((json) => Detailcardsitem.fromJson(json));
+      if (transactionresult.statusCode == 200) {
+        print('data print: ${Transactionmap.toList()}');
+        return Transactionmap.toList();
+      } else if (transactionresult.statusCode == 400) {
+        throw HttpException('400 Bad Request error');
+      } else if (transactionresult.statusCode == 404) {
+        throw HttpException('404 NOT FOUND');
+      } else if (transactionresult.statusCode == 503) {
+        throw HttpException('503 Service Unavailable error');
+      } else {
+        throw HttpException(
+            'An http error occured.Page not found. Please try again.');
+      }
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
+    } on HttpException catch (e) {
+      throw NoServiceFoundException(e.message);
+    } on FormatException catch (e) {
+      throw InvalidFormatException(e.message);
+    } catch (e) {
+      throw UnknownException(e.message);
+    }
+  }
+
+
   Future<List<DepReqItem>> getTransationItemsById(int userid) async {
     try {
       // Uri.parse must when you are passing URL.
@@ -67,9 +186,11 @@ class GetJSON {
 
       var parse = json.decode(transactionresult.body);
       var data = parse['items'] as List;
+
       var Transactionmap =
           data.map<DepReqItem>((json) => DepReqItem.fromJson(json));
       if (transactionresult.statusCode == 200) {
+        print('data print: ${Transactionmap.toList()}');
         return Transactionmap.toList();
       } else if (transactionresult.statusCode == 400) {
         throw HttpException('400 Bad Request error');
