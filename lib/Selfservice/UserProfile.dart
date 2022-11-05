@@ -1,4 +1,12 @@
+import 'dart:io';
+
+import 'package:art/Error/Error.dart';
+import 'package:art/InternetConnection/Offline.dart';
+import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/Model/MaritalStatusModel.dart';
+import 'package:art/Model/ProfileData.dart';
+import 'package:art/Model/user_profile_mode.dart';
+import 'package:art/ParsingJSON/GetJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/CustomAppbarWidget.dart';
@@ -14,6 +22,32 @@ class UserProfile extends StatefulWidget {
 }
 
 class _userprofileState extends State<UserProfile> {
+  List<Items> profilelist;
+  int getID;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    MySharedPreferences.instance
+        .getIntValue("UserId")
+        .then((value) => setState(() {
+              getID = value;
+              print(getID);
+              GetJSON().getProfileData(getID).then((users) {
+                setState(() {
+                  //list of user
+                  profilelist = users;
+                  print(profilelist.length);
+                });
+              });
+            }));
+  }
+
+  Future<dynamic> _refreshMenu() async {
+    return await GetJSON().getProfileData(getID);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Willpopwidget().getWillScope(Scaffold(
@@ -26,12 +60,79 @@ class _userprofileState extends State<UserProfile> {
             );
           },
           Title: 'User Profile',
-        )
-        ,
-        body: profileView()));
+          refreshonPressed: () {
+            _refreshMenu().then((list) => setState(() {
+                  profilelist = list;
+                  print(profilelist.length);
+                }));
+          },
+        ),
+        body: ReuseOffline().getoffline(FutureBuilder<List<Items>>(
+          future: GetJSON().getProfileData(getID),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              profilelist = snapshot.data;
+              print('length: ${profilelist.length}');
+
+              return profileView(profilelist);
+            } else if (snapshot.hasError) {
+              print('checking Error: ${snapshot.error}');
+              if (snapshot.error is HttpException) {
+                HttpException httpException = snapshot.error as HttpException;
+                return showError(
+                    'An http error occurred.Page not found. Please try again.',
+                    Icons.error);
+              }
+              if (snapshot.error is NoInternetException) {
+                NoInternetException noInternetException =
+                    snapshot.error as NoInternetException;
+                return showError('Please check your internet connection',
+                    Icons.signal_wifi_connected_no_internet_4_sharp);
+              }
+              if (snapshot.error is NoServiceFoundException) {
+                NoServiceFoundException noServiceFoundException =
+                    snapshot.error as NoServiceFoundException;
+                return showError('Server Error.', Icons.error);
+              }
+              if (snapshot.error is InvalidFormatException) {
+                InvalidFormatException invalidFormatException =
+                    snapshot.error as InvalidFormatException;
+                return showError(
+                    'There is a problem with your request.', Icons.error);
+              }
+              if (snapshot.error is SocketException) {
+                SocketException socketException =
+                    snapshot.error as SocketException;
+                print('Socket checking: ${socketException.message}');
+                return showError('Please check your internet connection',
+                    Icons.signal_wifi_connected_no_internet_4_sharp);
+              } else {
+                UnknownException unknownException =
+                    snapshot.error as UnknownException;
+                return showError('An Unknown error occurred.', Icons.error);
+              }
+            }
+            return Center(
+                child: CircularProgressIndicator(
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(ReColors().appMainColor),
+            ));
+          },
+        ))));
   }
 
-  Widget profileView() {
+  stringtodatetime(dateTimeString) {
+    final dateTime =
+        DateTime.parse(dateTimeString.replaceFirst(RegExp(r'-\d\d:\d\d'), ''));
+
+    final format = DateFormat('dd-MM-yyyy');
+    final clockString = format.format(dateTime);
+
+    print(clockString);
+    return clockString;
+  }
+
+  Widget profileView(profilelist) {
     return Container(
       // decoration: Gradientbg().getMenubg(),
       child: Column(
@@ -77,8 +178,8 @@ class _userprofileState extends State<UserProfile> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                           child: Text(
-                            'Ammad Grami',
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                            '${profilelist[0].employeename}',
+                            style: TextStyle(color: Colors.white, fontSize: 18,fontFamily: 'headerfont'),
                           ),
                         ),
                       ),
@@ -87,8 +188,8 @@ class _userprofileState extends State<UserProfile> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                           child: Text(
-                            'Ammad Grami',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            '${profilelist[0].relation == null ? '' : profilelist[0].relation} ${profilelist[0].fathername == null ? '' : profilelist[0].fathername}',
+                            style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: 'headingfont'),
                           ),
                         ),
                       ),
@@ -97,8 +198,8 @@ class _userprofileState extends State<UserProfile> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
                           child: Text(
-                            'CIO',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            '${profilelist[0].employeecode == null ? '' : profilelist[0].employeecode}',
+                            style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: 'headingfont'),
                           ),
                         ),
                       ),
@@ -130,6 +231,7 @@ class _userprofileState extends State<UserProfile> {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
                                     child: Align(
@@ -140,7 +242,7 @@ class _userprofileState extends State<UserProfile> {
                                     child: Text(
                                       'Company Info',
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 20),
+                                          color: Colors.black, fontSize: 18,fontFamily: 'headerfont'),
                                     ),
                                   ),
                                 )),
@@ -166,19 +268,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Division :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].division == null ? '' : profilelist[0].division}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -201,19 +305,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Branch :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].branchname == null ? '' : profilelist[0].branchname}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -235,19 +341,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Unit :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].companyname == null ? '' : profilelist[0].companyname}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -269,19 +377,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Department :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].departmentName == null ? '' : profilelist[0].departmentName}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -303,19 +413,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Date of joining',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${stringtodatetime(profilelist[0].dateofjoining) == null ? '' : stringtodatetime(profilelist[0].dateofjoining)}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -337,21 +449,27 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Duration :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
-                                      Padding(
+                                      Expanded(child: Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].duration == null ? '' : profilelist[0].duration}',
+
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
-                                      ),
+                                      ),),
+
+
                                     ],
                                   ),
                                 ),
@@ -371,19 +489,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Designation :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].designationName == null ? '' : profilelist[0].designationName}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -421,34 +541,41 @@ class _userprofileState extends State<UserProfile> {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
+                                    flex: 7,
                                     child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: Text('Personal Data',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 20)),
-                                  ),
-                                )),
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 8, 10, 0),
+                                        child: Text('Personal Data',
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,fontFamily: 'headerfont')),
+                                      ),
+                                    )),
                                 Expanded(
+                                    flex: 3,
                                     child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: IconButton(
-                                      color: Colors.black,
-                                      icon: new Icon(Icons.edit),
-                                      onPressed: () {
-                                        _displayPersonalDataDialog(context,
-                                            'marital_status', 'CNICExpiry');
-                                      },
-                                    ),
-                                  ),
-                                )),
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 8, 10, 0),
+                                        /*child: IconButton(
+                                          color: Colors.black,
+                                          icon: new Icon(Icons.edit),
+                                          onPressed: () {
+                                            _displayPersonalDataDialog(context,
+                                                'marital_status', 'CNICExpiry');
+                                          },
+                                        ),*/
+                                      ),
+                                    )),
                               ],
                             ),
                             Padding(
@@ -458,19 +585,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Birth Day',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${stringtodatetime(profilelist[0].dateofbirth) == null ? '' : stringtodatetime(profilelist[0].dateofbirth)}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -494,19 +623,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'CNIC# ',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].nic == null ? '' : profilelist[0].nic}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -530,19 +661,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Nationality',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].nationality == null ? '' : profilelist[0].nationality}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -566,19 +699,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Marital Status',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].meritalstatus == null ? '' : profilelist[0].meritalstatus}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -602,19 +737,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Gender',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].gender == null ? '' : profilelist[0].gender}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -638,19 +775,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'CNIC Expiry',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${stringtodatetime(profilelist[0].cnicexpire) == null ? '' : stringtodatetime(profilelist[0].cnicexpire)}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -674,19 +813,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Religion :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].religion == null ? '' : profilelist[0].religion}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -726,32 +867,38 @@ class _userprofileState extends State<UserProfile> {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
+                                  flex: 7,
                                     child: Align(
                                   alignment: Alignment.topLeft,
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
                                     child: Text('Communication',
+                                        overflow:
+                                        TextOverflow.ellipsis,
+                                        softWrap: false,
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 20)),
+                                            color: Colors.black, fontSize: 18,fontFamily: 'headerfont')),
                                   ),
                                 )),
                                 Expanded(
+                                  flex: 3,
                                     child: Align(
                                   alignment: Alignment.topRight,
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: IconButton(
+                                    /*child: IconButton(
                                       color: Colors.black,
                                       icon: new Icon(Icons.edit),
                                       onPressed: () {
                                         _displayCommunicationDialog(context,
                                             'marital_status', 'CNICExpiry', '');
                                       },
-                                    ),
+                                    ),*/
                                   ),
                                 ))
                               ],
@@ -763,20 +910,23 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Email :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
+                                      Expanded(child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${profilelist[0].email == null ? '' : profilelist[0].email}',
+                                            maxLines: 2,
+                                            style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
+                                          )),
                                       ),
                                     ],
                                   ),
@@ -799,19 +949,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Mobile :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].mobile == null ? '' : profilelist[0].mobile}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -835,19 +987,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Phone :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].phone == null ? '' : profilelist[0].phone}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -887,6 +1041,7 @@ class _userprofileState extends State<UserProfile> {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
                                     child: Align(
@@ -896,7 +1051,7 @@ class _userprofileState extends State<UserProfile> {
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
                                     child: Text('Address',
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 20)),
+                                            color: Colors.black, fontSize: 18,fontFamily: 'headerfont')),
                                   ),
                                 )),
                                 Expanded(
@@ -905,14 +1060,14 @@ class _userprofileState extends State<UserProfile> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: IconButton(
+                                    /*child: IconButton(
                                       color: Colors.black,
                                       icon: new Icon(Icons.edit),
                                       onPressed: () {
                                         _displayAddressDialog(
                                             context, 'marital_status');
                                       },
-                                    ),
+                                    ),*/
                                   ),
                                 )),
                               ],
@@ -920,25 +1075,29 @@ class _userprofileState extends State<UserProfile> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
                               child: Container(
-                                height: 40,
+                                height: 70,
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Residence :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
+                                      Expanded(
+                                          child: Text(
+                                              '${profilelist[0].address == null ? '' : profilelist[0].address}',
+                                              maxLines: 6,
+                                              textAlign: TextAlign.right,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: false,
+                                              style: TextStyle(
+                                                  color: Colors.black,fontFamily: 'titlefont'))),
                                     ],
                                   ),
                                 ),
@@ -976,6 +1135,7 @@ class _userprofileState extends State<UserProfile> {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
                                     child: Align(
@@ -985,7 +1145,7 @@ class _userprofileState extends State<UserProfile> {
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
                                     child: Text('Education',
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 20)),
+                                            color: Colors.black, fontSize: 18,fontFamily: 'headerfont')),
                                   ),
                                 )),
                                 Expanded(
@@ -994,14 +1154,14 @@ class _userprofileState extends State<UserProfile> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                                    child: IconButton(
+                                   /* child: IconButton(
                                       color: Colors.black,
                                       icon: new Icon(Icons.edit),
                                       onPressed: () {
                                         _displayEducationDialog(
                                             context, 'marital_status');
                                       },
-                                    ),
+                                    ),*/
                                   ),
                                 )),
                               ],
@@ -1013,19 +1173,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'Qualification :',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          'B.S',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].qualification == null ? '' : profilelist[0].qualification}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -1065,6 +1227,7 @@ class _userprofileState extends State<UserProfile> {
                         child: Column(
                           children: <Widget>[
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
                                     child: Align(
@@ -1074,7 +1237,7 @@ class _userprofileState extends State<UserProfile> {
                                         const EdgeInsets.fromLTRB(10, 8, 10, 0),
                                     child: Text('Benefits',
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 20)),
+                                            color: Colors.black, fontSize: 18,fontFamily: 'headerfont')),
                                   ),
                                 )),
                                 /*Expanded(
@@ -1099,19 +1262,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'EOBI#',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].eobino == null ? '' : profilelist[0].eobino}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -1135,19 +1300,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'EOBI Date#',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].eobidate == null ? '' : stringtodatetime(profilelist[0].eobidate)}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -1171,19 +1338,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'SESSI#',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].sessino == null ? '' : profilelist[0].sessino}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -1207,19 +1376,21 @@ class _userprofileState extends State<UserProfile> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
                                           'SESSI Date#',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black,fontFamily: 'headingfont'),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                          '-',
-                                          style: TextStyle(color: Colors.black),
+                                          '${profilelist[0].sessidate == null ? '' : stringtodatetime(profilelist[0].sessidate)}',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'titlefont'),
                                         ),
                                       ),
                                     ],
@@ -1411,7 +1582,29 @@ class _userprofileState extends State<UserProfile> {
         });
   }
 
-  Future<void> _displayPersonalDataDialog(BuildContext context, String marital_status, String CNICExpiry) async {
+  String getmonthName(var mon) {
+    List months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'April',
+      'May',
+      'Jun',
+      'July',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    var someDateTime = new DateTime.now();
+    mon = someDateTime.month;
+    print(months[mon - 1]);
+    return months[mon - 1];
+  }
+
+  Future<void> _displayPersonalDataDialog(
+      BuildContext context, String marital_status, String CNICExpiry) async {
     _worklistnameModelDropdownList =
         _buildworklistnameModelDropdown(_worklistnameModelList);
     _worklistnameModel = _worklistnameModelList[0];
@@ -1606,6 +1799,33 @@ class _userprofileState extends State<UserProfile> {
           );
         });
   }
+}
+
+Widget showError(String message, key) {
+  return Column(
+    children: <Widget>[
+      Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Icon(
+                key,
+                size: 70,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              message,
+              style: TextStyle(fontSize: 18),
+            )
+          ],
+        ),
+      ),
+    ],
+  );
 }
 
 /**/

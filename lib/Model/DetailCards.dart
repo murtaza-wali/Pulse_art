@@ -44,7 +44,7 @@ class Detailcardsitem {
   String columnPrompt;
   String columnVal;
   int columnSequence;
-  int cardId;
+  double cardId;
   int linesId;
 
   factory Detailcardsitem.fromJson(Map<String, dynamic> json) => Detailcardsitem(
@@ -53,7 +53,7 @@ class Detailcardsitem {
     columnPrompt: json["column_prompt"],
     columnVal: json["column_val"],
     columnSequence: json["column_sequence"],
-    cardId: json["card_id"],
+    cardId: json["card_id"].toDouble(),
     linesId: json["lines_id"],
   );
 

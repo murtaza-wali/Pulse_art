@@ -266,7 +266,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                       HttpException httpException =
                           snapshot.error as HttpException;
                       return showError(
-                          'An http error occured.Page not found. Please try again.',
+                          'An http error occurred.Page not found. Please try again.',
                           Icons.error);
                     }
                     if (snapshot.error is SocketException) {
@@ -288,15 +288,15 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                       return showError('Server Error.', Icons.error);
                     }
                     if (snapshot.error is InvalidFormatException) {
-                      if (countList[0].totCount == 0) {
-                        print('Count2: ${countList.length}');
-                        loaderVisiblity = false;
-                        return showError(
-                            "You have no pending approvals at this time.",
-                            Icons.pending_actions_sharp);
-                      }else{
-
-                      }
+                      try {
+                        if (countList[0].totCount == 0) {
+                          print('Count2: ${countList.length}');
+                          loaderVisiblity = false;
+                          return showError(
+                              "You have no pending approvals at this time.",
+                              Icons.pending_actions_sharp);
+                        } else {}
+                      } catch (e) {}
                     }
                     if (snapshot.error is SocketException) {
                       SocketException socketException =
@@ -305,10 +305,29 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                       return showError('Please check your internet connection',
                           Icons.signal_wifi_connected_no_internet_4_sharp);
                     } else {
-                      UnknownException unknownException =
-                          snapshot.error as UnknownException;
+                      _refreshMenu().then((list) {
+                        setState(() {
+                          //list of user
+                          listTypeItem = list;
+                          print('list type item: ${listTypeItem.length}');
+                          if (listTypeItem.length == 0) {
+                            visible = false;
+                            return showError(
+                                'No data found', Icons.assignment_late_outlined);
+                          } else {
+                            selectedSpinnerItem = listTypeItem.first.type;
+                            spinnerId = listTypeItem.first.typeId;
+                            visible = true;
+                            if (spinnerId == 14) {
+                              print('typeID${spinnerId}');
+                              MySharedPreferences.instance.setIntValue("typeID", spinnerId);
+                            }
+                          }
+                        });
+                      });
                       return showError(
-                          'An Unknown error occured.', Icons.error);
+                          'An Unknown error occurred. Refresh your data.',
+                          Icons.error);
                     }
                   }
                   return Visibility(
@@ -354,8 +373,8 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                         "department", depReqItem.departmentName);
                     MySharedPreferences.instance
                         .setStringValue("description", depReqItem.subject);
-                    MySharedPreferences.instance
-                        .setStringValue("forwarder_remarks", depReqItem.forwarderRemarks);
+                    MySharedPreferences.instance.setStringValue(
+                        "forwarder_remarks", depReqItem.forwarderRemarks);
                     MySharedPreferences.instance
                         .setIntValue("hID", depReqItem.hid);
                     Navigator.push(
@@ -411,11 +430,12 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                 Text(
                                                   '${depReqItem.fromUserName}',
                                                   style: TextStyle(
-                                                      color: Colors.white),
+                                                      color: Colors.white,fontFamily: 'headingfont'),
                                                 ),
                                                 Text(
                                                     '${getmonthName(depReqItem.sentDate.month)} ${depReqItem.sentDate.day},${depReqItem.sentDate.year} ${DateFormat.jm().format(DateFormat("hh:mm:ss").parse('${depReqItem.sentDate.hour}:${depReqItem.sentDate.minute}:${depReqItem.sentDate.second} '))} ',
                                                     style: TextStyle(
+                                                        fontFamily: 'titlefont',
                                                         color: Colors.white)),
                                               ],
                                             ),
@@ -435,6 +455,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                         TextOverflow.ellipsis,
                                                     softWrap: false,
                                                     style: TextStyle(
+                                                        fontFamily: 'titlefont',
                                                         color: Colors.white),
                                                   )),
                                                   Expanded(
@@ -446,6 +467,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                               .ellipsis,
                                                           softWrap: false,
                                                           style: TextStyle(
+                                                              fontFamily: 'titlefont',
                                                               color: Colors
                                                                   .white))),
                                                 ],
@@ -465,6 +487,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                       TextOverflow.ellipsis,
                                                   softWrap: false,
                                                   style: TextStyle(
+                                                      fontFamily: 'titlefont',
                                                       color: Colors.white)),
                                             )
                                           ],
@@ -558,11 +581,13 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                 Text(
                                                   '${depReqItem.fromUserName}',
                                                   style: TextStyle(
+                                                      fontFamily: 'headingfont',
                                                       color: Colors.white),
                                                 ),
                                                 Text(
                                                     '${getmonthName(depReqItem.sentDate.month)} ${depReqItem.sentDate.day},${depReqItem.sentDate.year} ${DateFormat.jm().format(DateFormat("hh:mm:ss").parse('${depReqItem.sentDate.hour}:${depReqItem.sentDate.minute}:${depReqItem.sentDate.second} '))} ',
                                                     style: TextStyle(
+                                                        fontFamily: 'titlefont',
                                                         color: Colors.white)),
                                               ],
                                             ),
@@ -582,6 +607,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                         TextOverflow.ellipsis,
                                                     softWrap: false,
                                                     style: TextStyle(
+                                                        fontFamily: 'titlefont',
                                                         color: Colors.white),
                                                   )),
                                                   Expanded(
@@ -593,6 +619,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                               .ellipsis,
                                                           softWrap: false,
                                                           style: TextStyle(
+                                                              fontFamily: 'titlefont',
                                                               color: Colors
                                                                   .white))),
                                                 ],
@@ -612,6 +639,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
                                                       TextOverflow.ellipsis,
                                                   softWrap: false,
                                                   style: TextStyle(
+                                                      fontFamily: 'titlefont',
                                                       color: Colors.white)),
                                             )
                                           ],
@@ -649,6 +677,7 @@ class _EapprovalByUSERIDState extends State<EapprovalByUSERID> {
         ),
         Text(
           message,
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20),
         )
       ],

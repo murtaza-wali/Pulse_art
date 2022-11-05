@@ -148,7 +148,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
               if (snapshot.error is HttpException) {
                 HttpException httpException = snapshot.error as HttpException;
                 return showError(
-                    'An http error occured.Page not found. Please try again.',
+                    'An http error occurred.Page not found. Please try again.',
                     Icons.error);
               }
               if (snapshot.error is NoInternetException) {
@@ -177,7 +177,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
               } else {
                 UnknownException unknownException =
                     snapshot.error as UnknownException;
-                return showError('An Unknown error occured.', Icons.error);
+                return showError('An Unknown error occurred.', Icons.error);
               }
             }
             return Center(
@@ -210,21 +210,21 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
               Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(10, 3, 0, 3),
                     child: Text(
                       '${fromUser}',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
+                      style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'headingfont',),
                     ),
                   )),
               Expanded(
                   child: Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
                   child: Text(
                     '${doc_no}',
                     textAlign: TextAlign.right,
-                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'titlefont',),
                   ),
                 ),
               ))
@@ -233,28 +233,28 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
           Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(10, 3, 0, 3),
                 child: Text(
                   '${dep_name}',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'titlefont',),
                 ),
               )),
           Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(10, 3, 0, 3),
                 child: Text(
                   '${des_name}',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'titlefont',),
                 ),
               )),
           Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(10, 3, 0, 3),
                 child: Text(
                   '${frd_remarks}',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+                  style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'titlefont',),
                 ),
               ))
         ],
@@ -282,7 +282,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
             if (element.columnPrompt.contains("Item")) {
               print('checking${element.columnPrompt.contains("Item")}');
               return Container(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment(-0.9, -1),
@@ -308,7 +308,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                         Text(
                           '${element.columnPrompt}  ',
                           maxLines: 3,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,fontFamily: 'headingfont'),
                         ),
                         Expanded(
                             child: Text('${element.columnVal}',
@@ -316,7 +316,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                                 textAlign: TextAlign.right,
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false,
-                                style: TextStyle(color: Colors.white))),
+                                style: TextStyle(color: Colors.white,fontFamily: 'titlefont'))),
                       ],
                     ),
                     Divider(
@@ -361,15 +361,15 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                       children: <Widget>[
                         Text(
                           '${element.columnPrompt}',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,fontFamily: 'headingfont'),
                         ),
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Icon(
-                              Icons.cancel,
-                              color: Colors.green,
+                              Icons.check_circle,
+                              color: Colors.red,
                               size: 20,
                             ),
                           ),
@@ -417,15 +417,15 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                       children: <Widget>[
                         Text(
                           '${element.columnPrompt}',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white,fontFamily: 'headingfont'),
                         ),
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Align(
                             alignment: Alignment.topRight,
                             child: Icon(
-                              Icons.check_circle,
-                              color: Colors.red,
+                              Icons.cancel,
+                              color: Colors.green,
                               size: 20,
                             ),
                           ),
@@ -505,7 +505,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
             }
 
             return Container(
-              padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+              padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
               decoration: BoxDecoration(
                 // border: Border.all(color: Color(0xff940D5A)),
                 /*gradient: LinearGradient(
@@ -539,7 +539,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                       Text(
                         '${element.columnPrompt}  ',
                         maxLines: 6,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white,fontFamily: 'headingfont'),
                       ),
                       Expanded(
                           child: Text('${element.columnVal}',
@@ -547,7 +547,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                               textAlign: TextAlign.right,
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
-                              style: TextStyle(color: Colors.white))),
+                              style: TextStyle(color: Colors.white,fontFamily: 'titlefont'))),
                     ],
                   ),
                   Divider(
@@ -662,7 +662,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                       ),
                       Text(
                         "Accept",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white,fontFamily: 'headerfont'),
                       )
                     ],
                   ),
@@ -714,7 +714,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                       ),
                       Text(
                         "Reject",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white,fontFamily: 'headerfont'),
                       )
                     ],
                   ),
@@ -766,7 +766,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                       ),
                       Text(
                         "Cancel",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white,fontFamily: 'headerfont'),
                       )
                     ],
                   ),
@@ -812,7 +812,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'Update',
+              '',
               textAlign: TextAlign.center,
             ),
             content: SingleChildScrollView(
@@ -828,7 +828,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID> {
                             // ..text = quantity,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Required Quantity',
+                              labelText: 'Approve Quantity',
                             ),
                             onChanged: (Quantitytext) {
                               setState(() {

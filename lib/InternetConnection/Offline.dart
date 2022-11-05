@@ -23,10 +23,6 @@ class ReuseOffline {
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          /*Text(
-                                "ONLINE",
-                                style: TextStyle(color: Colors.white),
-                              ),*/
                         ],
                       )
                     : Row(

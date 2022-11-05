@@ -16,4 +16,7 @@ class appstring{
   final username = 'Username';
   final accept = 'Accept';
   final reject = 'Reject';
+  final support = 'Support';
+  final AppID = '8c0c4728-eedc-4ed6-85cf-87a61e404368';
+  final RestAPI = 'YmQ2ZWJhZjYtYzdkZC00ZmFmLTlmZjktODcxNDg2YTkwODI3';
 }

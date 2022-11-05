@@ -1,73 +1,123 @@
-import 'dart:convert';
+// To parse this JSON data, do
+//
+//     final user = userFromJson(jsonString);
+/// items : [{"user_id":"5118","user_name":"ERPDEV5","empname":"Taha Siddiqui","dept":"I.T (E.R.P)","rtn_val":0}]
+/// first : {"$ref":"https://artlive.artisticmilliners.com:8081/ords/art/apis/auth/erpdev5/TJ182021"}
+/// Loginitems : [{"user_id":"5118","user_name":"ERPDEV5","empname":"Taha Siddiqui","dept":"I.T (E.R.P)","rtn_val":0}]
+/// first : {"$ref":"https://artlive.artisticmilliners.com:8081/ords/art/apis/auth/erpdev5/TJ182021"}
 
-LoginUser loginUserFromJson(String str) => LoginUser.fromJson(json.decode(str));
+class LOGINitem {
+  List<Loginitems> _loginitems;
+  First _first;
 
-String loginUserToJson(LoginUser data) => json.encode(data.toJson());
+  List<Loginitems> get loginitems => _loginitems;
+  First get first => _first;
 
-class LoginUser {
-  LoginUser({
-    this.items,
-    this.first,
-  });
+  LOGINitem({
+    List<Loginitems> loginitems,
+    First first}){
+    _loginitems = loginitems;
+    _first = first;
+  }
 
-  List<Item> items;
-  First first;
+  LOGINitem.fromJson(dynamic json) {
+    if (json["Loginitems"] != null) {
+      _loginitems = [];
+      json["Loginitems"].forEach((v) {
+        _loginitems.add(Loginitems.fromJson(v));
+      });
+    }
+    _first = json["first"] != null ? First.fromJson(json["first"]) : null;
+  }
 
-  factory LoginUser.fromJson(Map<String, dynamic> json) => LoginUser(
-        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-        first: First.fromJson(json["first"]),
-      );
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    if (_loginitems != null) {
+      map["Loginitems"] = _loginitems.map((v) => v.toJson()).toList();
+    }
+    if (_first != null) {
+      map["first"] = _first.toJson();
+    }
+    return map;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
-        "first": first.toJson(),
-      };
 }
+
+/// $ref : "https://artlive.artisticmilliners.com:8081/ords/art/apis/auth/erpdev5/TJ182021"
 
 class First {
+  String _$ref;
+
+  String get $ref => _$ref;
+
   First({
-    this.ref,
-  });
+    String $ref}){
+    _$ref = $ref;
+  }
 
-  String ref;
+  First.fromJson(dynamic json) {
+    _$ref = json["\u0024ref"];
+  }
 
-  factory First.fromJson(Map<String, dynamic> json) => First(
-        ref: json["\u0024ref"],
-      );
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["\u0024ref"] = _$ref;
+    return map;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "\u0024ref": ref,
-      };
 }
 
-class Item {
-  Item({
-    this.userId,
-    this.userName,
-    this.empname,
-    this.dept,
-  });
+/// user_id : "5118"
+/// user_name : "ERPDEV5"
+/// empname : "Taha Siddiqui"
+/// dept : "I.T (E.R.P)"
+/// rtn_val : 0
 
-  int userId;
-  String userName;
-  String empname;
-  String dept;
+class Loginitems {
+  String _userId;
+  String _userName;
+  String _empname;
+  String _dept;
+  int _rtnVal;
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
-        userId: json["user_id"],
-        userName: json["user_name"],
-        empname: json["empname"],
-        dept: json["dept"],
-      );
+  String get userId => _userId;
+  String get userName => _userName;
+  String get empname => _empname;
+  String get dept => _dept;
+  int get rtnVal => _rtnVal;
 
-  Map<String, dynamic> toJson() => {
-        "user_id": userId,
-        "user_name": userName,
-        "empname": empname,
-        "dept": dept,
-      };
+  Loginitems({
+    String userId,
+    String userName,
+    String empname,
+    String dept,
+    int rtnVal}){
+    _userId = userId;
+    _userName = userName;
+    _empname = empname;
+    _dept = dept;
+    _rtnVal = rtnVal;
+  }
+
+  Loginitems.fromJson(dynamic json) {
+    _userId = json["user_id"];
+    _userName = json["user_name"];
+    _empname = json["empname"];
+    _dept = json["dept"];
+    _rtnVal = json["rtn_val"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["user_id"] = _userId;
+    map["user_name"] = _userName;
+    map["empname"] = _empname;
+    map["dept"] = _dept;
+    map["rtn_val"] = _rtnVal;
+    return map;
+  }
+
 }
-
 class user {
   user({
     this.id,
@@ -91,4 +141,3 @@ class user {
     return {'id': id, 'user_id': user_id, 'name': user_name, 'status': status};
   }
 }
-

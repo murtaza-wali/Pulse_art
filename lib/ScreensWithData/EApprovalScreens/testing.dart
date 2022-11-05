@@ -102,7 +102,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
               if (snapshot.error is HttpException) {
                 HttpException httpException = snapshot.error as HttpException;
                 return showError(
-                    'An http error occured.Page not found. Please try again.',
+                    'An http error occurred.Page not found. Please try again.',
                     Icons.error);
               }
               if (snapshot.error is NoInternetException) {
@@ -131,7 +131,7 @@ class _EapprovalGPstate extends State<EapprovalGP> {
               } else {
                 UnknownException unknownException =
                     snapshot.error as UnknownException;
-                return showError('An Unknown error occured.', Icons.error);
+                return showError('An Unknown error occurred.', Icons.error);
               }
             }
             return Center(

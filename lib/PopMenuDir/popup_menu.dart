@@ -20,9 +20,9 @@ abstract class MenuItemProvider {
 }
 
 class MenuItem extends MenuItemProvider {
-  Widget image; // 图标名称
-  String title; // 菜单标题
-  var userInfo; // 额外的菜单荐信息
+  Widget image;
+  String title;
+  var userInfo;
   TextStyle textStyle;
   TextAlign textAlign;
 
@@ -37,7 +37,7 @@ class MenuItem extends MenuItemProvider {
 
   @override
   TextStyle get menuTextStyle =>
-      textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 13.0);
+      textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 12.0,fontFamily: 'titlefont');
 
   @override
   TextAlign get menuTextAlign => textAlign ?? TextAlign.center;
@@ -178,16 +178,12 @@ class PopupMenu {
   }
 
   double menuWidth() {
-    print('itemWidth * _col $itemWidth * _col');
-    print('_col $_col');
     _col = 1;
     return itemWidth * _col;
   }
 
   // This height exclude the arrow
   double menuHeight() {
-    print('itemWidth * _row $itemWidth * _row');
-    print('_row $_row');
     _row = 2;
     return itemHeight * _row;
   }
@@ -199,12 +195,6 @@ class PopupMenu {
         onTap: () {
           dismiss();
         },
-//        onTapDown: (TapDownDetails details) {
-//          dismiss();
-//        },
-        // onPanStart: (DragStartDetails details) {
-        //   dismiss();
-        // },
         onVerticalDragStart: (DragStartDetails details) {
           dismiss();
         },
@@ -306,13 +296,10 @@ class PopupMenu {
     int itemCount = items.length;
 
     if (_calculateColCount() == 1) {
-      print('_calculateColCount $_calculateColCount');
       return itemCount;
     }
 
     int row = (itemCount - 1) ~/ _calculateColCount() + 1;
-    print('row $row');
-
     return row;
   }
 
@@ -325,29 +312,22 @@ class PopupMenu {
 
     int itemCount = items.length;
     if (_maxColumn != 4 && _maxColumn > 0) {
-      print('max $_maxColumn');
-      print('item $itemCount');
       return _maxColumn;
     }
 
     if (itemCount == 4) {
-      print('0 $itemCount');
-      // 4个显示成两行
       return 2;
     }
 
     if (itemCount <= _maxColumn) {
-      print('1 $itemCount');
       return itemCount;
     }
 
     if (itemCount == 5) {
-      print('2 $itemCount');
       return 3;
     }
 
     if (itemCount == 6) {
-      print('3 $itemCount');
       return 3;
     }
 
@@ -453,7 +433,7 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
           widget.clickCallback(widget.item);
         }
       },
-      child: Container(
+      child:  Container(
           width: PopupMenu.itemWidth,
           height: PopupMenu.itemHeight,
           decoration: BoxDecoration(
@@ -470,26 +450,26 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
   Widget _createContent() {
     if (widget.item.menuImage != null) {
       // image and text
-
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: 30.0,
-            height: 30.0,
-            child: widget.item.menuImage,
-          ),
-          Container(
-            child: Material(
-              color: Colors.transparent,
-              child: Text(
-                widget.item.menuTitle,
-                style: widget.item.menuTextStyle,
-              ),
+      return 
+        Padding(padding: EdgeInsets.all(10),child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: 30.0,
+              height: 30.0,
+              child: widget.item.menuImage,
             ),
-          )
-        ],
-      );
+            Container(
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  widget.item.menuTitle,
+                  style: widget.item.menuTextStyle,
+                ),
+              ),
+            )
+          ],
+        ),);
     } else {
       // only text
       return Container(

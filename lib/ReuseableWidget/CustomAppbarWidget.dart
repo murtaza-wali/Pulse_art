@@ -2,12 +2,12 @@ import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   VoidCallback onPressed;
   VoidCallback refreshonPressed;
   String Title;
 
-  CustomAppBar({this.onPressed, this.Title,this.refreshonPressed});
+  CustomAppBar({this.onPressed, this.Title, this.refreshonPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
             height: 20,
           ),
           Container(
-              padding: const EdgeInsets.all(8.0), child: Text(Title))
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                Title,
+                overflow: TextOverflow.ellipsis,
+
+                softWrap: false,
+                style: TextStyle( fontFamily: 'headerfont'),
+              ))
         ],
       ),
       shape: RoundedRectangleBorder(

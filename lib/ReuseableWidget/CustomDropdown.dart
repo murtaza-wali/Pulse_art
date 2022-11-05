@@ -4,6 +4,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>> dropdownMenuItemList;
   final ValueChanged<T> onChanged;
   final T value;
+  final String hint;
   final bool isEnabled;
   final Color color;
 
@@ -12,6 +13,7 @@ class CustomDropdown<T> extends StatelessWidget {
     this.dropdownMenuItemList,
     this.onChanged,
     @required this.value,
+    @required this.hint,
     this.isEnabled = true,
     this.color,
   }) : super(key: key);
@@ -34,9 +36,12 @@ class CustomDropdown<T> extends StatelessWidget {
             isExpanded: true,
             itemHeight: 50.0,
             style: TextStyle(
+              fontFamily: 'headingfont',
                 fontSize: 15.0, color: isEnabled ? color : Colors.grey[700]),
             items: dropdownMenuItemList,
             onChanged: onChanged,
+            hint: Text(hint,style:  TextStyle(
+                color: Color(0xff055e8e), fontFamily: 'headingfont'),),
             value: value,
           ),
         ),

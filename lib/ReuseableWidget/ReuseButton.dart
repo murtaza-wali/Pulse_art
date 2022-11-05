@@ -40,7 +40,7 @@ class ReuseButton extends StatelessWidget {
             child: Text(
               buttonText,
               textAlign: TextAlign.center,
-              style: TextStyle(color: ReColors().appMainColor, fontSize: 15),
+              style: TextStyle(color: ReColors().appMainColor, fontSize: 15,fontFamily: 'headerfont'),
             ),
           ),
         ),
@@ -93,7 +93,7 @@ class ReuseTwoButton extends StatelessWidget {
                 child: Text(
                   firstbuttonText,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 15,fontFamily: 'headerfont'),
                 ),
               ),
             ),
@@ -128,7 +128,7 @@ class ReuseTwoButton extends StatelessWidget {
                 child: Text(
                   secondbuttonText,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 15,fontFamily: 'headerfont'),
                 ),
               ),
             ),

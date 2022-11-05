@@ -10,7 +10,6 @@ import 'package:art/ParsingJSON/PostJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:art/ReuseableValues/ReStrings.dart';
 import 'package:art/ReuseableWidget/CustomAppbarWidget.dart';
-import 'package:art/ReuseableWidget/GradientBG.dart';
 import 'package:art/ReuseableWidget/WillpopWidget.dart';
 import 'package:art/ScreensWithData/EApprovalScreens/EapprovalByUserID.dart';
 import 'package:flutter/cupertino.dart';
@@ -160,7 +159,7 @@ class _TransationByIDState extends State<TransactionByID> {
             if (snapshot.error is HttpException) {
               HttpException httpException = snapshot.error as HttpException;
               return showError(
-                  'An http error occured.Page not found. Please try again.',
+                  'An http error occurred.Page not found. Please try again.',
                   Icons.error);
             }
             if (snapshot.error is NoInternetException) {
@@ -189,7 +188,7 @@ class _TransationByIDState extends State<TransactionByID> {
             } else {
               UnknownException unknownException =
                   snapshot.error as UnknownException;
-              return showError('An Unknown error occured.', Icons.error);
+              return showError('An Unknown error occurred.', Icons.error);
             }
           }
           return Center(
@@ -813,7 +812,7 @@ class _TransationByIDState extends State<TransactionByID> {
                     padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                     child: Text(
                       fromUser,
-                      style: TextStyle(color: Colors.black, fontSize: 16),
+                      style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'headingfont',),
                     ),
                   )),
               Expanded(
@@ -824,7 +823,7 @@ class _TransationByIDState extends State<TransactionByID> {
                   child: Text(
                     '${doc_no.toString()}',
                     textAlign: TextAlign.right,
-                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    style: TextStyle(color: Colors.black, fontSize: 16,fontFamily: 'titlefont',),
                   ),
                 ),
               ))
