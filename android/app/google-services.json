@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "843503947093",
+    "project_id": "art-notifications-2dc95",
+    "storage_bucket": "art-notifications-2dc95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843503947093:android:b2d42ac9dbeb81dff773dc",
+        "android_client_info": {
+          "package_name": "am.art.art"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843503947093-uqkcvttmf7u1atdqgenrbbchrcv2lb8r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "am.art.art",
+            "certificate_hash": "eea1e4d6b6323ca10af234cdae95534a9f6c9b79"
+          }
+        },
+        {
+          "client_id": "843503947093-tuvorvagdk7shjr5ktrlt5k49g18pfb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKs6q1ADsflQShIDjJY17POplonwhqxHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843503947093-tuvorvagdk7shjr5ktrlt5k49g18pfb9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
