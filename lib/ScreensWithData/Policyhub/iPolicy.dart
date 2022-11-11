@@ -167,7 +167,7 @@ class _IPolicyHubstate extends State<IPolicyHub> {
               child: Text(
                 value.categoryTitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: ReColors().appButtonColor),
               ),
             ),
           ),
@@ -196,7 +196,7 @@ class _IPolicyHubstate extends State<IPolicyHub> {
                   child: ListTile(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-                    leading: Icon(Icons.folder),
+                    leading: Icon(Icons.picture_as_pdf,color: ReColors().appMainColor,),
                     title: Text(element.title),
                   ),
                 ),

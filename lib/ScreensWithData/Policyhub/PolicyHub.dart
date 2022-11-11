@@ -7,6 +7,8 @@ import 'package:art/ReuseableWidget/WillpopWidget.dart';
 import 'package:art/ScreensWithData/Policyhub/iPolicy.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 
 class policyhub extends StatefulWidget {
@@ -21,7 +23,14 @@ class _policyhubState extends State<policyhub> {
   String employeeCode;
   bool _isLoading = true;
  // PDFDocument document;
+
+
+
+  PDFView pdfView;
+
+  PDF pdf;
   String cdt, docNo, attachmentfile;
+
 
   @override
   void initState() {
@@ -38,22 +47,26 @@ class _policyhubState extends State<policyhub> {
                             .getStringValue("attachmentFile")
                             .then((name) => setState(() {
                                   attachmentfile = name;
-                                 /* LoadPDF(
+                                  LoadPDF('https://artlive.artisticmilliners.com:8081/policyhub/${cdt}/${docNo}/${attachmentfile}');
 
-                                      'https://artlive.artisticmilliners.com:8081/policyhub/${cdt}/${docNo}/${attachmentfile}');*/
+                                  setState(() {
 
+
+                                    aniHoleCode =   'https://artlive.artisticmilliners.com:8081/policyhub/${cdt}/${docNo}/${attachmentfile}';
+                                    print(aniHoleCode);
+                                  });
                                 }));
+
                       }));
             }));
   }
 
-/*  LoadPDF(String url) async {
+  LoadPDF(String url) async {
     setState(() => _isLoading = true);
-    document = await PDFDocument.fromURL(
-      url,
-    );
+     PDF().cachedFromUrl(url);
     setState(() => _isLoading = false);
-  }*/
+  }
+
 
   Widget chip(String label) {
     return Row(
@@ -70,7 +83,7 @@ class _policyhubState extends State<policyhub> {
       ],
     );
   }
-
+  String aniHoleCode = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,17 +99,14 @@ class _policyhubState extends State<policyhub> {
           image_bar: 'assets/images/policymanage_logo.png',
         ),
         body: Willpopwidget().getWillScope(Center(
-          child: Text('PDF need to be done'))
-    /*_isLoading
+          child: _isLoading
               ? Center(child: CircularProgressIndicator(valueColor:
           AlwaysStoppedAnimation<Color>(ReColors().appMainColor),))
-              : PDFViewer(
-                  document: document,
-                  zoomSteps: 1,
-
-          ),
-        )*/
-
+              : PDF(
+              nightMode: true,
+            fitPolicy: FitPolicy.BOTH
+          ).cachedFromUrl(aniHoleCode)
+        )
         ));
   }
 }

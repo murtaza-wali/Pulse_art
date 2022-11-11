@@ -2,7 +2,10 @@ import 'package:art/APIUri/BaseUrl.dart';
 import 'package:art/LocalStorage/MySharedPref.dart';
 import 'package:art/ReuseableWidget/CustomAppbarWithImage.dart';
 import 'package:art/ReuseableWidget/WillpopWidget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 //import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 
 import '../TransactionLineScreen.dart';
@@ -15,8 +18,11 @@ class AttachmentsScreenApp extends StatefulWidget {
 class _AttachmentsScreenState extends State<AttachmentsScreenApp> {
   bool _isLoading = true;
  // PDFDocument document;
+
+  PDFView pdfView;
   String BaseUrl = BaseURL().Auth;
   int id;
+
 
   @override
   void initState() {
@@ -25,11 +31,16 @@ class _AttachmentsScreenState extends State<AttachmentsScreenApp> {
         setState(() {
               id = name;
               loadDocument(id);
+              print('id is ${id}');
+              fileid = id;
             }));
     //
   }
 
   loadDocument(int id_) async {
+
+      PDF().cachedFromUrl(BaseUrl + "approval/attachements/" + id_.toString());
+
    // document = await PDFDocument.fromURL(
      // BaseUrl + "approval/attachements/" + id_.toString(),
       /* cacheManager: CacheManager(
@@ -41,9 +52,10 @@ class _AttachmentsScreenState extends State<AttachmentsScreenApp> {
         ), */
     //);
 
-    setState(() => _isLoading = false);
+  //  setState(() => _isLoading = false);
   }
 
+  int fileid;
   @override
   Widget build(BuildContext context) {
     return Willpopwidget().getWillScope(Scaffold(
@@ -60,51 +72,8 @@ class _AttachmentsScreenState extends State<AttachmentsScreenApp> {
         image_bar: 'assets/images/eapprovals.png',
       ),
       body: Center(
-        child: Text('PDF')
-        /*_isLoading
-            ? Center(child: CircularProgressIndicator())
-            : PDFViewer(
-                document: document,
-                zoomSteps: 1,
-                //uncomment below line to preload all pages
-                // lazyLoad: false,
-                // uncomment below line to scroll vertically
-                // scrollDirection: Axis.vertical,
-
-                //uncomment below code to replace bottom navigation with your own
-                *//* navigationBuilder:
-                      (context, page, totalPages, jumpToPage, animateToPage) {
-                    return ButtonBar(
-                      alignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.first_page),
-                          onPressed: () {
-                            jumpToPage()(page: 0);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () {
-                            animateToPage(page: page - 2);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.arrow_forward),
-                          onPressed: () {
-                            animateToPage(page: page);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.last_page),
-                          onPressed: () {
-                            jumpToPage(page: totalPages - 1);
-                          },
-                        ),
-                      ],
-                    );
-                  }, *//*
-              ),*/
+        child:
+             PDF().cachedFromUrl(BaseUrl + "approval/attachements/" + fileid.toString()),
       ),
     ));
   }

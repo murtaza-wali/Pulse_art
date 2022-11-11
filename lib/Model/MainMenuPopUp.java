@@ -783,6 +783,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                 style: TextStyle(
                   color: ReColors().appMainColor,
                   fontSize: 17.0,
+
                   fontFamily: 'headingfont',
                 ),
               ),

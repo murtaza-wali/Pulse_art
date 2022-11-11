@@ -33,37 +33,54 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final leave_request = new LeaveRequest1();
   // final Employee_attendance_correction = new UnderdevelopmentPage();
   final Employee_attendance_correction = new AttendanceCorrection();
-  Widget homeShow = AttendanceApprovalScreen();
+  Widget homeShow = UserProfile();
+  // Widget homeShow = AttendanceApprovalScreen();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+  //
+  // case 0:
+  // return attendanceCorrectionscreen;
+  // break;
+  //
+  // case 1:
+  // return userprofile;
+  // break;
+  // case 2:
+  // return attendence;//attendence;
+  // break;
+  // case 3:
+  // return organgram;
+  // break;
+  // case 4:
+  // return Employee_performance;
+  // break;
+  // case 5:
+  // return leave_request;
+  // break;
+  // case 6:
+  // return Employee_attendance_correction;
+  // break;
+  // default:
+  // return homeShow;
+
 
   Widget _pageChooser(int page) {
     switch (page) {
       case 0:
-        return attendanceCorrectionscreen;
-        break;
-
-      case 1:
         return userprofile;
         break;
+      case 1:
+        return attendence;
+        break;
       case 2:
-        return attendence;//attendence;
+        return organgram;//attendence;
         break;
       case 3:
-        return organgram;
-        break;
-      case 4:
         return Employee_performance;
-        break;
-      case 5:
-        return leave_request;
-        break;
-      case 6:
-        return Employee_attendance_correction;
         break;
       default:
         return homeShow;
@@ -86,7 +103,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               color: Colors.white,
             ),
             Icon(
-              Icons.perm_contact_calendar,
+              Icons.inventory_outlined,
               size: 25,
               color: Colors.white,
             ),
@@ -100,22 +117,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
               color: Colors.white,
               size: 25,
             ),
-            FaIcon(
-              FontAwesomeIcons.calendarCheck,
-              color: Colors.white,
-
-              size: 25,
-            ),
-            FaIcon(
-              FontAwesomeIcons.book,
-              color: Colors.white,
-              size: 25,
-            ),
-            FaIcon(
-              FontAwesomeIcons.book,
-              color: Colors.white,
-              size: 25,
-            ),
+            // FaIcon(
+            //   FontAwesomeIcons.calendarCheck,
+            //   color: Colors.white,
+            //
+            //   size: 25,
+            // ),
+            // FaIcon(
+            //   FontAwesomeIcons.book,
+            //   color: Colors.white,
+            //   size: 25,
+            // ),
+            // FaIcon(
+            //   FontAwesomeIcons.book,
+            //   color: Colors.white,
+            //   size: 25,
+            // ),
           ],
           color: ReColors().appMainColor,
           buttonBackgroundColor: ReColors().appMainColor,

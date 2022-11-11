@@ -846,7 +846,7 @@ class _EmployeeAttendance extends State<EmployeeAttendance> {
                 Container(
                   child: Center(
                       child: Text(
-                    'Attendence Date: ${attendence_selected_date_list?.length > 0 ? '${attendence_selected_date_list[0].attendanceDate.day}-${attendence_selected_date_list[0].attendanceDate.month}-${attendence_selected_date_list[0].attendanceDate.year}' : ''}',
+                    'Attendance Date: ${attendence_selected_date_list?.length > 0 ? '${attendence_selected_date_list[0].attendanceDate.day}-${attendence_selected_date_list[0].attendanceDate.month}-${attendence_selected_date_list[0].attendanceDate.year}' : ''}',
                     overflow: TextOverflow.ellipsis,
                     softWrap: false,
                     textAlign: TextAlign.center,

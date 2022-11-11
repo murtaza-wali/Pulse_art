@@ -633,12 +633,12 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                             child: Container(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  begin: Alignment(-0.6, -1),
-                                  end: Alignment(-1, -0),
+                                  // begin: Alignment(-0.6, -1),
+                                  // end: Alignment(-1, -0),
                                   colors: [Colors.black, color2],
                                 ),
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(17.0),
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -657,8 +657,8 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                                                 ),
                                                 imageUrl:
                                                     'https://artlive.artisticmilliners.com:8081${_cardsMenuItem.logo}',
-                                                height: 100,
-                                                width: 100,
+                                                height: 80,
+                                                width: 80,
                                               )),
                                   ),
                                   Text(
@@ -674,7 +674,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
                               ),
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(17.0),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             elevation: 5,
                             margin: EdgeInsets.all(10),
@@ -774,20 +774,31 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
       insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       title: Align(
         alignment: Alignment.center,
-        child: Row(
+        child: Column(
           children: [
-            new Expanded(
-              child: Text(
-                'Create Ticket',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: ReColors().appMainColor,
-                  fontSize: 17.0,
-                  fontFamily: 'headingfont',
+            Row(
+              children: [
+                new Expanded(
+                  child: Text(
+                    'Create Ticket',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: ReColors().appMainColor,
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'headingfont',
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
+            SizedBox(height: 10,),
+            Divider(
+              height: 10,
+              color: Colors.grey,
+            )
           ],
+
         ),
       ),
       shape: RoundedRectangleBorder(
@@ -802,13 +813,10 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
               )),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           textColor: Theme.of(context).accentColor,
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => MainMenuPopUp()),
-            );
-          },
+    onPressed: () {
+      Navigator.of(context, rootNavigator: true)
+          .pop();
+    }
         ),
         FlatButton(
           child: const Text('CREATE',
