@@ -96,7 +96,7 @@ class _State extends State<Login> {
                     decoration: InputDecoration(
                       labelText: appstring().username,
                       labelStyle: TextStyle(
-                          color: Colors.white, fontFamily: 'titlefont'),
+                          color: Colors.white30, fontFamily: 'titlefont'),
                       fillColor: Colors.white,
                       enabledBorder: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
@@ -131,7 +131,7 @@ class _State extends State<Login> {
                       ),
                       labelText: appstring().psw,
                       labelStyle: TextStyle(
-                          color: Colors.white, fontFamily: 'titlefont'),
+                          color: Colors.white30, fontFamily: 'titlefont'),
                       fillColor: Colors.white,
                       enabledBorder: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
@@ -152,7 +152,7 @@ class _State extends State<Login> {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                          flex: 5,
+                          flex: 6,
                           child: Container(
                               child: FlatButton(
                                   onPressed: () =>
@@ -161,9 +161,13 @@ class _State extends State<Login> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                            height: 24.0,
-                                            width: 24.0,
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            minHeight: 24,
+                                            maxHeight: 24,
+                                            minWidth: 24,
+                                            maxWidth: 24
+                                          ),
                                             child: Checkbox(
                                                 side: BorderSide(color: ReColors().appTextWhiteColor),
                                                 checkColor: ReColors().appMainColor,
@@ -207,7 +211,8 @@ class _State extends State<Login> {
                   padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                   height: 50.0,
                   margin: EdgeInsets.all(10),
-                  child: RaisedButton(
+                  child: ElevatedButton(
+
                     onPressed: () {
                       /*  Navigator.of(context).push(
                         PageRouteBuilder(
@@ -286,12 +291,28 @@ class _State extends State<Login> {
                         });
                       }
                     },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(80.0)),
-                    padding: EdgeInsets.all(0.0),
+                    style: ElevatedButton.styleFrom(
+
+                      primary:  Color(0xff292639),
+
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      padding: EdgeInsets.all(0.0),
+                      //backgroundColor: const Color(0xff292639),
+                    ),
+
+
                     child: Ink(
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(
+                          boxShadow: <BoxShadow>[
+                      BoxShadow(
+                      color: Colors.white.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: Offset(0, 2),
+                      )],
+
+                        gradient: LinearGradient(
+
                             colors: [
                               ReColors().appTextWhiteColor,
                               ReColors().appTextWhiteColor
@@ -299,23 +320,31 @@ class _State extends State<Login> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
-                          borderRadius: BorderRadius.circular(30.0)),
+                          borderRadius: BorderRadius.circular(10.0)),
                       child: Container(
                         margin: EdgeInsets.symmetric(
                             horizontal:
-                                0.05 * MediaQuery.of(context).size.width),
+                                0.02 * MediaQuery.of(context).size.width),
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width,
                             minHeight: 50.0),
                         alignment: Alignment.center,
-                        child: Text(
-                          appstring().login,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: ReColors().appMainColor,
-                              fontSize: 15,
-                              fontFamily: 'headerfont'),
-                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                            appstring().login,
+                            textAlign: TextAlign.center,
+
+                            style: TextStyle(
+                                color: ReColors().appMainColor,
+                                fontSize: 15,
+                                fontFamily: 'headerfont'),
+                          ),
+                            SizedBox(width: 5,),
+                            Icon(Icons.login_outlined, color: ReColors().appMainColor,)
+                          ],
+                        )
                       ),
                     ),
                   ),

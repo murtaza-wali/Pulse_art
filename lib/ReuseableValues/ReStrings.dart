@@ -1,7 +1,7 @@
 // ignore: camel_case_types
 class appstring{
   final appname = 'PULSE';
-  final login = 'LOGIN';
+  final login = 'Login';
   final apply = 'Apply';
   final cancel = 'Cancel';
   final ok = 'OK';
@@ -13,7 +13,7 @@ class appstring{
   final forget_psw = 'Forget Password?';
   final remember = 'Remember me';
   final psw = 'Password';
-  final username = 'Username';
+  final username = 'User ID';
   final accept = 'Accept';
   final reject = 'Reject';
   final support = 'Support';

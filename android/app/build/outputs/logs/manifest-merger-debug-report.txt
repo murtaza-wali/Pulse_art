@@ -6,6 +6,7 @@ INJECTED from D:\StudioProjects\art\android\app\src\main\AndroidManifest.xml:1:1
 INJECTED from D:\StudioProjects\art\android\app\src\main\AndroidManifest.xml:1:1-48:12
 MERGED from D:\StudioProjects\art\android\app\src\main\AndroidManifest.xml:1:1-48:12
 MERGED from [:firebase_core] C:\flutter\.pub-cache\hosted\pub.dartlang.org\firebase_core-1.12.0\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-15:12
+MERGED from [:flutter_pdfview] C:\flutter\.pub-cache\hosted\pub.dartlang.org\flutter_pdfview-1.2.2\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:app_installer] C:\flutter\.pub-cache\hosted\pub.dartlang.org\app_installer-1.1.0\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-12:12
 MERGED from [:shared_preferences] C:\flutter\.pub-cache\hosted\pub.dartlang.org\shared_preferences-2.0.7\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:qr_mobile_vision] C:\flutter\.pub-cache\hosted\pub.dartlang.org\qr_mobile_vision-3.0.1\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
@@ -45,6 +46,8 @@ MERGED from [androidx.appcompat:appcompat:1.4.1] C:\Users\uroosa.ali\.gradle\cac
 MERGED from [androidx.camera:camera-camera2:1.1.0-alpha06] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\f0526b43c612957947370d3f4d330f30\jetified-camera-camera2-1.1.0-alpha06\AndroidManifest.xml:17:1-38:12
 MERGED from [androidx.webkit:webkit:1.4.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\ec1164698513a563eac735758ac6f7d0\webkit-1.4.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.browser:browser:1.3.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\f621b8e97ec3c7b0283fd99db76ce52d\browser-1.3.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.github.barteksc:android-pdf-viewer:3.2.0-beta.1] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\eaabd0f9fd625d35063a7532df3c1c15\jetified-android-pdf-viewer-3.2.0-beta.1\AndroidManifest.xml:2:1-11:12
+MERGED from [com.github.barteksc:pdfium-android:1.9.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\fd72dd0679138a4ee5b5fbe753f04e3c\jetified-pdfium-android-1.9.0\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\506a92cf0ded8bf1eadda5fa5b62d957\legacy-support-v4-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\0831c1cd52ce940601d0925d32134f6c\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\5a05bc0826e111b779f6b6e83b708780\swiperefreshlayout-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -353,6 +356,8 @@ INJECTED from D:\StudioProjects\art\android\app\src\main\AndroidManifest.xml
 INJECTED from D:\StudioProjects\art\android\app\src\main\AndroidManifest.xml
 MERGED from [:firebase_core] C:\flutter\.pub-cache\hosted\pub.dartlang.org\firebase_core-1.12.0\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] C:\flutter\.pub-cache\hosted\pub.dartlang.org\firebase_core-1.12.0\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_pdfview] C:\flutter\.pub-cache\hosted\pub.dartlang.org\flutter_pdfview-1.2.2\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_pdfview] C:\flutter\.pub-cache\hosted\pub.dartlang.org\flutter_pdfview-1.2.2\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:app_installer] C:\flutter\.pub-cache\hosted\pub.dartlang.org\app_installer-1.1.0\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:app_installer] C:\flutter\.pub-cache\hosted\pub.dartlang.org\app_installer-1.1.0\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences] C:\flutter\.pub-cache\hosted\pub.dartlang.org\shared_preferences-2.0.7\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
@@ -431,6 +436,10 @@ MERGED from [androidx.webkit:webkit:1.4.0] C:\Users\uroosa.ali\.gradle\caches\tr
 MERGED from [androidx.webkit:webkit:1.4.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\ec1164698513a563eac735758ac6f7d0\webkit-1.4.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.browser:browser:1.3.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\f621b8e97ec3c7b0283fd99db76ce52d\browser-1.3.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.browser:browser:1.3.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\f621b8e97ec3c7b0283fd99db76ce52d\browser-1.3.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.github.barteksc:android-pdf-viewer:3.2.0-beta.1] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\eaabd0f9fd625d35063a7532df3c1c15\jetified-android-pdf-viewer-3.2.0-beta.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.barteksc:android-pdf-viewer:3.2.0-beta.1] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\eaabd0f9fd625d35063a7532df3c1c15\jetified-android-pdf-viewer-3.2.0-beta.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.barteksc:pdfium-android:1.9.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\fd72dd0679138a4ee5b5fbe753f04e3c\jetified-pdfium-android-1.9.0\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.barteksc:pdfium-android:1.9.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\fd72dd0679138a4ee5b5fbe753f04e3c\jetified-pdfium-android-1.9.0\AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\506a92cf0ded8bf1eadda5fa5b62d957\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\506a92cf0ded8bf1eadda5fa5b62d957\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\uroosa.ali\.gradle\caches\transforms-2\files-2.1\0831c1cd52ce940601d0925d32134f6c\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
