@@ -451,29 +451,25 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
     if (widget.item.menuImage != null) {
       // image and text
       return 
-        Padding(padding: EdgeInsets.all(10),child: Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
+        Padding(padding: EdgeInsets.all(10),child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
 
-              Expanded(
-                child: Container(
-                  width: 30.0,
-                  height: 30.0,
-                  child: widget.item.menuImage,
+            Container(
+              width: 30.0,
+              height: 30.0,
+              child: widget.item.menuImage,
+            ),
+            Container(
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  widget.item.menuTitle,
+                  style: widget.item.menuTextStyle,
                 ),
               ),
-              Container(
-                child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    widget.item.menuTitle,
-                    style: widget.item.menuTextStyle,
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),);
     } else {
       // only text

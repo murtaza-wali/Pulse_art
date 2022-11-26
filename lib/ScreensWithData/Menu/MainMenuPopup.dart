@@ -691,7 +691,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
 
   void maxColumn() {
     PopupMenu menu = PopupMenu(
-        maxColumn: 2,
+        maxColumn: 3,
         items: [
           MenuItem(
               title: 'Self Service',
@@ -699,6 +699,7 @@ class _MainMenuPopUpState extends State<MainMenuPopUp> {
           MenuItem(
               title: 'Sign Out',
               image: Image.asset('assets/images/signout_logo.png')),
+
         ],
         onClickMenu: onClickMenu,
         stateChanged: stateChanged,

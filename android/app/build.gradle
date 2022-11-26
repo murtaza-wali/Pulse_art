@@ -59,7 +59,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-    }
+        manifestPlaceholders = [onesignal_app_id               : "8c0c4728-eedc-4ed6-85cf-87a61e404368",
+                                onesignal_google_project_number: "843503947093"]    }
+
 
     signingConfigs {
         release {
@@ -71,6 +73,7 @@ android {
     }
     buildTypes {
         release {
+            ndk.abiFilters 'armeabi-v7a'
             shrinkResources true
             signingConfig signingConfigs.release
         }
