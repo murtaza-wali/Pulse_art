@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="am.art.art"
     android:versionCode="50"
-    android:versionName="1.0.50" >
+    android:versionName="1.0.50">
 
     <uses-sdk
         android:minSdkVersion="21"
@@ -13,7 +14,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+<!--    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"-->
+<!--        tools:node="remove"/>-->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <uses-feature
@@ -41,8 +43,9 @@
             <action android:name="android.support.customtabs.action.CustomTabsService" />
         </intent>
     </queries>
-
-    <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+<!--
+        <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+    tools:node="remove"/>-->
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />

@@ -451,7 +451,7 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
     if (widget.item.menuImage != null) {
       // image and text
       return 
-        Padding(padding: EdgeInsets.all(10),child: Row(
+        Padding(padding: EdgeInsets.all(5),child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
 

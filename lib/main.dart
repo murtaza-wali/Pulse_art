@@ -7,7 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:in_app_update/in_app_update.dart';
 import 'package:new_version/new_version.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -244,51 +243,51 @@ class _MyHomePageState extends State<MyHomePage> {
       descStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
       animationDuration: Duration(milliseconds: 400),
     );
-    Alert(
-        context: dialogContext,
-        style: alertStyle,
-        title: 'Update App?',
-        desc:
-            'A new version of Pulse available. Would You like to update it now?',
-        buttons: [
-          DialogButton(
-            child: Text(
-              'Update',
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            onPressed: () {
-              //yeh comment kara hai .....
-              /*  LaunchReview.launch(
-                androidAppId: "am.art.art",
-                iOSAppId: "",
-              );*/
-
-              //yeh updated code hai ... yeh test krna hai
-              _updateInfo?.updateAvailability ==
-                      UpdateAvailability.updateAvailable
-                  ? () {
-                      InAppUpdate.performImmediateUpdate()
-                          .catchError((e) => print(e.toString()));
-                    }
-                  : null;
-            },
-            color: Colors.black,
-          ),
-        ]).show();
+    // Alert(
+    //     context: dialogContext,
+    //     style: alertStyle,
+    //     title: 'Update App?',
+    //     desc:
+    //         'A new version of Pulse available. Would You like to update it now?',
+    //     buttons: [
+    //       DialogButton(
+    //         child: Text(
+    //           'Update',
+    //           style: TextStyle(color: Colors.white, fontSize: 18),
+    //         ),
+    //         onPressed: () {
+    //           //yeh comment kara hai .....
+    //           /*  LaunchReview.launch(
+    //             androidAppId: "am.art.art",
+    //             iOSAppId: "",
+    //           );*/
+    //
+    //           //yeh updated code hai ... yeh test krna hai
+    //           _updateInfo?.updateAvailability ==
+    //                   UpdateAvailability.updateAvailable
+    //               ? () {
+    //                   InAppUpdate.performImmediateUpdate()
+    //                       .catchError((e) => print(e.toString()));
+    //                 }
+    //               : null;
+    //         },
+    //         color: Colors.black,
+    //       ),
+    //     ]).show();
   }
 
-  AppUpdateInfo _updateInfo;
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> checkForUpdate() async {
-    InAppUpdate.checkForUpdate().then((info) {
-      setState(() {
-        _updateInfo = info;
-      });
-    }).catchError((e) {
-      print(e.toString());
-    });
-  }
+  // AppUpdateInfo _updateInfo;
+  //
+  // // Platform messages are asynchronous, so we initialize in an async method.
+  // Future<void> checkForUpdate() async {
+  //   InAppUpdate.checkForUpdate().then((info) {
+  //     setState(() {
+  //       _updateInfo = info;
+  //     });
+  //   }).catchError((e) {
+  //     print(e.toString());
+  //   });
+  // }
 
   initStateMain() {
     MySharedPreferences.instance
