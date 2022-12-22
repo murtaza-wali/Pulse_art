@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:art/APIUri/BaseUrl.dart';
 import 'package:art/Error/Error.dart';
+import 'package:art/Model/AttendanceCorrectionReport.dart';
 import 'package:art/Model/AttendenceModel.dart';
 import 'package:art/Model/Count.dart';
 import 'package:art/Model/DAM/DAMunitlist.dart';
@@ -40,6 +41,7 @@ import 'package:art/Model/version.dart';
 import 'package:art/Model/wms_am5_model/warehouse_rack_list.dart';
 import 'package:art/Model/wms_am5_model/warehouse_racks.dart';
 import 'package:art/Model/wms_am5_model/warehouse_types.dart';
+import 'package:art/ParsingJSON/PostJSONMethod.dart';
 import 'package:art/ReuseableValues/ReColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -277,6 +279,8 @@ class GetJSON {
       // parse URI .....
       var menuURL = Uri.parse(
           BaseURL().Auth + 'base' + '/' + 'cards' + '/' + userId.toString());
+
+      print('Value of user ID is: ${userId.toString()}');
       final result = await http.get(menuURL);
       var parse = json.decode(result.body);
       var data = parse['items'] as List;
@@ -1119,6 +1123,25 @@ class GetJSON {
     }
   }
 
+
+  Future<List<AttendanceCorrectionReport>> getAttendanceReport(String employeeCode) async {
+    try {
+      // parse URI .....
+      var correctionURL = Uri.parse(
+          BaseURL().attendanceCorrection  + employeeCode.toString());
+      final result = await http.get(correctionURL);
+
+      print(correctionURL);
+      var parse = json.decode(result.body);
+      var data = parse["items"] as List;
+
+      var map =
+      data.map<AttendanceCorrectionReport>((json) => AttendanceCorrectionReport.fromJson(json));
+      return map.toList();
+    } on SocketException catch (e) {
+      throw NoInternetException(e.message);
+    }
+  }
   Future<List<Attendenceitem>> getattendenceData(String employeeCode) async {
     try {
       // parse URI .....

@@ -384,7 +384,7 @@ class _TransactionLinestate extends State<TransactionLine>
           ),
           itemBuilder: (_, Detailcardsitem element) {
             if (element.columnPrompt.contains("Item")) {
-              print('checking${element.columnPrompt.contains("Item")}');
+              print('checking item is ${element.columnPrompt.contains("Item")}');
               return Container(
                 padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                 decoration: BoxDecoration(
@@ -396,8 +396,8 @@ class _TransactionLinestate extends State<TransactionLine>
                 child: Column(
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+
                         Text(
                           '${element.columnPrompt}  ',
                           maxLines: 3,
@@ -406,16 +406,15 @@ class _TransactionLinestate extends State<TransactionLine>
                               color: Colors.grey,
                               fontFamily: 'headingfont'),
                         ),
-                        Expanded(
-                            child: Text('${element.columnVal}',
-                                maxLines: 3,
-                                textAlign: TextAlign.right,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: false,
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontFamily: 'headingfont'))),
+                        Text('${element.columnVal}',
+                            maxLines: 3,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                fontFamily: 'headingfont')),
                       ],
                     ),
                     /* Divider(
@@ -438,7 +437,6 @@ class _TransactionLinestate extends State<TransactionLine>
                 child: Column(
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
                           '${element.columnPrompt}',
@@ -448,7 +446,7 @@ class _TransactionLinestate extends State<TransactionLine>
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Align(
-                            alignment: Alignment.topRight,
+                            alignment: Alignment.topLeft,
                             child: Icon(
                               Icons.check_circle,
                               color: Colors.red,
@@ -477,7 +475,6 @@ class _TransactionLinestate extends State<TransactionLine>
                 child: Column(
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
                           '${element.columnPrompt}',
@@ -487,7 +484,7 @@ class _TransactionLinestate extends State<TransactionLine>
                         Padding(
                           padding: EdgeInsets.all(5),
                           child: Align(
-                            alignment: Alignment.topRight,
+                            alignment: Alignment.topLeft,
                             child: Icon(
                               Icons.cancel,
                               color: Colors.green,
@@ -516,31 +513,36 @@ class _TransactionLinestate extends State<TransactionLine>
                 )),
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          '',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              color: Colors.black,
-                              icon: new Icon(Icons.edit),
-                              onPressed: () {
-                                print('lineees ID${element.cardId}');
-                                _displayQuantityDialog(
-                                  context,
-                                  element.cardId,
-                                );
-                              },
+
+                    //edit visibility gone
+                    Visibility(
+                      visible: false,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Edit',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(0),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                color: Colors.black,
+                                icon: new Icon(Icons.edit),
+                                onPressed: () {
+                                  print('lineees ID${element.cardId}');
+                                  _displayQuantityDialog(
+                                    context,
+                                    element.cardId,
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     /* Divider(
                       height: 1,
@@ -561,7 +563,7 @@ class _TransactionLinestate extends State<TransactionLine>
               child: Column(
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                     children: <Widget>[
                       Text(
                         '${element.columnPrompt}  ',
@@ -571,16 +573,15 @@ class _TransactionLinestate extends State<TransactionLine>
                             color: Colors.grey,
                             fontFamily: 'headingfont'),
                       ),
-                      Expanded(
-                          child: Text('${element.columnVal}',
-                              maxLines: 6,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: false,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                  fontFamily: 'headingfont'))),
+                      Text('${element.columnVal}',
+                          maxLines: 6,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                              fontFamily: 'headingfont')),
                     ],
                   ),
                 ],

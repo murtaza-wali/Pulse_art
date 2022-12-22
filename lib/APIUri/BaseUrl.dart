@@ -3,6 +3,7 @@ class BaseURL {
   String Auth = 'https://artlive.artisticmilliners.com:8081/ords/art/apis/';
   String NewAuth = 'https://artlive.artisticmilliners.com:8081/ords/art/';
   String WarehouseAuth = 'https://artlive.artisticmilliners.com:8081/ords/art/bscan/warehouse/';
+  String attendanceCorrection = 'https://artlive.artisticmilliners.com:8081/ords/art/test/attendance/';
 
   //DENIM SALES
 

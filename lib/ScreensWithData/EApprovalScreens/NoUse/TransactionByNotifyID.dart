@@ -227,6 +227,7 @@ class _TransactionNotifyIDstate extends State<TransactionNotifyID>
       child: Column(
         children: <Widget>[
           Row(
+            crossAxisAlignment: CrossAxisAlignment.,
             children: [
               Align(
                   alignment: Alignment.topLeft,

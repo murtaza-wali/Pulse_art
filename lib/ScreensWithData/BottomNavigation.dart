@@ -3,6 +3,7 @@ import 'package:art/ScreensWithData/AttendanceApproval/AttendanceApprovalScreen.
 import 'package:art/ScreensWithData/DigitalHR/LMS/Attendance.dart';
 import 'package:art/ScreensWithData/Selfservice/Attendance.dart';
 import 'package:art/ScreensWithData/Selfservice/LeaveApplication.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,7 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final leave_request = new LeaveRequest1();
   // final Employee_attendance_correction = new UnderdevelopmentPage();
   final Employee_attendance_correction = new AttendanceCorrection();
-  Widget homeShow = UserProfile();
+  Widget homeShow = AttendanceApprovalScreen();
   // Widget homeShow = AttendanceApprovalScreen();
 
   @override
@@ -70,20 +71,27 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   Widget _pageChooser(int page) {
     switch (page) {
-      case 0:
-        return userprofile;
-        break;
-      case 1:
-        return attendence;
-        break;
-      case 2:
-        return organgram;//attendence;
-        break;
-      case 3:
-        return Employee_performance;
-        break;
-      default:
-        return homeShow;
+    case 0:
+    return attendanceCorrectionscreen;
+    break;
+
+    case 1:
+    return userprofile;
+    break;
+    case 2:
+    return attendence;//attendence;
+    break;
+    case 3:
+    return organgram;
+    break;
+    case 4:
+    return Employee_performance;
+    break;
+    case 5:
+    return leave_request;
+    break;
+    default:
+    return homeShow;
     }
   }
 
@@ -97,6 +105,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           index: 0,
           height: 50.0,
           items: <Widget>[
+            FaIcon(
+              FontAwesomeIcons.edit,
+              size: 22,
+              color: Colors.white,
+            ),
             Icon(
               Icons.perm_identity,
               size: 25,
@@ -107,22 +120,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
               size: 25,
               color: Colors.white,
             ),
-            Icon(
+            FaIcon(
               Icons.account_tree_outlined,
-              size: 25,
               color: Colors.white,
+              size: 25,
             ),
             FaIcon(
-              FontAwesomeIcons.chartLine,
+              Icons.local_activity_outlined,
               color: Colors.white,
               size: 25,
             ),
-            // FaIcon(
-            //   FontAwesomeIcons.calendarCheck,
-            //   color: Colors.white,
-            //
-            //   size: 25,
-            // ),
             // FaIcon(
             //   FontAwesomeIcons.book,
             //   color: Colors.white,

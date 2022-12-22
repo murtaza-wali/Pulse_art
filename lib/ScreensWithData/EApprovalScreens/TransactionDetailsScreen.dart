@@ -185,7 +185,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
         .getStringValue("attribute1_prompt")
         .then((value) => setState(() {
               prompt1 = value;
-              print(prompt1);
+              print('prompt 1 ${prompt1}');
               if (prompt1 == 'null') {
                 visible1 = false;
               }
@@ -446,7 +446,6 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
@@ -484,7 +483,6 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
@@ -527,8 +525,6 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -540,17 +536,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value1}',
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value1}',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
@@ -576,8 +570,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -589,18 +582,16 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value2}',
-                                              textAlign: TextAlign.right,
-                                              maxLines: 3,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value2}',
+                                            textAlign: TextAlign.right,
+                                            maxLines: 3,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
@@ -625,8 +616,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
@@ -638,17 +628,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                               fontFamily: 'headingfont'),
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            '${value3}',
-                                            textAlign: TextAlign.right,
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black,
-                                                fontFamily: 'headingfont'),
-                                          ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                          '${value3}',
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                              fontFamily: 'headingfont'),
                                         ),
                                       ),
                                     ],
@@ -675,8 +663,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -693,7 +680,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                             padding: const EdgeInsets.all(5.0),
                                             child: Text(
                                               '${value4}',
-                                              textAlign: TextAlign.right,
+                                              textAlign: TextAlign.left,
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black,
@@ -723,8 +710,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -741,7 +727,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                             padding: const EdgeInsets.all(5.0),
                                             child: Text(
                                               '${value5}',
-                                              textAlign: TextAlign.right,
+                                              textAlign: TextAlign.left,
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black,
@@ -771,8 +757,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -784,17 +769,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value6}',
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value6}',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
@@ -820,8 +803,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -833,17 +815,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value7}',
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value7}',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
@@ -868,8 +848,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -881,17 +860,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value8}',
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value8}',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
@@ -916,8 +893,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -929,17 +905,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value9}',
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value9}',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
@@ -964,8 +938,7 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(5.0),
@@ -977,17 +950,15 @@ class _TransactionDetailsstate extends State<TransactionDetails>
                                                 fontFamily: 'headingfont'),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text(
-                                              '${value10}',
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                  fontFamily: 'headingfont'),
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            '${value10}',
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontFamily: 'headingfont'),
                                           ),
                                         ),
                                       ],
